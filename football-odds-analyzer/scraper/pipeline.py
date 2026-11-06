@@ -70,7 +70,7 @@ def _upsert_match(session, raw: RawMatch, league, favorite_side: str, extracted_
 
 
 async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple]]:
-    """Lit les matchs puis, en mode Pinnacle, enrichit les candidats plausibles."""
+    """Lit les matchs puis ouvre la page des candidats plausibles pour la cote de référence."""
     leagues = default_leagues()
     decisions: dict[str, tuple] = {}
     async with OddsPortalScraper() as scraper:
@@ -84,9 +84,9 @@ async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple]]:
             if structural_reject:
                 decisions[raw.match_id] = (pre.reason_code, pre.reason)
                 continue
-            if config.ODDS_SOURCE == "pinnacle" and pre.reason_code != REJECT_ODDS:
+            if config.ODDS_SOURCE in ("pinnacle", "average") and pre.reason_code != REJECT_ODDS:
                 if pages < config.SCRAPE_MAX_MATCH_PAGES:
-                    await scraper.enrich_with_pinnacle(raw)
+                    await scraper.enrich_odds(raw)
                     pages += 1
                 else:
                     log.info("Plafond de pages de match atteint : cotes moyennes pour %s", raw.match_id)

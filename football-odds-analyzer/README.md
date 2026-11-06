@@ -20,9 +20,12 @@ OddsPortal (Playwright, rendu JS) ──► filtres ──► SQLite ──► a
 - Pages `/matches/football/AAAAMMJJ/` de **J à J+`DAYS_AHEAD`** (3 par défaut), marché 1X2.
 - Chromium headless est lancé avec le fuseau `America/Toronto`, donc les heures affichées par OddsPortal sont déjà dans ce fuseau.
 - **Cote de référence** (`ODDS_SOURCE`) :
-  - `pinnacle` : la page du match est ouverte et la ligne Pinnacle est lue. Si Pinnacle est absent, la cote moyenne est gardée. La source réellement utilisée est enregistrée pour chaque match.
-  - `average` : la cote moyenne de la liste est utilisée, sans ouvrir les pages de match (plus rapide).
-  - En mode `pinnacle`, seuls les matchs déjà proches des seuils d'après la moyenne sont ouverts, dans la limite de `SCRAPE_MAX_MATCH_PAGES`.
+  - `pinnacle` (défaut) : ouvre la page du match et lit la ligne Pinnacle ; si Pinnacle est absent, calcule la **moyenne des bookmakers affichés** ; si la page est illisible, garde la cote de la liste.
+  - `average` : moyenne des bookmakers de la page du match.
+  - `listing` : cote de la liste du jour, sans ouvrir les matchs. **Attention : OddsPortal y affiche la meilleure cote du marché, pas la moyenne.**
+  - Seuls les matchs déjà proches des seuils sont ouverts, dans la limite de `SCRAPE_MAX_MATCH_PAGES`. La source réellement utilisée est enregistrée pour chaque match (`pinnacle`, `moyenne (N bookm.)`, `meilleure`).
+  - Les bookmakers affichés dépendent du pays de l'adresse IP. Depuis les États-Unis, OddsPortal ne montre que des bookmakers américains, sans Pinnacle : la cote retenue est alors la moyenne.
+- **Liste virtualisée** : la page du jour retire des lignes en défilant. Le scraper capture donc le HTML à chaque étape de défilement et fusionne les matchs (environ 700 matchs pour un samedi chargé).
 - **Sélection** (seuils dans `config.py`) : cote du favori `< 1.70`, cote de l'outsider `> 4.00`. Le favori peut jouer à domicile ou à l'extérieur.
 - **Exclusions** :
   - Coupes nationales et coupes de la ligue, compétitions européennes et internationales, amicaux, barrages (play-offs), qualifications, supercoupes. Le contrôle porte sur les mots-clés du nom et de l'URL, et sur les « pays » virtuels `world`, `europe`, etc.
@@ -60,6 +63,10 @@ Les rapprochements automatiques sont enregistrés dans la table d'alias (origine
 | `/api/matches` | JSON |
 
 Tous les matchs de championnat éligibles et cotés sont stockés, ce qui permet **d'élargir** les seuils depuis l'interface. Les seuils par défaut décident du journal « cotes hors seuils » et de l'analyse automatique.
+
+### Extraction quotidienne vers l'artefact « Favori Confirmé »
+
+`python -m tools.daily_snapshot --out data/snapshot.json` lance une extraction complète (J à J+3), puis écrit un instantané JSON : matchs de championnat éligibles avec cotes, rejets, analyses API-Football si une clé est configurée. Une tâche planifiée Claude Code l'exécute chaque jour et envoie le fichier dans la base de l'artefact (document `oddsportal/latest`), où la page applique les seuils et les 3 critères.
 
 ### Planification
 APScheduler relance l'extraction **toutes les 2 h** (`REFRESH_INTERVAL_HOURS`), suivie de l'analyse automatique des matchs retenus. Une seule extraction peut tourner à la fois.

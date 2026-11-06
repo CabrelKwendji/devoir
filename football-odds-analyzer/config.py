@@ -46,7 +46,8 @@ MAX_LEAGUE_TIER: int = _env_int("MAX_LEAGUE_TIER", 2)
 
 # --- Extraction OddsPortal ---------------------------------------------------
 DAYS_AHEAD: int = _env_int("DAYS_AHEAD", 3)                # J à J+3
-ODDS_SOURCE: str = _env("ODDS_SOURCE", "pinnacle").lower()  # "pinnacle" | "average"
+# "pinnacle" (repli : moyenne des bookmakers) | "average" (moyenne) | "listing" (meilleure cote de la liste, sans ouvrir les matchs)
+ODDS_SOURCE: str = _env("ODDS_SOURCE", "pinnacle").lower()
 PINNACLE_BOOKMAKER_NAME: str = _env("PINNACLE_BOOKMAKER_NAME", "Pinnacle")
 ODDSPORTAL_BASE_URL: str = _env("ODDSPORTAL_BASE_URL", "https://www.oddsportal.com")
 SCRAPE_DELAY_MIN: float = _env_float("SCRAPE_DELAY_MIN", 3.0)

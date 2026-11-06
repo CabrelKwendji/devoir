@@ -136,11 +136,68 @@ class OddsPortalScraper:
 
     # --- extraction ------------------------------------------------------------
     async def list_day(self, day: date) -> list[RawMatch]:
+        """Lit la page du jour en défilant ; chaque capture est analysée puis fusionnée."""
         url = config.ODDSPORTAL_BASE_URL + S.DAY_LISTING_PATH.format(date=day.strftime("%Y%m%d"))
-        html = await self.fetch(url, S.LISTING_READY, scroll=True)
-        matches = parsers.parse_listing(html, day)
-        log.info("%s : %d matchs lus", day.isoformat(), len(matches))
+        marker = "\n<!--FOA-SNAPSHOT-->\n"
+        cached = self.cache.get(url)
+        if cached is not None:
+            snapshots = cached.split(marker)
+        else:
+            snapshots = await self._scroll_snapshots(url, day)
+            self.cache.set(url, marker.join(snapshots))
+        merged: dict[str, RawMatch] = {}
+        for html in snapshots:
+            for m in parsers.parse_listing(html, day):
+                prev = merged.get(m.match_id)
+                if prev is None or (not prev.has_odds and m.has_odds):
+                    merged[m.match_id] = m
+        matches = sorted(merged.values(), key=lambda m: m.kickoff)
+        log.info("%s : %d matchs lus (%d captures)", day.isoformat(), len(matches), len(snapshots))
         return matches
+
+    async def _scroll_snapshots(self, url: str, day: date, retries: int = 2) -> list[str]:
+        last_exc: Exception | None = None
+        for attempt in range(1, retries + 2):
+            await self._polite_delay()
+            page = await self._context.new_page()
+            try:
+                resp = await page.goto(url, timeout=config.SCRAPE_TIMEOUT_MS, wait_until="domcontentloaded")
+                if resp is not None and resp.status >= 400:
+                    raise ScrapeError(f"HTTP {resp.status} sur {url}")
+                await self._accept_cookies(page)
+                if not await self._wait_any(page, S.LISTING_READY, config.SCRAPE_TIMEOUT_MS):
+                    log.warning("Aucune ligne de match sur %s (sélecteurs à vérifier ?)", url)
+                await page.wait_for_timeout(2500)  # laisse arriver les cotes
+                snapshots: list[str] = []
+                seen: set[str] = set()
+                idle = 0
+                for _ in range(S.SCROLL_MAX_STEPS):
+                    html = await page.content()
+                    ids = {m.match_id for m in parsers.parse_listing(html, day)}
+                    if ids - seen:
+                        snapshots.append(html)
+                        seen |= ids
+                        idle = 0
+                    else:
+                        idle += 1
+                        if idle >= S.SCROLL_IDLE_STEPS:
+                            break
+                    # amène la dernière ligne à l'écran (déclenche la page suivante), puis descend
+                    try:
+                        await page.locator(S.LISTING_READY[0]).last.scroll_into_view_if_needed(timeout=3000)
+                    except PlaywrightError:
+                        pass
+                    await page.mouse.wheel(0, S.SCROLL_STEP_PX)
+                    await page.wait_for_timeout(random.randint(1200, 2000))
+                if not snapshots:
+                    snapshots.append(await page.content())
+                return snapshots
+            except (PlaywrightError, ScrapeError) as exc:
+                last_exc = exc
+                log.warning("Échec %s (tentative %d) : %s", url, attempt, exc)
+            finally:
+                await page.close()
+        raise ScrapeError(f"Impossible de charger {url} : {last_exc}")
 
     async def list_upcoming(self, days_ahead: int = config.DAYS_AHEAD, start: date | None = None) -> list[RawMatch]:
         from database import now_local
@@ -159,22 +216,31 @@ class OddsPortalScraper:
             raise ScrapeError("Aucune journée chargée : " + errors[0])
         return out
 
-    async def enrich_with_pinnacle(self, match: RawMatch) -> RawMatch:
-        """Remplace les cotes moyennes par celles de Pinnacle si disponibles."""
-        if not match.url:
+    async def enrich_odds(self, match: RawMatch, mode: str = config.ODDS_SOURCE) -> RawMatch:
+        """Remplace la meilleure cote de la liste par la cote de référence de la page du match.
+
+        mode « pinnacle » : Pinnacle si affiché, sinon moyenne des bookmakers ;
+        mode « average »  : moyenne des bookmakers ;
+        sinon, ou si la page est illisible, la meilleure cote de la liste est conservée.
+        """
+        if not match.url or mode not in ("pinnacle", "average"):
             return match
         try:
             html = await self.fetch(match.url + S.MATCH_1X2_ANCHOR, S.MATCH_READY)
         except ScrapeError as exc:
-            log.warning("Page du match indisponible (%s) : cotes moyennes conservées", exc)
+            log.warning("Page du match indisponible (%s) : meilleure cote de la liste conservée", exc)
             return match
-        odds = parsers.parse_bookmaker_odds(html, config.PINNACLE_BOOKMAKER_NAME)
-        if odds:
-            match.odds_home, match.odds_draw, match.odds_away = odds
-            match.odds_source = "pinnacle"
-        elif not match.has_odds:
-            avg = parsers.parse_average_odds(html)
-            if avg:
-                match.odds_home, match.odds_draw, match.odds_away = avg
-                match.odds_source = "average"
+        if mode == "pinnacle":
+            odds = parsers.parse_bookmaker_odds(html, config.PINNACLE_BOOKMAKER_NAME)
+            if odds:
+                match.odds_home, match.odds_draw, match.odds_away = odds
+                match.odds_source = "pinnacle"
+                return match
+        avg = parsers.parse_average_odds(html)
+        if avg:
+            (match.odds_home, match.odds_draw, match.odds_away), n = avg
+            match.odds_source = "moyenne" if n == 0 else f"moyenne ({n} bookm.)"
         return match
+
+    # compatibilité
+    enrich_with_pinnacle = enrich_odds

@@ -1,0 +1,786 @@
+<title>Favori Confirmé</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout : feuille de match — barre de vues en haut, tableau des matchs, cartes d'analyse en grille, panneaux de saisie repliables */
+:root {
+  --bg: #f3f5f2;
+  --surface: #ffffff;
+  --ink: #17231c;
+  --muted: #5d6b62;
+  --line: #d9dfd9;
+  --pitch: #1d6a43;
+  --pitch-soft: #dcefe3;
+  --red: #b3261e;
+  --red-soft: #f8dedb;
+  --amber: #9a6200;
+  --amber-soft: #f6ead2;
+  --neutral-soft: #eceeec;
+  --focus: #2a7fd4;
+  --f-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101612; --surface: #172019; --ink: #e5ece6; --muted: #9aa89f; --line: #2b372f;
+    --pitch: #5cc48a; --pitch-soft: #1b3a28; --red: #f08a80; --red-soft: #45201d;
+    --amber: #e3b05a; --amber-soft: #3d2f15; --neutral-soft: #222b25; --focus: #6fb2ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101612; --surface: #172019; --ink: #e5ece6; --muted: #9aa89f; --line: #2b372f;
+  --pitch: #5cc48a; --pitch-soft: #1b3a28; --red: #f08a80; --red-soft: #45201d;
+  --amber: #e3b05a; --amber-soft: #3d2f15; --neutral-soft: #222b25; --focus: #6fb2ff;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: .01em; }
+h1 { font-size: 2.1rem; font-weight: 700; line-height: 1.05; }
+h2 { font-size: 1.45rem; font-weight: 600; }
+h3 { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.mono, .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+a { color: var(--pitch); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+header.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+.brand p { margin: 4px 0 0; max-width: 62ch; }
+nav.views { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 2px solid var(--line); }
+nav.views a {
+  font-family: var(--f-display); font-size: 1.05rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+  text-decoration: none; color: var(--muted); padding: 6px 12px; border-bottom: 3px solid transparent; margin-bottom: -2px;
+}
+nav.views a[aria-current="page"] { color: var(--ink); border-color: var(--pitch); }
+.badge-count { font-family: var(--f-mono); font-size: .75rem; color: var(--muted); }
+
+.banner { border: 1px dashed var(--amber); background: var(--amber-soft); color: var(--ink); padding: 10px 14px; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.banner strong { color: var(--amber); }
+.note { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 14px; align-items: end; }
+label { display: grid; gap: 3px; font-size: .82rem; color: var(--muted); font-weight: 600; }
+input, select, textarea {
+  font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 5px; padding: 6px 8px; min-width: 0; width: 100%;
+}
+textarea { font-family: var(--f-mono); font-size: .82rem; line-height: 1.45; }
+input[type="checkbox"] { width: auto; }
+.check { display: flex; gap: 6px; align-items: center; font-size: .9rem; color: var(--ink); font-weight: 400; }
+button, .btn {
+  font: 600 .9rem var(--f-body); border-radius: 5px; padding: 6px 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); white-space: nowrap;
+}
+button.primary { background: var(--pitch); border-color: var(--pitch); color: var(--surface); }
+button.danger { color: var(--red); border-color: var(--red); background: transparent; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.spread { justify-content: space-between; }
+
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th { text-align: left; font: 600 .78rem var(--f-body); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td.c, th.c { text-align: center; }
+.when { white-space: nowrap; font-family: var(--f-mono); font-size: .82rem; }
+.fav-name { font-weight: 700; }
+.odd { display: inline-block; min-width: 3.6em; text-align: center; font-family: var(--f-mono); font-weight: 500; padding: 2px 6px; border-radius: 4px; }
+.odd.fav { background: var(--pitch-soft); color: var(--pitch); font-weight: 700; }
+.odd.out { background: var(--red-soft); color: var(--red); font-weight: 700; }
+.tier { font-family: var(--f-mono); font-size: .75rem; color: var(--muted); }
+.src { display: block; font-size: .7rem; color: var(--muted); }
+.pill { display: inline-block; font: 700 .78rem var(--f-mono); padding: 2px 8px; border-radius: 999px; background: var(--neutral-soft); color: var(--muted); }
+.pill.s3 { background: var(--pitch-soft); color: var(--pitch); }
+.pill.s2 { background: var(--amber-soft); color: var(--amber); }
+.pill.s1, .pill.s0 { background: var(--red-soft); color: var(--red); }
+.empty { padding: 28px 16px; text-align: center; color: var(--muted); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: grid; }
+.card-head { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.card-head .meta { font-size: .8rem; color: var(--muted); }
+.teams { font-family: var(--f-display); font-size: 1.45rem; font-weight: 600; line-height: 1.15; }
+.teams .vs { color: var(--muted); font-size: 1rem; padding: 0 6px; }
+.t-fav { color: var(--pitch); }
+.t-out { color: var(--red); }
+.score { text-align: right; }
+.score .big { font-family: var(--f-display); font-size: 2.8rem; font-weight: 700; line-height: 1; }
+.score .big.s3 { color: var(--pitch); } .score .big.s2 { color: var(--amber); }
+.score .big.s1, .score .big.s0 { color: var(--red); } .score .big.na { color: var(--muted); }
+.score .verdict { font-weight: 700; font-size: .9rem; }
+.crit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.crit section { padding: 12px 14px; min-width: 0; border-right: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
+.crit section:last-child { border-right: 0; }
+.crit h3 { display: flex; gap: 6px; align-items: center; font-size: .95rem; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; font-size: .84rem; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.seq { font-family: var(--f-mono); letter-spacing: .15em; font-weight: 700; }
+.warn { color: var(--amber); font-size: .8rem; font-weight: 600; }
+.list { font-family: var(--f-mono); font-size: .76rem; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.card-foot { padding: 8px 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; font-size: .8rem; color: var(--muted); }
+
+.editor { display: grid; gap: 14px; }
+.ed-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.ed-grid fieldset { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; display: grid; gap: 8px; min-width: 0; }
+legend { font: 600 .82rem var(--f-body); text-transform: uppercase; letter-spacing: .06em; padding: 0 4px; }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.toast { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 6px; font-size: .9rem; z-index: 20; }
+.reason { font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .84rem; color: var(--muted); }
+details summary { cursor: pointer; font-weight: 600; }
+@media (max-width: 720px) {
+  .crit { grid-template-columns: 1fr; }
+  .crit section { border-right: 0; border-bottom: 1px solid var(--line); }
+  .crit section:last-child { border-bottom: 0; }
+  .ed-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Favori Confirmé</h1>
+      <p class="muted">Repère les matchs de championnat où un favori net (cote &lt; seuil) affronte un outsider (cote &gt; seuil), puis vérifie le classement, la forme et les confrontations directes.</p>
+    </div>
+    <div class="small muted" id="storeInfo">Chargement…</div>
+  </header>
+
+  <nav class="views" aria-label="Vues">
+    <a href="#matchs" data-view="matchs">Matchs détectés <span class="badge-count" id="cMatchs"></span></a>
+    <a href="#analyse" data-view="analyse">Analyse <span class="badge-count" id="cAnalyse"></span></a>
+    <a href="#rejets" data-view="rejets">Rejets <span class="badge-count" id="cRejets"></span></a>
+    <a href="#donnees" data-view="donnees">Données</a>
+  </nav>
+
+  <div id="exampleBanner" class="banner" hidden>
+    <span><strong>Exemple :</strong> aucune extraction OddsPortal n'a encore été reçue. Les matchs ci-dessous sont fictifs et servent uniquement à montrer l'outil.</span>
+    <a class="btn" href="#donnees">Importer mes matchs</a>
+  </div>
+
+  <main id="view"></main>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(() => {
+"use strict";
+const NA = "N/D";
+const FORM_N = 3, H2H_N = 5, MIN_ROUNDS = 5, MIN_H2H = 2;
+const ICON = { favorable: "✅", defavorable: "❌", neutre: "⚪" };
+const REJECT = {
+  coupe: "Coupe / compétition hors championnat",
+  non_reference: "Championnat non référencé",
+  niveau: "Niveau de division trop bas",
+  cotes_nd: "Cotes 1X2 indisponibles",
+  cotes_hors_seuils: "Cotes hors seuils",
+};
+
+/* ---------- Référentiel des championnats (repris de leagues.yaml) ---------- */
+const LEAGUES = [
+  ["Angleterre","England","Premier League",1],["Angleterre","England","Championship",2],["Angleterre","England","League One",3],
+  ["France","France","Ligue 1",1],["France","France","Ligue 2",2],
+  ["Allemagne","Germany","Bundesliga",1],["Allemagne","Germany","2. Bundesliga",2],["Allemagne","Germany","3. Liga",3],
+  ["Italie","Italy","Serie A",1],["Italie","Italy","Serie B",2],
+  ["Espagne","Spain","LaLiga",1],["Espagne","Spain","LaLiga 2",2],["Espagne","Spain","La Liga",1],["Espagne","Spain","Segunda Division",2],
+  ["Pays-Bas","Netherlands","Eredivisie",1],["Pays-Bas","Netherlands","Eerste Divisie",2],
+  ["Portugal","Portugal","Liga Portugal",1],["Portugal","Portugal","Primeira Liga",1],["Portugal","Portugal","Liga Portugal 2",2],
+  ["Belgique","Belgium","Jupiler Pro League",1],["Belgique","Belgium","Pro League",1],["Belgique","Belgium","Challenger Pro League",2],
+  ["Écosse","Scotland","Premiership",1],["Écosse","Scotland","Championship",2],
+  ["Turquie","Turkey","Super Lig",1],["Turquie","Turkey","1. Lig",2],
+  ["Suisse","Switzerland","Super League",1],["Suisse","Switzerland","Challenge League",2],
+  ["Autriche","Austria","Bundesliga",1],["Autriche","Austria","2. Liga",2],
+  ["Danemark","Denmark","Superliga",1],["Danemark","Denmark","1st Division",2],
+  ["Suède","Sweden","Allsvenskan",1],["Suède","Sweden","Superettan",2],
+  ["Norvège","Norway","Eliteserien",1],["Norvège","Norway","OBOS-ligaen",2],
+  ["Grèce","Greece","Super League",1],["Pologne","Poland","Ekstraklasa",1],["Pologne","Poland","I liga",2],
+  ["Tchéquie","Czech Republic","Chance Liga",1],["Croatie","Croatia","HNL",1],
+  ["États-Unis","USA","MLS",1],["États-Unis","USA","USL Championship",2],["Mexique","Mexico","Liga MX",1],
+  ["Brésil","Brazil","Serie A",1],["Brésil","Brazil","Serie B",2],["Argentine","Argentina","Liga Profesional",1],
+  ["Japon","Japan","J1 League",1],["Japon","Japan","J2 League",2],
+  ["Corée du Sud","South Korea","K League 1",1],["Corée du Sud","South Korea","K League 2",2],
+  ["Arabie saoudite","Saudi Arabia","Saudi Pro League",1],["Australie","Australia","A-League",1],
+];
+const slug = s => String(s ?? "").normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const LEAGUE_INDEX = new Map();
+for (const [fr, en, name, tier] of LEAGUES) {
+  for (const c of [fr, en]) LEAGUE_INDEX.set(slug(c) + "|" + slug(name), { country: fr, name, tier });
+}
+
+/* ---------- Filtres (même logique que scraper/filters.py) ---------- */
+const INTL = new Set(["world","monde","europe","south-america","north-central-america","asia","asie","africa","afrique","oceania","international"]);
+const CUP_TOKENS = new Set(["cup","cups","coupe","copa","coppa","pokal","taca","beker","kupa","cupa","puchar","pohar","kubok","kupasi","trophy","trophee","shield","supercup","supercopa","supercoppa","superpokal","supercoupe","friendly","friendlies","amical","amicaux","playoff","playoffs","barrage","barrages","qualification","qualifying","qualifiers","qualifier","qualifications","libertadores","sudamericana","concacaf","uefa","fifa","afc","caf","ofc","conmebol","olympic","olympics","euro","liguilla","relegation","knockout","carabao"]);
+const CUP_PHRASES = ["play-off","play-offs","champions-league","europa-league","conference-league","nations-league","world-cup","club-friendly","league-cup","fa-cup","super-cup","copa-del-rey","dfb-pokal","coupe-de-france","coppa-italia","gold-cup","asian-cup","africa-cup","leagues-cup","community-shield","fa-trophy","coupe-de-la-ligue"];
+function isCup(league, country) {
+  if (INTL.has(slug(country))) return true;
+  const hay = slug(league);
+  if (hay.split("-").some(t => CUP_TOKENS.has(t))) return true;
+  return CUP_PHRASES.some(p => ("-" + hay + "-").includes("-" + p + "-"));
+}
+function leagueTier(r) {
+  if (Number.isFinite(r.tier)) return r.tier;
+  const hit = LEAGUE_INDEX.get(slug(r.country) + "|" + slug(r.league));
+  return hit ? hit.tier : null;
+}
+function favSide(r) { return r.o1 <= r.o2 ? "home" : "away"; }
+function withinThresholds(o1, o2, fmax, omin) { return Math.min(o1, o2) < fmax && Math.max(o1, o2) > omin; }
+function evaluate(r, th) {
+  if (isCup(r.league, r.country)) return { kept: false, code: "coupe", reason: "Coupe ou compétition hors championnat : " + r.league };
+  const tier = leagueTier(r);
+  if (tier == null) return { kept: false, code: "non_reference", reason: "Championnat absent du référentiel et niveau non renseigné : " + r.country + " · " + r.league };
+  if (tier > th.tier) return { kept: false, code: "niveau", reason: "Niveau " + tier + " > " + th.tier };
+  if (![r.o1, r.ox, r.o2].every(Number.isFinite)) return { kept: false, code: "cotes_nd", reason: "Cotes 1X2 incomplètes" };
+  if (!withinThresholds(r.o1, r.o2, th.fav, th.out)) {
+    return { kept: false, code: "cotes_hors_seuils", reason: "Favori " + fmt2(Math.min(r.o1, r.o2)) + " (seuil < " + fmt2(th.fav) + "), outsider " + fmt2(Math.max(r.o1, r.o2)) + " (seuil > " + fmt2(th.out) + ")" };
+  }
+  return { kept: true, tier, side: favSide(r) };
+}
+
+/* ---------- Critères (même logique que analysis/criteria.py) ---------- */
+const outcome = (gf, ga) => gf > ga ? "V" : gf === ga ? "N" : "D";
+const pts = o => ({ V: 3, N: 1, D: 0 })[o];
+function standings(f, o) {
+  const d = { fr: f?.rank ?? null, fp: f?.points ?? null, fj: f?.played ?? null, or: o?.rank ?? null, op: o?.points ?? null, oj: o?.played ?? null, rankGap: null, ptsGap: null };
+  if ([d.fr, d.fp, d.or, d.op].some(v => v == null)) return { name: "Classement", status: "neutre", note: "Classement " + NA, d };
+  d.rankGap = d.or - d.fr; d.ptsGap = d.fp - d.op;
+  const played = [d.fj, d.oj].filter(v => v != null);
+  const note = (!played.length || Math.min(...played) < MIN_ROUNDS) ? "échantillon faible" : null;
+  return { name: "Classement", status: (d.fr < d.or && d.fp > d.op) ? "favorable" : "defavorable", note, d };
+}
+function formSummary(list) {
+  if (!Array.isArray(list)) return { seq: null, pts: null, gf: null, ga: null, n: 0, list: [] };
+  const last = list.slice(0, FORM_N);
+  return {
+    seq: last.map(x => outcome(x.gf, x.ga)).join("") || null,
+    pts: last.length ? last.reduce((a, x) => a + pts(outcome(x.gf, x.ga)), 0) : null,
+    gf: last.length ? last.reduce((a, x) => a + x.gf, 0) : null,
+    ga: last.length ? last.reduce((a, x) => a + x.ga, 0) : null,
+    n: last.length, list: last,
+  };
+}
+function form(fl, ol) {
+  const d = { fav: formSummary(fl), out: formSummary(ol) };
+  if (d.fav.n < FORM_N || d.out.n < FORM_N) return { name: "Forme", status: "neutre", note: "Moins de " + FORM_N + " matchs disponibles", d };
+  return { name: "Forme", status: d.fav.pts > d.out.pts ? "favorable" : "defavorable", note: null, d };
+}
+function h2h(list) {
+  if (!Array.isArray(list)) return { name: "H2H", status: "neutre", note: "H2H " + NA, d: { n: 0, fw: null, ow: null, dr: null, list: [] } };
+  const last = list.slice(0, H2H_N);
+  const fw = last.filter(x => x.fg > x.og).length, ow = last.filter(x => x.og > x.fg).length;
+  const d = { n: last.length, fw, ow, dr: last.length - fw - ow, list: last };
+  if (last.length < MIN_H2H) return { name: "H2H", status: "neutre", note: "données insuffisantes", d };
+  return { name: "H2H", status: fw > ow ? "favorable" : "defavorable", note: null, d };
+}
+function implied(fo, xo, oo) {
+  if (![fo, xo, oo].every(v => Number.isFinite(v) && v > 1)) return null;
+  const inv = [1 / fo, 1 / xo, 1 / oo];
+  return inv[0] / (inv[0] + inv[1] + inv[2]);
+}
+const verdictOf = s => s >= 3 ? "Favori confirmé" : s === 2 ? "Plutôt confirmé" : "Favori fragile";
+function hasSports(sp) {
+  if (!sp) return false;
+  const f = sp.fav || {}, o = sp.out || {};
+  return [f.rank, f.points, o.rank, o.points].some(v => v != null) || Array.isArray(f.form) || Array.isArray(o.form) || Array.isArray(sp.h2h);
+}
+function analyse(r) {
+  const side = favSide(r);
+  const fo = side === "home" ? r.o1 : r.o2, oo = side === "home" ? r.o2 : r.o1;
+  const res = { implied: implied(fo, r.ox, oo), side };
+  if (!hasSports(r.sports)) return { ...res, crit: null, score: null, verdict: "Données sportives " + NA };
+  const sp = r.sports, f = sp.fav || {}, o = sp.out || {};
+  const crit = [standings(f, o), form(f.form ?? null, o.form ?? null), h2h(sp.h2h ?? null)];
+  const score = crit.filter(c => c.status === "favorable").length;
+  return { ...res, crit, score, verdict: verdictOf(score) };
+}
+
+/* ---------- Formatage ---------- */
+const fmt2 = v => Number.isFinite(v) ? v.toFixed(2) : NA;
+const pct = v => v == null ? NA : (v * 100).toFixed(1).replace(".", ",") + " %";
+const nd = v => v == null || v === "" ? NA : String(v);
+const signed = v => v == null ? NA : (v > 0 ? "+" : "") + v;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const JOURS = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."];
+function fmtWhen(k) {
+  if (!k) return NA;
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}))?/.exec(k);
+  if (!m) return esc(k);
+  const d = new Date(+m[1], +m[2] - 1, +m[3]);
+  return JOURS[d.getDay()] + " " + m[3] + "/" + m[2] + (m[4] ? " " + m[4] + ":" + m[5] : "");
+}
+const dayOf = k => (k || "").slice(0, 10);
+function fmtStamp(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return NA;
+  try { return d.toLocaleString("fr-CA", { timeZone: "America/Toronto", dateStyle: "medium", timeStyle: "short" }) + " (Toronto)"; } catch { return iso; }
+}
+const favName = r => favSide(r) === "home" ? r.home : r.away;
+const outName = r => favSide(r) === "home" ? r.away : r.home;
+
+/* ---------- État ---------- */
+function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+const S = {
+  rows: [], loaded: false, store: "memoire", snap: null,
+  th: Object.assign({ fav: 1.70, out: 4.00, tier: 2 }, lsGet("fc.th", {})),
+  f: { date: "", country: "", league: "" },
+  onlyFull: false, sort: "score", editing: null, rejectCode: "",
+};
+const EXAMPLES = [
+  { id: "ex1", example: true, kickoff: "2026-11-08T10:00", country: "Angleterre", league: "Premier League", tier: 1, home: "Exemple United", away: "Démo Town", o1: 1.38, ox: 5.10, o2: 8.40, source: "exemple",
+    sports: { fav: { rank: 2, points: 25, played: 11, form: [{gf:2,ga:0},{gf:1,ga:1},{gf:3,ga:1}] }, out: { rank: 18, points: 8, played: 11, form: [{gf:0,ga:2},{gf:1,ga:2},{gf:1,ga:1}] }, h2h: [{date:"2026-03-01",fg:2,og:0},{date:"2025-10-12",fg:1,og:1},{date:"2025-02-09",fg:3,og:1}] } },
+  { id: "ex2", example: true, kickoff: "2026-11-08T14:30", country: "France", league: "Ligue 2", tier: 2, home: "Démo Athletic", away: "Exemple FC", o1: 5.60, ox: 4.00, o2: 1.58, source: "exemple",
+    sports: { fav: { rank: 4, points: 20, played: 12, form: [{gf:0,ga:1},{gf:2,ga:2},{gf:1,ga:0}] }, out: { rank: 15, points: 11, played: 12, form: [{gf:2,ga:0},{gf:1,ga:0},{gf:1,ga:1}] }, h2h: [{date:"2026-01-20",fg:1,og:0}] } },
+  { id: "ex3", example: true, kickoff: "2026-11-09T09:00", country: "Allemagne", league: "Bundesliga", tier: 1, home: "Modèle 04", away: "Échantillon SV", o1: 1.52, ox: 4.50, o2: 6.20, source: "exemple", sports: null },
+  { id: "ex4", example: true, kickoff: "2026-11-09T12:00", country: "Angleterre", league: "FA Cup", tier: null, home: "Exemple United", away: "Démo Rovers", o1: 1.12, ox: 8.50, o2: 19.0, source: "exemple", sports: null },
+  { id: "ex5", example: true, kickoff: "2026-11-09T13:00", country: "Italie", league: "Serie A", tier: 1, home: "Prova Calcio", away: "Esempio", o1: 2.10, ox: 3.30, o2: 3.60, source: "exemple", sports: null },
+];
+function merged() {
+  const map = new Map();
+  for (const m of (S.snap && Array.isArray(S.snap.matches) ? S.snap.matches : [])) map.set(m.id, { ...m, shared: true });
+  for (const r of S.rows) map.set(r.id, map.has(r.id) ? { ...map.get(r.id), ...r, shared: true, overlay: true } : r);
+  return [...map.values()];
+}
+const rows = () => { const m = merged(); return m.length ? m : (S.loaded ? EXAMPLES : []); };
+const isExample = () => S.loaded && !merged().length;
+
+/* ---------- Stockage : base privée par personne (db), sinon ce navigateur ---------- */
+let col = null;
+function setStoreInfo() {
+  const el = document.getElementById("storeInfo");
+  const where = S.store === "db" ? "Vos saisies sont enregistrées dans votre espace privé."
+    : S.store === "local" ? "Vos saisies sont enregistrées dans ce navigateur uniquement."
+    : "Mode sans sauvegarde : vos saisies seront perdues à la fermeture.";
+  const snap = S.snap && S.snap.extracted_at
+    ? "Dernière extraction OddsPortal : " + fmtStamp(S.snap.extracted_at) + " · " + (S.snap.matches || []).length + " matchs de championnat éligibles sur " + nd(S.snap.found) + " lus."
+    : "Aucune extraction OddsPortal reçue pour l'instant.";
+  el.innerHTML = "<div><strong>" + esc(snap) + "</strong></div><div>" + esc(where) + "</div>";
+}
+function useLocal() {
+  if (S.store === "db") return;
+  let ok = true;
+  try { localStorage.setItem("fc.probe", "1"); localStorage.removeItem("fc.probe"); } catch { ok = false; }
+  S.store = ok ? "local" : "memoire";
+  if (ok) S.rows = lsGet("fc.rows", []);
+  S.loaded = true; setStoreInfo(); render();
+}
+async function initStore() {
+  const use = window.claude && window.claude.use ? n => window.claude.use(n) : null;
+  if (!use) return useLocal();
+  let timer = setTimeout(useLocal, 10000);
+  try {
+    const [db, user] = await Promise.all([use("db"), use("user")]);
+    const uid = db && user ? await user.id() : null;
+    if (!uid) { clearTimeout(timer); return useLocal(); }
+    db.doc("oddsportal/latest").onSnapshot(d => {
+      S.snap = d.exists ? (d.data() || null) : null; setStoreInfo(); render();
+    }, () => {});
+    col = db.collection("data/users/" + uid);
+    col.onSnapshot(snap => {
+      clearTimeout(timer);
+      S.store = "db"; S.loaded = true;
+      S.rows = snap.docs.map(d => ({ ...d.data(), id: d.id })).filter(r => r && r.home);
+      setStoreInfo(); render();
+    }, () => { clearTimeout(timer); col = null; useLocal(); });
+  } catch { clearTimeout(timer); useLocal(); }
+}
+function clean(r) { const { example, shared, overlay, ...rest } = r; return JSON.parse(JSON.stringify(rest)); }
+async function saveRows(list) {
+  if (S.store === "db" && col) {
+    for (const r of list) { try { await col.doc(r.id).set(clean(r)); } catch (e) { toast("Enregistrement refusé : " + (e.message || e.code)); return false; } }
+    return true;
+  }
+  const map = new Map(S.rows.map(r => [r.id, r]));
+  for (const r of list) map.set(r.id, clean(r));
+  S.rows = [...map.values()];
+  if (S.store === "local") lsSet("fc.rows", S.rows);
+  render(); return true;
+}
+async function deleteRows(ids) {
+  if (S.store === "db" && col) {
+    for (const id of ids) { try { await col.doc(id).delete(); } catch (e) { toast("Suppression refusée : " + (e.message || e.code)); return; } }
+    return;
+  }
+  S.rows = S.rows.filter(r => !ids.includes(r.id));
+  if (S.store === "local") lsSet("fc.rows", S.rows);
+  render();
+}
+const newId = (r) => "m_" + slug((r.kickoff || "") + "-" + r.home + "-" + r.away).slice(0, 80);
+
+/* ---------- Import ---------- */
+const num = v => { if (v == null || v === "") return null; const n = Number(String(v).trim().replace(",", ".")); return Number.isFinite(n) ? n : null; };
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return { rows: [], errors: ["Aucune ligne."] };
+  const sep = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ";" : ",";
+  const head = lines[0].split(sep).map(h => slug(h));
+  const idx = names => head.findIndex(h => names.includes(h));
+  const I = {
+    date: idx(["date","jour"]), heure: idx(["heure","time","horaire"]), pays: idx(["pays","country"]), ligue: idx(["ligue","league","championnat"]),
+    niveau: idx(["niveau","tier","division"]), dom: idx(["domicile","home","equipe-domicile"]), ext: idx(["exterieur","away","equipe-exterieur"]),
+    c1: idx(["cote1","cote-1","1","odds-home"]), cx: idx(["cotex","cote-x","x","n","odds-draw"]), c2: idx(["cote2","cote-2","2","odds-away"]), src: idx(["source","source-cotes"]),
+  };
+  const missing = ["date","pays","ligue","dom","ext","c1","cx","c2"].filter(k => I[k] < 0);
+  if (missing.length) return { rows: [], errors: ["En-tête incomplet. Colonnes attendues : date;heure;pays;ligue;niveau;domicile;exterieur;cote1;coteX;cote2;source"] };
+  const out = [], errors = [];
+  lines.slice(1).forEach((l, i) => {
+    const c = l.split(sep).map(x => x.trim());
+    const g = k => I[k] >= 0 ? c[I[k]] : "";
+    let date = g("date");
+    const fr = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(date); if (fr) date = fr[3] + "-" + fr[2] + "-" + fr[1];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) { errors.push("Ligne " + (i + 2) + " : date illisible (" + g("date") + ")"); return; }
+    const heure = /^\d{1,2}:\d{2}$/.test(g("heure")) ? g("heure").padStart(5, "0") : "";
+    const r = { kickoff: date + (heure ? "T" + heure : ""), country: g("pays"), league: g("ligue"), tier: num(g("niveau")),
+      home: g("dom"), away: g("ext"), o1: num(g("c1")), ox: num(g("cx")), o2: num(g("c2")), source: g("src") || "saisie", sports: null };
+    if (!r.home || !r.away) { errors.push("Ligne " + (i + 2) + " : équipes manquantes"); return; }
+    r.id = newId(r); out.push(r);
+  });
+  return { rows: out, errors };
+}
+function parseLocalJSON(text) {
+  let data; try { data = JSON.parse(text); } catch { return { rows: [], errors: ["JSON invalide."] }; }
+  if (!Array.isArray(data)) return { rows: [], errors: ["Le JSON doit être la liste renvoyée par /api/matches."] };
+  const out = [];
+  for (const m of data) {
+    const odds = m.odds || [];
+    const r = { kickoff: String(m.kickoff || "").slice(0, 16), country: m.country, league: m.league, tier: num(m.tier),
+      home: m.home, away: m.away, o1: num(odds[0]), ox: num(odds[1]), o2: num(odds[2]), source: m.odds_source || "app", sports: null };
+    const crit = m.analysis && m.analysis.details && m.analysis.details.criteria;
+    if (Array.isArray(crit)) {
+      const by = Object.fromEntries(crit.map(c => [c.name, c.data || {}]));
+      const cl = by["Classement"] || {}, fo = by["Forme"] || {}, hh = by["H2H"];
+      const formOf = s => Array.isArray(s?.matches) && s.matches.length ? s.matches.map(x => { const [a, b] = String(x.score).split("-").map(Number); return { gf: a, ga: b }; }).filter(x => Number.isFinite(x.gf) && Number.isFinite(x.ga)) : null;
+      const favHome = (m.favorite || "") === m.home;
+      r.sports = {
+        fav: { rank: cl.favorite_rank ?? null, points: cl.favorite_points ?? null, played: cl.favorite_played ?? null, form: formOf(fo.favorite) },
+        out: { rank: cl.outsider_rank ?? null, points: cl.outsider_points ?? null, played: cl.outsider_played ?? null, form: formOf(fo.outsider) },
+        h2h: hh && Array.isArray(hh.matches) ? hh.matches.map(x => {
+          const favIsHome = x.winner === "favorite" ? x.home_goals > x.away_goals : x.winner === "outsider" ? x.home_goals < x.away_goals : (favHome ? x.home === m.home : x.home === m.away);
+          return { date: x.date, fg: favIsHome ? x.home_goals : x.away_goals, og: favIsHome ? x.away_goals : x.home_goals };
+        }) : null,
+      };
+    }
+    r.id = "m_" + slug(String(m.id || newId(r)));
+    out.push(r);
+  }
+  return { rows: out, errors: [] };
+}
+function parseScores(text) {
+  const t = String(text || "").trim();
+  if (!t) return null;
+  const parts = t.split(/[,\n]+/).map(x => x.trim()).filter(Boolean);
+  const res = [];
+  for (const p of parts) { const m = /^(\d+)\s*-\s*(\d+)$/.exec(p); if (!m) throw new Error("Score illisible : « " + p + " » (format attendu : 2-1)"); res.push({ gf: +m[1], ga: +m[2] }); }
+  return res;
+}
+function parseH2H(text) {
+  const t = String(text || "").trim();
+  if (!t) return null;
+  return t.split(/\n+/).map(l => l.trim()).filter(Boolean).map(l => {
+    const m = /^(?:(\d{4}-\d{2}-\d{2})\s*[;,]?\s*)?(\d+)\s*-\s*(\d+)$/.exec(l);
+    if (!m) throw new Error("Ligne H2H illisible : « " + l + " » (format : 2026-03-01; 2-0)");
+    return { date: m[1] || null, fg: +m[2], og: +m[3] };
+  });
+}
+
+/* ---------- Rendu ---------- */
+const view = () => (location.hash.replace("#", "") || "matchs");
+function render() {
+  const v = ["matchs", "analyse", "rejets", "donnees"].includes(view()) ? view() : "matchs";
+  document.querySelectorAll("nav.views a").forEach(a => a.dataset.view === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  document.getElementById("exampleBanner").hidden = !isExample() || v === "donnees";
+  const all = rows();
+  const evals = all.map(r => ({ r, e: evaluate(r, S.th) }));
+  const kept = evals.filter(x => x.e.kept);
+  document.getElementById("cMatchs").textContent = S.loaded ? kept.length : "";
+  document.getElementById("cAnalyse").textContent = S.loaded ? kept.filter(x => hasSports(x.r.sports)).length : "";
+  document.getElementById("cRejets").textContent = S.loaded ? evals.length - kept.length : "";
+  const el = document.getElementById("view");
+  if (!S.loaded) { el.innerHTML = '<div class="panel empty">Chargement de vos matchs…</div>'; return; }
+  el.innerHTML = v === "matchs" ? renderMatchs(kept) : v === "analyse" ? renderAnalyse(kept) : v === "rejets" ? renderRejets(evals.filter(x => !x.e.kept)) : renderDonnees();
+  if (S.editing && v === "matchs") { const ed = document.getElementById("editor"); if (ed) ed.scrollIntoView({ block: "nearest" }); }
+}
+
+function renderMatchs(kept) {
+  const opts = (vals, cur, label) => '<option value="">' + label + "</option>" + [...new Set(vals)].sort().map(x => '<option' + (x === cur ? " selected" : "") + ' value="' + esc(x) + '">' + esc(x) + "</option>").join("");
+  const base = kept.map(x => x.r);
+  const list = base.filter(r => (!S.f.date || dayOf(r.kickoff) === S.f.date) && (!S.f.country || r.country === S.f.country) && (!S.f.league || r.league === S.f.league))
+    .sort((a, b) => String(a.kickoff).localeCompare(String(b.kickoff)));
+  const body = list.map(r => {
+    const side = favSide(r), a = analyse(r);
+    const odd = (v, s) => '<span class="odd ' + (s === side ? "fav" : s ? "out" : "") + '">' + fmt2(v) + "</span>";
+    const pill = a.score == null ? '<span class="pill">' + NA + "</span>" : '<span class="pill s' + a.score + '">' + a.score + "/3</span>";
+    return "<tr>" +
+      '<td class="when">' + fmtWhen(r.kickoff) + "</td>" +
+      "<td>" + esc(r.country) + "</td>" +
+      "<td>" + esc(r.league) + ' <span class="tier">N' + nd(leagueTier(r)) + "</span></td>" +
+      '<td class="' + (side === "home" ? "fav-name" : "") + '">' + esc(r.home) + "</td>" +
+      '<td class="' + (side === "away" ? "fav-name" : "") + '">' + esc(r.away) + "</td>" +
+      '<td class="c">' + odd(r.o1, "home") + '</td><td class="c">' + odd(r.ox, "") + '</td><td class="c">' + odd(r.o2, "away") + "</td>" +
+      '<td class="c num">' + pct(a.implied) + '<span class="src">' + esc(r.source || NA) + "</span></td>" +
+      '<td class="c">' + pill + "</td>" +
+      '<td><div class="row"><button data-act="edit" data-id="' + esc(r.id) + '"' + (r.example ? " disabled title=\"Exemple non modifiable\"" : "") + ">Analyser</button>" +
+      (a.score != null ? '<a class="btn" href="#analyse" data-act="goto" data-id="' + esc(r.id) + '">Voir</a>' : "") + "</div></td></tr>";
+  }).join("");
+  const editing = S.editing ? rows().find(r => r.id === S.editing) : null;
+  return '<div class="wrap">' +
+    '<form class="panel filters" id="filtersForm" onsubmit="return false">' +
+      '<label for="fDate">Date<select id="fDate" name="date">' + opts(base.map(r => dayOf(r.kickoff)), S.f.date, "Toutes") + "</select></label>" +
+      '<label for="fCountry">Pays<select id="fCountry" name="country">' + opts(base.map(r => r.country), S.f.country, "Tous") + "</select></label>" +
+      '<label for="fLeague">Ligue<select id="fLeague" name="league">' + opts(base.filter(r => !S.f.country || r.country === S.f.country).map(r => r.league), S.f.league, "Toutes") + "</select></label>" +
+      '<label for="thFav">Cote favori &lt;<input id="thFav" type="number" step="0.01" min="1.01" value="' + S.th.fav.toFixed(2) + '"></label>' +
+      '<label for="thOut">Cote outsider &gt;<input id="thOut" type="number" step="0.01" min="1.01" value="' + S.th.out.toFixed(2) + '"></label>' +
+      '<label for="thTier">Niveau max.<select id="thTier">' + [1, 2, 3].map(t => "<option" + (t === S.th.tier ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>" +
+      '<button type="button" data-act="resetFilters">Réinitialiser</button>' +
+    "</form>" +
+    (editing ? renderEditor(editing) : "") +
+    '<div class="table-wrap"><table><thead><tr><th>Heure</th><th>Pays</th><th>Ligue (niveau)</th><th>Domicile</th><th>Extérieur</th><th class="c">1</th><th class="c">X</th><th class="c">2</th><th class="c">Proba. favori</th><th class="c">Score</th><th></th></tr></thead><tbody>' +
+      (body || '<tr><td colspan="11" class="empty">Aucun match ne respecte ces filtres. Élargissez les seuils ou importez des matchs dans « Données ».</td></tr>') +
+    "</tbody></table></div>" +
+    '<p class="small muted">' + list.length + " match(s). Cote du favori en vert, de l'outsider en rouge. Probabilité implicite démarginée : (1/cote du favori) ÷ (1/c1 + 1/cX + 1/c2).</p>" +
+  "</div>";
+}
+
+function renderEditor(r) {
+  const sp = r.sports || {}, f = sp.fav || {}, o = sp.out || {};
+  const sc = l => Array.isArray(l) ? l.map(x => x.gf + "-" + x.ga).join(", ") : "";
+  const hh = Array.isArray(sp.h2h) ? sp.h2h.map(x => (x.date ? x.date + "; " : "") + x.fg + "-" + x.og).join("\n") : "";
+  const v = x => x == null ? "" : x;
+  const team = (key, label, t, name) =>
+    '<fieldset><legend>' + label + " · " + esc(name) + "</legend>" +
+    '<div class="trio"><label for="' + key + 'Rank">Rang<input id="' + key + 'Rank" type="number" min="1" value="' + v(t.rank) + '"></label>' +
+    '<label for="' + key + 'Pts">Points<input id="' + key + 'Pts" type="number" min="0" value="' + v(t.points) + '"></label>' +
+    '<label for="' + key + 'Pl">Journées jouées<input id="' + key + 'Pl" type="number" min="0" value="' + v(t.played) + '"></label></div>' +
+    '<label for="' + key + 'Form">3 derniers matchs de championnat, du plus récent au plus ancien (buts pour-contre)<input id="' + key + 'Form" placeholder="2-0, 1-1, 0-1" value="' + esc(sc(t.form)) + '"></label></fieldset>';
+  return '<form class="panel editor" id="editor" data-id="' + esc(r.id) + '" onsubmit="return false">' +
+    '<div class="row spread"><h2>Données sportives : ' + esc(r.home) + " – " + esc(r.away) + '</h2><button type="button" data-act="closeEdit">Fermer</button></div>' +
+    (r.url ? '<p class="small"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">Voir le match sur OddsPortal</a></p>' : "") +
+    (r.sports && r.sports.origin ? '<p class="small muted">Données pré-remplies depuis ' + esc(r.sports.origin) + ".</p>" : "") +
+    '<p class="small muted note">Saisissez seulement ce que vous avez vérifié (API-Football, site de la ligue…). Un champ vide reste « ' + NA + ' » et rend le critère neutre.</p>' +
+    '<div class="ed-grid">' + team("f", "Favori", f, favName(r)) + team("o", "Outsider", o, outName(r)) + "</div>" +
+    '<label for="h2hText">5 dernières confrontations, une par ligne, buts du favori-buts de l\'outsider (date facultative)<textarea id="h2hText" rows="5" placeholder="2026-03-01; 2-0&#10;2025-10-12; 1-1">' + esc(hh) + "</textarea></label>" +
+    '<div class="row"><button type="button" class="primary" data-act="saveSports">Enregistrer et analyser</button>' + (r.shared ? (r.overlay ? '<button type="button" class="danger" data-act="deleteOne">Revenir aux données OddsPortal</button>' : "") : '<button type="button" class="danger" data-act="deleteOne">Supprimer ce match</button>') + '<span class="small" id="edErr" style="color:var(--red)"></span></div>' +
+  "</form>";
+}
+
+function critBlock(c, title) {
+  const head = "<h3>" + (c ? ICON[c.status] : ICON.neutre) + " " + title + "</h3>";
+  if (!c) return "<section>" + head + '<span class="muted small">' + NA + "</span></section>";
+  let inner = "";
+  if (c.name === "Classement") {
+    const d = c.d;
+    inner = '<dl class="kv"><dt>Favori</dt><dd>' + nd(d.fr) + "e · " + nd(d.fp) + " pts · " + nd(d.fj) + " J</dd>" +
+      "<dt>Outsider</dt><dd>" + nd(d.or) + "e · " + nd(d.op) + " pts · " + nd(d.oj) + " J</dd>" +
+      "<dt>Écart rang</dt><dd>" + signed(d.rankGap) + "</dd><dt>Écart pts</dt><dd>" + signed(d.ptsGap) + "</dd></dl>";
+  } else if (c.name === "Forme") {
+    const line = (lbl, s) => "<dt>" + lbl + '</dt><dd><span class="seq">' + nd(s.seq) + "</span> · " + nd(s.pts) + " pts · " + nd(s.gf) + "-" + nd(s.ga) + "</dd>";
+    inner = '<dl class="kv">' + line("Favori", c.d.fav) + line("Outsider", c.d.out) + "</dl>";
+  } else {
+    const d = c.d;
+    inner = '<dl class="kv"><dt>Favori</dt><dd>' + nd(d.fw) + " V</dd><dt>Nuls</dt><dd>" + nd(d.dr) + "</dd><dt>Outsider</dt><dd>" + nd(d.ow) + " V</dd></dl>" +
+      (d.list.length ? '<ul class="list">' + d.list.map(x => "<li>" + esc(x.date || NA) + " · " + x.fg + "-" + x.og + "</li>").join("") + "</ul>" : "");
+  }
+  return "<section>" + head + inner + (c.note ? '<span class="warn">' + esc(c.note) + "</span>" : "") + "</section>";
+}
+
+function renderAnalyse(kept) {
+  let list = kept.map(x => ({ r: x.r, a: analyse(x.r) })).filter(x => x.a.score != null);
+  if (S.onlyFull) list = list.filter(x => x.a.score === 3);
+  list.sort(S.sort === "date" ? (p, q) => String(p.r.kickoff).localeCompare(String(q.r.kickoff)) : (p, q) => q.a.score - p.a.score || String(p.r.kickoff).localeCompare(String(q.r.kickoff)));
+  const waiting = kept.filter(x => !hasSports(x.r.sports)).length;
+  const cards = list.map(({ r, a }) => {
+    const side = a.side, by = Object.fromEntries(a.crit.map(c => [c.name, c]));
+    const odd = (v, s) => '<span class="odd ' + (s === side ? "fav" : s ? "out" : "") + '">' + fmt2(v) + "</span>";
+    return '<article class="card" id="card-' + esc(r.id) + '">' +
+      '<div class="card-head"><div>' +
+        '<div class="meta">' + fmtWhen(r.kickoff) + " · " + esc(r.country) + " · " + esc(r.league) + " (N" + nd(leagueTier(r)) + ")</div>" +
+        '<div class="teams"><span class="' + (side === "home" ? "t-fav" : "t-out") + '">' + esc(r.home) + '</span><span class="vs">vs</span><span class="' + (side === "away" ? "t-fav" : "t-out") + '">' + esc(r.away) + "</span></div>" +
+        '<div class="row small">1 ' + odd(r.o1, "home") + " X " + odd(r.ox, "") + " 2 " + odd(r.o2, "away") + '<span class="muted">' + esc(r.source || "") + "</span></div>" +
+      '</div><div class="score"><div class="big s' + a.score + '">' + a.score + '/3</div><div class="verdict">' + a.verdict + "</div></div></div>" +
+      '<div class="crit">' + critBlock(by["Classement"], "Classement") + critBlock(by["Forme"], "Forme (3 derniers)") + critBlock(by["H2H"], "H2H (5 dernières)") + "</div>" +
+      '<div class="card-foot"><span>Probabilité implicite démarginée de ' + esc(favName(r)) + " : <strong class=\"num\">" + pct(a.implied) + "</strong></span>" +
+      (r.example ? "<span>Exemple fictif</span>" : '<button data-act="edit" data-id="' + esc(r.id) + '">Modifier les données</button>') + "</div>" +
+    "</article>";
+  }).join("");
+  return '<div class="wrap">' +
+    '<div class="panel row spread"><div class="row">' +
+      '<label class="check" for="onlyFull"><input type="checkbox" id="onlyFull"' + (S.onlyFull ? " checked" : "") + "> Seulement 3/3</label>" +
+      '<label for="sortSel" class="check">Tri <select id="sortSel"><option value="score"' + (S.sort === "score" ? " selected" : "") + '>par score</option><option value="date"' + (S.sort === "date" ? " selected" : "") + ">par date</option></select></label>" +
+    '</div><button class="primary" data-act="csv">Exporter en CSV</button></div>' +
+    '<div class="legend"><span>✅ favorable</span><span>❌ défavorable</span><span>⚪ neutre / insuffisant</span><span>3/3 Favori confirmé · 2/3 Plutôt confirmé · 0–1/3 Favori fragile</span></div>' +
+    (waiting ? '<p class="small muted note">' + waiting + " match(s) retenu(s) sans données sportives : ouvrez « Matchs détectés » et cliquez « Analyser » pour les saisir.</p>" : "") +
+    '<div class="cards">' + (cards || '<div class="panel empty">Aucune analyse à afficher.</div>') + "</div>" +
+    '<div id="csvOut"></div>' +
+  "</div>";
+}
+
+function renderRejets(list) {
+  const codes = Object.keys(REJECT);
+  const extra = (S.snap && Array.isArray(S.snap.rejects) ? S.snap.rejects : []).map(x => ({ r: x, e: { code: x.code, reason: x.reason }, fromSnap: true }));
+  const shown = list.concat(extra).filter(x => !S.rejectCode || x.e.code === S.rejectCode).sort((a, b) => String(a.r.kickoff).localeCompare(String(b.r.kickoff)));
+  const counts = S.snap && S.snap.reject_counts ? Object.entries(S.snap.reject_counts).map(([c, n]) => (REJECT[c] || c) + " : " + n).join(" · ") : "";
+  return '<div class="wrap">' +
+    '<div class="panel row"><label for="rejSel" class="check">Motif <select id="rejSel"><option value="">Tous</option>' + codes.map(c => '<option value="' + c + '"' + (c === S.rejectCode ? " selected" : "") + ">" + REJECT[c] + "</option>").join("") + "</select></label></div>" +
+    '<div class="table-wrap"><table><thead><tr><th>Heure</th><th>Pays · Ligue</th><th>Match</th><th class="c">1 / X / 2</th><th>Motif</th></tr></thead><tbody>' +
+    (shown.map(({ r, e }) => "<tr><td class=\"when\">" + fmtWhen(r.kickoff) + "</td><td>" + esc(r.country) + " · " + esc(r.league) + "</td><td>" + esc(r.home) + " – " + esc(r.away) + '</td><td class="c num">' + fmt2(r.o1) + " / " + fmt2(r.ox) + " / " + fmt2(r.o2) + '</td><td><span class="reason">' + REJECT[e.code] + '</span><div class="small muted">' + esc(e.reason) + "</div></td></tr>").join("") ||
+      '<tr><td colspan="5" class="empty">Aucun match rejeté.</td></tr>') +
+    "</tbody></table></div>" +
+    (counts ? '<p class="small muted">Rejets de la dernière extraction OddsPortal : ' + esc(counts) + (S.snap.rejects_truncated ? " (" + S.snap.rejects_truncated + " non affichés)" : "") + ".</p>" : "") +
+    '<p class="small muted">Les rejets « cotes hors seuils » sont recalculés à chaque changement de seuil. Exclus : coupes, compétitions européennes et internationales, amicaux, barrages, qualifications ; divisions au-delà du niveau maximal ; championnats absents du référentiel quand le niveau n\'est pas renseigné.</p>' +
+  "</div>";
+}
+
+function renderDonnees() {
+  const n = S.rows.length;
+  return '<div class="wrap">' +
+    '<section class="panel editor"><h2>Importer des cotes (CSV)</h2>' +
+      '<p class="small muted">Collez un tableau avec cet en-tête, séparateur « ; » ou « , ». Date au format AAAA-MM-JJ ou JJ/MM/AAAA, heure de Toronto. Le niveau est facultatif pour les championnats du référentiel.</p>' +
+      '<textarea id="csvIn" rows="7" placeholder="date;heure;pays;ligue;niveau;domicile;exterieur;cote1;coteX;cote2;source&#10;2026-11-08;10:00;Angleterre;Premier League;1;Arsenal;Burnley;1.35;5.20;8.50;Pinnacle"></textarea>' +
+      '<div class="row"><button class="primary" data-act="importCsv">Importer le CSV</button><span class="small" id="csvMsg"></span></div>' +
+    "</section>" +
+    '<section class="panel editor"><h2>Importer depuis l\'application locale</h2>' +
+      '<p class="small muted">Lancez l\'application Python, ouvrez <span class="mono">http://localhost:8000/api/matches</span>, copiez tout le JSON et collez-le ici. Les cotes et les analyses API-Football sont reprises telles quelles.</p>' +
+      '<textarea id="jsonIn" rows="6" placeholder="[{&quot;id&quot;: &quot;AbCd1234&quot;, &quot;kickoff&quot;: &quot;2026-11-08T10:00:00-05:00&quot;, …}]"></textarea>' +
+      '<div class="row"><button class="primary" data-act="importJson">Importer le JSON</button><span class="small" id="jsonMsg"></span></div>' +
+    "</section>" +
+    '<section class="panel editor"><h2>Ajouter un match</h2>' +
+      '<form id="addForm" class="filters" onsubmit="return false">' +
+        '<label for="aDate">Date<input id="aDate" type="date" required></label>' +
+        '<label for="aTime">Heure (Toronto)<input id="aTime" type="time"></label>' +
+        '<label for="aCountry">Pays<input id="aCountry" required placeholder="Angleterre"></label>' +
+        '<label for="aLeague">Ligue<input id="aLeague" required placeholder="Premier League"></label>' +
+        '<label for="aTier">Niveau<input id="aTier" type="number" min="1" placeholder="auto"></label>' +
+        '<label for="aHome">Domicile<input id="aHome" required></label>' +
+        '<label for="aAway">Extérieur<input id="aAway" required></label>' +
+        '<label for="aO1">Cote 1<input id="aO1" type="number" step="0.01" min="1.01" required></label>' +
+        '<label for="aOX">Cote X<input id="aOX" type="number" step="0.01" min="1.01" required></label>' +
+        '<label for="aO2">Cote 2<input id="aO2" type="number" step="0.01" min="1.01" required></label>' +
+        '<label for="aSrc">Source<select id="aSrc"><option>Pinnacle</option><option>Moyenne</option><option>Autre</option></select></label>' +
+        '<button type="button" class="primary" data-act="addOne">Ajouter</button>' +
+      "</form><span class=\"small\" id=\"addMsg\"></span>" +
+    "</section>" +
+    '<section class="panel row spread"><span>' + (S.snap ? (S.snap.matches || []).length + " match(s) reçus d'OddsPortal · " : "") + n + " saisie(s) personnelle(s).</span>" +
+      (n ? '<span class="row" id="clearZone"><button class="danger" data-act="askClear">Effacer mes saisies</button></span>' : "") +
+    "</section>" +
+    '<details class="panel"><summary>D\'où viennent les matchs ?</summary>' +
+      '<p class="small">Chaque jour, une tâche planifiée lance l\'extracteur Playwright sur OddsPortal (J à J+3), applique les filtres et envoie ici les matchs de championnat éligibles avec leurs cotes. Cette page ne lit pas OddsPortal elle-même : un navigateur ne peut pas interroger ce site directement. Les données sportives (classement, forme, H2H) viennent d\'API-Football quand une clé est configurée, sinon vous pouvez les saisir avec « Analyser ».</p>' +
+    "</details>" +
+  "</div>";
+}
+
+/* ---------- Interactions ---------- */
+let toastTimer;
+function toast(msg) { const t = document.getElementById("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3200); }
+const val = id => { const e = document.getElementById(id); return e ? e.value : ""; };
+const say = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+
+function buildCSV() {
+  const kept = rows().filter(r => evaluate(r, S.th).kept).map(r => ({ r, a: analyse(r) })).filter(x => x.a.score != null && (!S.onlyFull || x.a.score === 3));
+  const q = s => { s = String(s ?? ""); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const head = ["date","pays","ligue","niveau","domicile","exterieur","cote_1","cote_X","cote_2","source_cotes","favori","outsider","proba_implicite_favori","classement","forme","h2h","score","verdict"];
+  const lines = [head.join(";")];
+  for (const { r, a } of kept) {
+    const by = Object.fromEntries(a.crit.map(c => [c.name, c.status]));
+    lines.push([r.kickoff, r.country, r.league, nd(leagueTier(r)), r.home, r.away, fmt2(r.o1), fmt2(r.ox), fmt2(r.o2), r.source || NA, favName(r), outName(r), pct(a.implied), by["Classement"], by["Forme"], by["H2H"], a.score + "/3", a.verdict].map(q).join(";"));
+  }
+  return "﻿" + lines.join("\r\n");
+}
+async function exportCSV() {
+  const data = buildCSV();
+  const name = "analyse_favoris_" + new Date().toISOString().slice(0, 10) + ".csv";
+  try {
+    const dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
+    if (dl) { const res = await dl.save({ filename: name, data: new Blob([data], { type: "text/csv;charset=utf-8" }) }); if (res && res.status === "saved") toast("CSV enregistré"); return; }
+  } catch (e) { if (e && e.code !== "unavailable") { toast("Export annulé"); return; } }
+  const out = document.getElementById("csvOut");
+  if (out) {
+    out.innerHTML = '<div class="panel editor"><div class="row spread"><strong>CSV à copier</strong><button data-act="copyCsv">Copier</button></div><textarea id="csvText" rows="8" readonly></textarea></div>';
+    document.getElementById("csvText").value = data.replace(/^﻿/, "");
+  }
+}
+
+document.addEventListener("click", async ev => {
+  const b = ev.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act, id = b.dataset.id;
+  if (act === "edit") { S.editing = id; if (view() !== "matchs") location.hash = "matchs"; else render(); }
+  else if (act === "goto") { setTimeout(() => { const c = document.getElementById("card-" + id); if (c) c.scrollIntoView({ block: "start" }); }, 0); }
+  else if (act === "closeEdit") { S.editing = null; render(); }
+  else if (act === "resetFilters") { S.f = { date: "", country: "", league: "" }; S.th = { fav: 1.70, out: 4.00, tier: 2 }; lsSet("fc.th", S.th); render(); }
+  else if (act === "saveSports") {
+    const r = rows().find(x => x.id === S.editing && !x.example); if (!r) return;
+    const n = k => num(val(k));
+    try {
+      const sports = {
+        fav: { rank: n("fRank"), points: n("fPts"), played: n("fPl"), form: parseScores(val("fForm")) },
+        out: { rank: n("oRank"), points: n("oPts"), played: n("oPl"), form: parseScores(val("oForm")) },
+        h2h: parseH2H(val("h2hText")),
+      };
+      const ok = await saveRows([{ ...r, sports }]);
+      if (ok) { S.editing = null; toast("Analyse enregistrée"); render(); }
+    } catch (e) { document.getElementById("edErr").textContent = e.message; }
+  }
+  else if (act === "deleteOne") { const tid = S.editing; S.editing = null; await deleteRows([tid]); toast("Match supprimé"); }
+  else if (act === "csv") exportCSV();
+  else if (act === "copyCsv") {
+    const t = document.getElementById("csvText");
+    try { await navigator.clipboard.writeText(t.value); toast("CSV copié"); } catch { t.focus(); t.select(); toast("Texte sélectionné : copiez-le avec Ctrl+C"); }
+  }
+  else if (act === "importCsv") {
+    const { rows: list, errors } = parseCSV(val("csvIn"));
+    if (list.length && await saveRows(list)) { const t = list.length + " match(s) importé(s)" + (errors.length ? " · " + errors.length + " ligne(s) ignorée(s) : " + errors.slice(0, 2).join(" ; ") : ""); say("csvMsg", t); toast(t); const i = document.getElementById("csvIn"); if (i) i.value = ""; }
+    else say("csvMsg", errors.join(" ; ") || "Rien à importer.");
+  }
+  else if (act === "importJson") {
+    const { rows: list, errors } = parseLocalJSON(val("jsonIn"));
+    if (list.length && await saveRows(list)) { const t = list.length + " match(s) importé(s), dont " + list.filter(r => r.sports).length + " avec analyse."; say("jsonMsg", t); toast(t); const i = document.getElementById("jsonIn"); if (i) i.value = ""; }
+    else say("jsonMsg", errors.join(" ; ") || "Rien à importer.");
+  }
+  else if (act === "addOne") {
+    const r = { kickoff: val("aDate") + (val("aTime") ? "T" + val("aTime") : ""), country: val("aCountry").trim(), league: val("aLeague").trim(), tier: num(val("aTier")),
+      home: val("aHome").trim(), away: val("aAway").trim(), o1: num(val("aO1")), ox: num(val("aOX")), o2: num(val("aO2")), source: val("aSrc"), sports: null };
+    if (!val("aDate") || !r.country || !r.league || !r.home || !r.away || ![r.o1, r.ox, r.o2].every(Number.isFinite)) { say("addMsg", "Renseignez la date, le pays, la ligue, les deux équipes et les trois cotes."); return; }
+    r.id = newId(r);
+    if (await saveRows([r])) { const t = "Match ajouté. " + (evaluate(r, S.th).kept ? "Il est retenu." : "Il est rejeté (voir « Rejets »)."); const f = document.getElementById("addForm"); if (f) f.reset(); say("addMsg", t); toast(t); }
+  }
+  else if (act === "askClear") {
+    document.getElementById("clearZone").innerHTML = '<span class="small">Effacer vos ' + S.rows.length + " saisies ? Les matchs OddsPortal restent.</span><button class=\"danger\" data-act=\"doClear\">Oui, tout effacer</button><button data-act=\"cancelClear\">Annuler</button>";
+  }
+  else if (act === "cancelClear") render();
+  else if (act === "doClear") { await deleteRows(S.rows.map(r => r.id)); toast("Données effacées"); }
+});
+
+document.addEventListener("change", ev => {
+  const t = ev.target;
+  if (t.id === "fDate") S.f.date = t.value;
+  else if (t.id === "fCountry") { S.f.country = t.value; S.f.league = ""; }
+  else if (t.id === "fLeague") S.f.league = t.value;
+  else if (t.id === "thFav" || t.id === "thOut" || t.id === "thTier") {
+    const fav = num(val("thFav")), out = num(val("thOut")), tier = num(val("thTier"));
+    if (fav && fav > 1) S.th.fav = fav; if (out && out > 1) S.th.out = out; if (tier) S.th.tier = tier;
+    lsSet("fc.th", S.th);
+  }
+  else if (t.id === "onlyFull") S.onlyFull = t.checked;
+  else if (t.id === "sortSel") S.sort = t.value;
+  else if (t.id === "rejSel") S.rejectCode = t.value;
+  else return;
+  render();
+});
+window.addEventListener("hashchange", render);
+
+render();
+initStore();
+})();
+</script>

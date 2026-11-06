@@ -37,7 +37,7 @@
 </form>
 
 <p class="text-xs text-slate-500 mb-2">
-  Source des cotes : {{ "Pinnacle (sinon moyenne)" if config.ODDS_SOURCE == "pinnacle" else "cote moyenne" }}
+  Source des cotes : {{ {"pinnacle": "Pinnacle (sinon moyenne des bookmakers)", "average": "moyenne des bookmakers", "listing": "meilleure cote de la liste"}.get(config.ODDS_SOURCE, config.ODDS_SOURCE) }}
   · Fenêtre J à J+{{ config.DAYS_AHEAD }} · Championnats de niveau ≤ {{ config.MAX_LEAGUE_TIER }}.
 </p>
 

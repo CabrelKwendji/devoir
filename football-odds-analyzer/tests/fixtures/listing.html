@@ -1,52 +1,45 @@
 <html><body><div id="app">
-<!-- Fixture simplifiée imitant la structure rendue d'OddsPortal (/matches/football/AAAAMMJJ/) -->
-<div class="eventRow flex w-full flex-col">
-  <div data-testid="secondary-header">
-    <a href="/football/">Football</a>
-    <a href="/football/england/">England</a>
-    <a href="/football/england/premier-league/">Premier League</a>
+<!-- Fixture simplifiée reproduisant la structure rendue d'OddsPortal (nov. 2026, site Next.js) -->
+<aside>
+  <!-- menu latéral : liens de ligue qui ne sont PAS des en-têtes de liste -->
+  <a href="/football/spain/laliga/"><p>LaLiga</p></a>
+  <a href="/football/england/premier-league/"><p>Premier League</p></a>
+</aside>
+<div class="flex flex-col">
+  <div><div><a href="/football/"><img alt=""><p>Football</p></a><span>/</span></div>
+       <div><a href="/football/england/"><img alt=""><p>England</p></a><span>/</span></div>
+       <div><a href="/football/england/premier-league/"><p>Premier League</p></a></div></div>
+  <div><div>Tomorrow, 07 Nov</div><div><div>1</div><div>X</div><div>2</div></div></div>
+  <div class="flex w-full">
+    <a href="/football/h2h/arsenal-hA1Zm19f/burnley-S66R0t75/#AbCd1234"><div><p>15:00</p></div>
+      <div><div><img alt=""><p>Arsenal</p></div><span>-</span><div><img alt=""><p>Burnley</p></div></div></a>
+    <div></div>
+    <ul><li><div><p>1.35</p></div></li><li><div><p>5.20</p></div></li><li><div><p>8.50</p></div></li></ul>
   </div>
-  <div class="flex">
-    <div data-testid="time-item"><p>15:00</p></div>
-    <a href="/football/england/premier-league/arsenal-burnley-AbCd1234/" title="Arsenal">
-      <p class="participant-name">Arsenal</p></a>
-    <a href="/football/england/premier-league/arsenal-burnley-AbCd1234/" title="Burnley">
-      <p class="participant-name">Burnley</p></a>
-    <div data-testid="odd-container"><p>1.35</p></div>
-    <div data-testid="odd-container"><p>5.20</p></div>
-    <div data-testid="odd-container"><p>8.50</p></div>
+  <div class="flex w-full">
+    <!-- encart promotionnel : pas de #ID, doit être ignoré -->
+    <a href="/football/h2h/dortmund-c8955fd1/elversberg-eae512da/"><div><p>09:30</p></div>
+      <div><p>Dortmund</p><span>-</span><p>Elversberg</p></div></a>
+    <ul><li><p>1.32</p></li><li><p>6.00</p></li><li><p>8.50</p></li></ul>
   </div>
-</div>
-<div class="eventRow flex w-full flex-col">
-  <div class="flex">
-    <div data-testid="time-item"><p>17:30</p></div>
-    <a href="/football/england/premier-league/everton-liverpool-ZyXw9876/">
-      <p class="participant-name">Everton</p><p class="participant-name">Liverpool</p></a>
-    <div data-testid="odd-container"><p>5.75</p></div>
-    <div data-testid="odd-container"><p>4.10</p></div>
-    <div data-testid="odd-container"><p>1.55</p></div>
+  <div class="flex w-full">
+    <!-- l'ordre des équipes dans l'URL est alphabétique : on suit l'affichage -->
+    <a href="/football/h2h/everton-aaaa1111/liverpool-bbbb2222/#ZyXw9876"><div><p>17:30</p></div>
+      <div><p>Everton</p><span>-</span><p>Liverpool</p></div></a>
+    <ul><li><p>5.75</p></li><li><p>4.10</p></li><li><p>1.55</p></li></ul>
   </div>
-</div>
-<div class="eventRow flex w-full flex-col">
-  <div data-testid="secondary-header">
-    <a href="/football/england/">England</a>
-    <a href="/football/england/fa-cup/">FA Cup</a>
+  <div><div><a href="/football/"><p>Football</p></a><span>/</span></div>
+       <div><a href="/football/england/"><p>England</p></a><span>/</span></div>
+       <div><a href="/football/england/fa-cup/"><p>FA Cup</p></a></div></div>
+  <div class="flex w-full">
+    <a href="/football/h2h/barnet-cccc3333/chelsea-dddd4444/#QqQq1111"><div><p>12:00</p></div>
+      <div><p>Chelsea</p><span>-</span><p>Barnet</p></div></a>
+    <ul><li><p>1.10</p></li><li><p>9.00</p></li><li><p>21.00</p></li></ul>
   </div>
-  <div class="flex">
-    <div data-testid="time-item"><p>12:00</p></div>
-    <a href="/football/england/fa-cup/chelsea-barnet-QqQq1111/">
-      <p class="participant-name">Chelsea</p><p class="participant-name">Barnet</p></a>
-    <div data-testid="odd-container"><p>1.10</p></div>
-    <div data-testid="odd-container"><p>9.00</p></div>
-    <div data-testid="odd-container"><p>21.00</p></div>
-  </div>
-</div>
-<div class="eventRow flex w-full flex-col">
-  <div class="flex">
-    <div data-testid="time-item"><p>FT</p></div>
-    <a href="/football/england/fa-cup/leeds-york-RrRr2222/">
-      <p class="participant-name">Leeds</p><p class="participant-name">York</p></a>
-    <div data-testid="odd-container"><p>-</p></div>
+  <div class="flex w-full">
+    <a href="/football/h2h/leeds-eeee5555/york-ffff6666/#RrRr2222"><div><p>FT</p></div>
+      <div><p>Leeds</p><span>-</span><p>York</p></div></a>
+    <ul><li><p>-</p></li><li><p>-</p></li><li><p>-</p></li></ul>
   </div>
 </div>
 </div></body></html>

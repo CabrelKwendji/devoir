@@ -17,7 +17,8 @@ def test_parse_odds_formats():
 def test_parse_listing_fixture():
     matches = parse_listing((FIXTURES / "listing.html").read_text(), date(2026, 11, 7))
     ids = [m.match_id for m in matches]
-    assert ids == ["AbCd1234", "ZyXw9876", "QqQq1111"]  # le match terminé (FT) est ignoré
+    # encart promotionnel (sans #ID) et match terminé (FT) ignorés ; menu latéral ignoré
+    assert ids == ["AbCd1234", "ZyXw9876", "QqQq1111"]
     ars = matches[0]
     assert (ars.home, ars.away) == ("Arsenal", "Burnley")
     assert (ars.odds_home, ars.odds_draw, ars.odds_away) == (1.35, 5.20, 8.50)
@@ -25,6 +26,9 @@ def test_parse_listing_fixture():
     assert ars.kickoff.hour == 15 and str(ars.kickoff.tzinfo) == "America/Toronto"
     # l'en-tête de ligue est propagé aux lignes suivantes
     assert matches[1].league_label == "Premier League" and matches[1].odds_away == 1.55
+    assert (matches[1].home, matches[1].away) == ("Everton", "Liverpool")
+    assert matches[2].home == "Chelsea"  # ordre affiché, pas celui de l'URL
+    assert ars.country_label == "England"
     assert matches[2].league_path == "england/fa-cup"
 
 
@@ -32,7 +36,13 @@ def test_parse_pinnacle_and_average():
     html = (FIXTURES / "match.html").read_text()
     assert parse_bookmaker_odds(html, "Pinnacle") == [1.38, 5.40, 9.20]
     assert parse_bookmaker_odds(html, "Unibet") is None
-    assert parse_average_odds(html) == [1.35, 5.20, 8.70]
+    odds, n = parse_average_odds(html)
+    assert n == 3 and odds == [round((1.33 + 1.38 + 1.34) / 3, 2), round((5.0 + 5.4 + 5.2) / 3, 2), round((9.0 + 9.2 + 7.9) / 3, 2)]
+
+
+def test_listing_odds_are_flagged_as_best_odds():
+    matches = parse_listing((FIXTURES / "listing.html").read_text(), date(2026, 11, 7))
+    assert {m.odds_source for m in matches} == {"meilleure"}
 
 
 # --- rapprochement des noms ----------------------------------------------------------------
