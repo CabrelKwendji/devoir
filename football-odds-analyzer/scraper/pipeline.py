@@ -89,7 +89,7 @@ async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple]]:
                     await scraper.enrich_odds(raw)
                     pages += 1
                 else:
-                    log.info("Plafond de pages de match atteint : cotes moyennes pour %s", raw.match_id)
+                    log.info("Plafond de pages de match atteint : meilleure cote de la liste conservée pour %s", raw.match_id)
     return raws, decisions
 
 

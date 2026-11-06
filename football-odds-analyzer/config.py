@@ -56,7 +56,7 @@ SCRAPE_TIMEOUT_MS: int = _env_int("SCRAPE_TIMEOUT_MS", 45_000)
 SCRAPE_HEADLESS: bool = _env_bool("SCRAPE_HEADLESS", True)
 SCRAPE_CACHE_TTL_MIN: int = _env_int("SCRAPE_CACHE_TTL_MIN", 90)
 # Nombre max. de pages de match ouvertes par extraction (cote Pinnacle)
-SCRAPE_MAX_MATCH_PAGES: int = _env_int("SCRAPE_MAX_MATCH_PAGES", 60)
+SCRAPE_MAX_MATCH_PAGES: int = _env_int("SCRAPE_MAX_MATCH_PAGES", 200)
 CHROMIUM_EXECUTABLE: str | None = os.getenv("CHROMIUM_EXECUTABLE") or None
 USER_AGENT: str = _env(
     "USER_AGENT",
