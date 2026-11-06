@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Journal des rejets{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <h1 class="text-2xl font-bold">Journal des matchs rejetés</h1>
+  <form method="get" class="text-sm">
+    <select name="reason" onchange="this.form.submit()" class="border rounded p-1">
+      <option value="">Tous les motifs</option>
+      {% for code, label in REJECT_LABELS.items() %}
+        <option value="{{ code }}" {% if code == reason %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+<div class="bg-white shadow rounded overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-100 text-left">
+      <tr><th class="p-2">Journalisé</th><th class="p-2">Coup d'envoi</th><th class="p-2">Pays / Ligue</th>
+          <th class="p-2">Match</th><th class="p-2">1 / X / 2</th><th class="p-2">Étape</th><th class="p-2">Motif</th></tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+      <tr class="border-t">
+        <td class="p-2 whitespace-nowrap">{{ r.logged_at|dt("%d/%m %H:%M") }}</td>
+        <td class="p-2 whitespace-nowrap">{{ r.kickoff|dt("%d/%m %H:%M") }}</td>
+        <td class="p-2">{{ r.country|nd }} · {{ r.league|nd }}</td>
+        <td class="p-2">{{ r.home|nd }} – {{ r.away|nd }}</td>
+        <td class="p-2 whitespace-nowrap">{{ r.odds_home|odds }} / {{ r.odds_draw|odds }} / {{ r.odds_away|odds }}</td>
+        <td class="p-2">{{ r.stage }}</td>
+        <td class="p-2"><span class="font-semibold">{{ REJECT_LABELS.get(r.reason_code, r.reason_code) }}</span>
+          <div class="text-xs text-slate-500">{{ r.reason }}</div></td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7" class="p-6 text-center text-slate-500">Aucun rejet journalisé.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

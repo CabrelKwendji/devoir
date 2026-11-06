@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Alias d'équipes{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-2">Table d'alias OddsPortal ↔ API-Football</h1>
+<p class="text-sm text-slate-600 mb-4">
+  Les rapprochements automatiques (rapidfuzz) sont enregistrés ici et peuvent être corrigés.
+  Un alias manuel est toujours prioritaire. L'identifiant d'équipe API-Football se trouve via
+  l'endpoint <code>/teams?search=…</code> ou le tableau de bord api-football.
+</p>
+
+<form method="post" action="/aliases" class="bg-white shadow rounded p-4 mb-4 grid md:grid-cols-4 gap-3 items-end text-sm">
+  <label>Nom OddsPortal <input name="oddsportal_name" required class="mt-1 w-full border rounded p-1"></label>
+  <label>ID équipe API-Football <input name="api_team_id" type="number" required class="mt-1 w-full border rounded p-1"></label>
+  <label>Nom API-Football <input name="api_team_name" required class="mt-1 w-full border rounded p-1"></label>
+  <button class="bg-emerald-600 text-white px-3 py-1 rounded">Ajouter / remplacer</button>
+</form>
+
+<div class="bg-white shadow rounded overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-100 text-left">
+      <tr><th class="p-2">OddsPortal</th><th class="p-2">API-Football</th><th class="p-2">ID</th>
+          <th class="p-2">Origine</th><th class="p-2">Score</th><th class="p-2"></th></tr>
+    </thead>
+    <tbody>
+    {% for a in rows %}
+      <tr class="border-t">
+        <td class="p-2">{{ a.oddsportal_name }}</td>
+        <td class="p-2">{{ a.api_team_name }}</td>
+        <td class="p-2">{{ a.api_team_id }}</td>
+        <td class="p-2">{{ "manuel" if a.is_manual else "automatique" }}</td>
+        <td class="p-2">{{ "%.0f"|format(a.score) if a.score is not none else NA }}</td>
+        <td class="p-2">
+          <form method="post" action="/aliases/{{ a.id }}/delete">
+            <button class="text-red-600 hover:underline text-xs">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="6" class="p-6 text-center text-slate-500">Aucun alias.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

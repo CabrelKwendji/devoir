@@ -1,0 +1,5 @@
+/* Cote du favori en vert, de l'outsider en rouge */
+.odd-fav { background-color: #dcfce7; color: #166534; font-weight: 700; }
+.odd-out { background-color: #fee2e2; color: #991b1b; font-weight: 700; }
+.htmx-indicator { display: none; }
+.htmx-request .htmx-indicator, .htmx-request.htmx-indicator { display: inline; }

@@ -1,0 +1,84 @@
+# Référentiel des championnats acceptés.
+#
+# Seuls les championnats listés ici sont conservés ; tout championnat absent
+# est exclu par défaut (motif « championnat non référencé »).
+# Seules les ligues dont tier <= MAX_LEAGUE_TIER (config.py, 2 par défaut) sont gardées.
+#
+# Champs :
+#   oddsportal      : chemin OddsPortal "pays/ligue" (tel qu'il apparaît dans l'URL
+#                     https://www.oddsportal.com/football/<pays>/<ligue>/)
+#   aliases         : autres chemins possibles (les ligues changent de nom au gré des sponsors)
+#   name            : nom affiché
+#   country         : pays affiché
+#   tier            : niveau (1 = première division, 2 = deuxième division, ...)
+#   api_football_id : identifiant de la ligue chez API-Football (facultatif).
+#                     S'il est absent, l'application le recherche via /leagues
+#                     (nom + pays) et met le résultat en cache.
+#                     À vérifier sur https://dashboard.api-football.com si besoin.
+
+leagues:
+  # --- Angleterre ---
+  - {oddsportal: england/premier-league, name: Premier League, country: Angleterre, tier: 1, api_football_id: 39}
+  - {oddsportal: england/championship, name: Championship, country: Angleterre, tier: 2, api_football_id: 40}
+  - {oddsportal: england/league-one, name: League One, country: Angleterre, tier: 3, api_football_id: 41}
+  # --- France ---
+  - {oddsportal: france/ligue-1, name: Ligue 1, country: France, tier: 1, api_football_id: 61}
+  - {oddsportal: france/ligue-2, name: Ligue 2, country: France, tier: 2, api_football_id: 62}
+  # --- Allemagne ---
+  - {oddsportal: germany/bundesliga, name: Bundesliga, country: Allemagne, tier: 1, api_football_id: 78}
+  - {oddsportal: germany/2-bundesliga, name: 2. Bundesliga, country: Allemagne, tier: 2, api_football_id: 79}
+  - {oddsportal: germany/3-liga, name: 3. Liga, country: Allemagne, tier: 3}
+  # --- Italie ---
+  - {oddsportal: italy/serie-a, name: Serie A, country: Italie, tier: 1, api_football_id: 135}
+  - {oddsportal: italy/serie-b, name: Serie B, country: Italie, tier: 2, api_football_id: 136}
+  # --- Espagne ---
+  - {oddsportal: spain/laliga, aliases: [spain/primera-division], name: LaLiga, country: Espagne, tier: 1, api_football_id: 140}
+  - {oddsportal: spain/laliga2, aliases: [spain/segunda-division, spain/laliga-hypermotion], name: LaLiga 2, country: Espagne, tier: 2, api_football_id: 141}
+  # --- Pays-Bas ---
+  - {oddsportal: netherlands/eredivisie, name: Eredivisie, country: Pays-Bas, tier: 1, api_football_id: 88}
+  - {oddsportal: netherlands/eerste-divisie, name: Eerste Divisie, country: Pays-Bas, tier: 2, api_football_id: 89}
+  # --- Portugal ---
+  - {oddsportal: portugal/liga-portugal, aliases: [portugal/primeira-liga, portugal/liga-portugal-betclic], name: Liga Portugal, country: Portugal, tier: 1, api_football_id: 94}
+  - {oddsportal: portugal/liga-portugal-2, aliases: [portugal/segunda-liga], name: Liga Portugal 2, country: Portugal, tier: 2}
+  # --- Belgique ---
+  - {oddsportal: belgium/jupiler-pro-league, aliases: [belgium/pro-league], name: Jupiler Pro League, country: Belgique, tier: 1, api_football_id: 144}
+  - {oddsportal: belgium/challenger-pro-league, name: Challenger Pro League, country: Belgique, tier: 2}
+  # --- Écosse ---
+  - {oddsportal: scotland/premiership, name: Premiership, country: Écosse, tier: 1, api_football_id: 179}
+  - {oddsportal: scotland/championship, name: Championship, country: Écosse, tier: 2, api_football_id: 180}
+  # --- Turquie ---
+  - {oddsportal: turkey/super-lig, name: Süper Lig, country: Turquie, tier: 1, api_football_id: 203}
+  - {oddsportal: turkey/1-lig, name: 1. Lig, country: Turquie, tier: 2, api_football_id: 204}
+  # --- Suisse ---
+  - {oddsportal: switzerland/super-league, name: Super League, country: Suisse, tier: 1, api_football_id: 207}
+  - {oddsportal: switzerland/challenge-league, name: Challenge League, country: Suisse, tier: 2, api_football_id: 208}
+  # --- Autriche ---
+  - {oddsportal: austria/bundesliga, name: Bundesliga, country: Autriche, tier: 1, api_football_id: 218}
+  - {oddsportal: austria/2-liga, name: 2. Liga, country: Autriche, tier: 2}
+  # --- Scandinavie ---
+  - {oddsportal: denmark/superliga, name: Superliga, country: Danemark, tier: 1, api_football_id: 119}
+  - {oddsportal: denmark/1st-division, name: 1st Division, country: Danemark, tier: 2}
+  - {oddsportal: sweden/allsvenskan, name: Allsvenskan, country: Suède, tier: 1, api_football_id: 113}
+  - {oddsportal: sweden/superettan, name: Superettan, country: Suède, tier: 2, api_football_id: 114}
+  - {oddsportal: norway/eliteserien, name: Eliteserien, country: Norvège, tier: 1, api_football_id: 103}
+  - {oddsportal: norway/obos-ligaen, aliases: [norway/1-divisjon], name: OBOS-ligaen, country: Norvège, tier: 2, api_football_id: 104}
+  # --- Europe (autres) ---
+  - {oddsportal: greece/super-league, name: Super League, country: Grèce, tier: 1, api_football_id: 197}
+  - {oddsportal: poland/ekstraklasa, name: Ekstraklasa, country: Pologne, tier: 1, api_football_id: 106}
+  - {oddsportal: poland/division-1, aliases: [poland/1-liga], name: I liga, country: Pologne, tier: 2}
+  - {oddsportal: czech-republic/chance-liga, aliases: [czech-republic/1-liga], name: Chance Liga, country: Tchéquie, tier: 1}
+  - {oddsportal: croatia/hnl, name: HNL, country: Croatie, tier: 1}
+  # --- Amériques ---
+  - {oddsportal: usa/mls, name: MLS, country: États-Unis, tier: 1, api_football_id: 253}
+  - {oddsportal: usa/usl-championship, name: USL Championship, country: États-Unis, tier: 2}
+  - {oddsportal: mexico/liga-mx, name: Liga MX, country: Mexique, tier: 1, api_football_id: 262}
+  - {oddsportal: brazil/serie-a, aliases: [brazil/serie-a-betano], name: Série A, country: Brésil, tier: 1, api_football_id: 71}
+  - {oddsportal: brazil/serie-b, aliases: [brazil/serie-b-superbet], name: Série B, country: Brésil, tier: 2, api_football_id: 72}
+  - {oddsportal: argentina/liga-profesional, aliases: [argentina/torneo-betano], name: Liga Profesional, country: Argentine, tier: 1, api_football_id: 128}
+  # --- Asie / Océanie ---
+  - {oddsportal: japan/j1-league, name: J1 League, country: Japon, tier: 1, api_football_id: 98}
+  - {oddsportal: japan/j2-league, name: J2 League, country: Japon, tier: 2, api_football_id: 99}
+  - {oddsportal: south-korea/k-league-1, name: K League 1, country: Corée du Sud, tier: 1, api_football_id: 292}
+  - {oddsportal: south-korea/k-league-2, name: K League 2, country: Corée du Sud, tier: 2, api_football_id: 293}
+  - {oddsportal: saudi-arabia/saudi-professional-league, aliases: [saudi-arabia/saudi-pro-league], name: Saudi Pro League, country: Arabie saoudite, tier: 1, api_football_id: 307}
+  - {oddsportal: australia/a-league, name: A-League, country: Australie, tier: 1, api_football_id: 188}

@@ -1,0 +1,41 @@
+<div id="matches" class="bg-white shadow rounded overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-100 text-left">
+      <tr>
+        <th class="p-2">Heure</th>
+        <th class="p-2">Pays</th>
+        <th class="p-2">Ligue (niveau)</th>
+        <th class="p-2">Domicile</th>
+        <th class="p-2">Extérieur</th>
+        <th class="p-2 text-center">1</th>
+        <th class="p-2 text-center">X</th>
+        <th class="p-2 text-center">2</th>
+        <th class="p-2 text-center">Proba. favori</th>
+        <th class="p-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for m in matches %}
+      {% set fav_home = m.favorite_side == "home" %}
+      <tr class="border-t hover:bg-slate-50">
+        <td class="p-2 whitespace-nowrap">{{ m.kickoff|dt("%a %d/%m %H:%M") }}</td>
+        <td class="p-2">{{ m.country }}</td>
+        <td class="p-2">{{ m.league }} <span class="text-slate-400">(N{{ m.tier }})</span></td>
+        <td class="p-2 {% if fav_home %}font-semibold{% endif %}">{{ m.home }}</td>
+        <td class="p-2 {% if not fav_home %}font-semibold{% endif %}">{{ m.away }}</td>
+        <td class="p-2 text-center {{ 'odd-fav' if fav_home else 'odd-out' }}">{{ m.odds_home|odds }}</td>
+        <td class="p-2 text-center">{{ m.odds_draw|odds }}</td>
+        <td class="p-2 text-center {{ 'odd-out' if fav_home else 'odd-fav' }}">{{ m.odds_away|odds }}</td>
+        <td class="p-2 text-center">{{ implied(m)|pct }}
+          <div class="text-[10px] text-slate-400">{{ m.odds_source }}</div></td>
+        <td class="p-2 whitespace-nowrap">{% include "partials/analyse_button.html" %}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="10" class="p-6 text-center text-slate-500">
+        Aucun match ne correspond. Lancez « Rafraîchir » ou élargissez les seuils.
+      </td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="p-2 text-xs text-slate-500">{{ matches|length }} match(s) · cote du favori en vert, de l'outsider en rouge.</div>
+</div>

@@ -1,0 +1,93 @@
+<div id="cards" class="grid gap-4 lg:grid-cols-2">
+{% for m in matches %}
+  {% set a = m.analysis %}
+  {% set crit = {} %}
+  {% for c in (a.details or {}).get("criteria", []) %}{% set _ = crit.update({c.name: c}) %}{% endfor %}
+  {% set fav_home = m.favorite_side == "home" %}
+  <article id="m-{{ m.id }}" class="bg-white shadow rounded overflow-hidden">
+    <header class="p-4 border-b flex justify-between gap-4">
+      <div>
+        <div class="text-xs text-slate-500">{{ m.kickoff|dt("%a %d/%m %H:%M") }} · {{ m.country }} · {{ m.league }} (N{{ m.tier }})</div>
+        <div class="text-lg font-semibold">
+          <span class="{{ 'text-emerald-700' if fav_home else 'text-red-700' }}">{{ m.home }}</span>
+          <span class="text-slate-400">vs</span>
+          <span class="{{ 'text-red-700' if fav_home else 'text-emerald-700' }}">{{ m.away }}</span>
+        </div>
+        <div class="text-sm mt-1">
+          1 <span class="{{ 'odd-fav' if fav_home else 'odd-out' }} px-1 rounded">{{ m.odds_home|odds }}</span>
+          · X {{ m.odds_draw|odds }}
+          · 2 <span class="{{ 'odd-out' if fav_home else 'odd-fav' }} px-1 rounded">{{ m.odds_away|odds }}</span>
+          <span class="text-xs text-slate-400">({{ m.odds_source }})</span>
+        </div>
+        <div class="text-xs text-slate-500 mt-1">Probabilité implicite démarginée du favori ({{ m.favorite }}) :
+          <strong>{{ a.implied_probability|pct }}</strong></div>
+      </div>
+      <div class="text-right shrink-0">
+        <div class="text-4xl font-black {% if a.error %}text-slate-400{% elif a.score == 3 %}text-emerald-600{% elif a.score == 2 %}text-amber-600{% else %}text-red-600{% endif %}">
+          {% if a.error %}N/D{% else %}{{ a.score }}/3{% endif %}
+        </div>
+        <div class="text-sm font-semibold">{{ a.verdict }}</div>
+        <div class="text-[10px] text-slate-400">analysé {{ a.computed_at|dt("%d/%m %H:%M") }}</div>
+      </div>
+    </header>
+
+    {% if a.error %}
+      <div class="px-4 py-2 bg-amber-50 text-amber-800 text-sm">⚠ {{ a.error }}</div>
+    {% endif %}
+
+    <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x text-sm">
+      {# --- Classement --- #}
+      {% set c = crit.get("Classement") %}
+      <section class="p-3">
+        <h3 class="font-semibold mb-1">{{ c.icon if c else ICONS["neutre"] }} Classement</h3>
+        {% if c %}{% set d = c.data %}
+        <table class="w-full text-xs">
+          <tr><td></td><th>Rang</th><th>Pts</th><th>J</th></tr>
+          <tr><td>Favori</td><td>{{ d.favorite_rank|nd }}</td><td>{{ d.favorite_points|nd }}</td><td>{{ d.favorite_played|nd }}</td></tr>
+          <tr><td>Outsider</td><td>{{ d.outsider_rank|nd }}</td><td>{{ d.outsider_points|nd }}</td><td>{{ d.outsider_played|nd }}</td></tr>
+        </table>
+        <div class="text-xs mt-1">Écart de rang : {{ d.rank_gap|signed }} · Écart de points : {{ d.points_gap|signed }}</div>
+        {% if c.note %}<div class="text-xs text-amber-700 mt-1">{{ c.note }}</div>{% endif %}
+        {% else %}<div class="text-xs text-slate-500">{{ NA }}</div>{% endif %}
+      </section>
+
+      {# --- Forme --- #}
+      {% set c = crit.get("Forme") %}
+      <section class="p-3">
+        <h3 class="font-semibold mb-1">{{ c.icon if c else ICONS["neutre"] }} Forme (3 derniers)</h3>
+        {% if c %}
+          {% for side, label in [("favorite", "Favori"), ("outsider", "Outsider")] %}
+          {% set f = c.data[side] %}
+          <div class="text-xs mb-1">
+            <strong>{{ label }}</strong> : {{ f.sequence|nd }} · {{ f.points|nd }} pts ·
+            buts {{ f.goals_for|nd }}-{{ f.goals_against|nd }}
+            {% for x in f.get("matches", []) %}
+              <div class="text-slate-500 pl-2">{{ x.date }} {{ x.venue }} vs {{ x.opponent }} {{ x.score }} ({{ x.outcome }})</div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          {% if c.note %}<div class="text-xs text-amber-700">{{ c.note }}</div>{% endif %}
+        {% else %}<div class="text-xs text-slate-500">{{ NA }}</div>{% endif %}
+      </section>
+
+      {# --- H2H --- #}
+      {% set c = crit.get("H2H") %}
+      <section class="p-3">
+        <h3 class="font-semibold mb-1">{{ c.icon if c else ICONS["neutre"] }} H2H (5 dernières)</h3>
+        {% if c %}{% set d = c.data %}
+          <div class="text-xs">Favori {{ d.favorite_wins|nd }} V · Nuls {{ d.draws|nd }} · Outsider {{ d.outsider_wins|nd }} V
+            <span class="text-slate-400">({{ d.count }} match(s))</span></div>
+          {% for x in d.matches %}
+            <div class="text-xs text-slate-500 pl-2">{{ x.date|nd }} {{ x.home }} {{ x.home_goals }}-{{ x.away_goals }} {{ x.away }}</div>
+          {% endfor %}
+          {% if c.note %}<div class="text-xs text-amber-700 mt-1">{{ c.note }}</div>{% endif %}
+        {% else %}<div class="text-xs text-slate-500">{{ NA }}</div>{% endif %}
+      </section>
+    </div>
+  </article>
+{% else %}
+  <div class="col-span-full bg-white shadow rounded p-6 text-center text-slate-500">
+    Aucune analyse disponible. Cliquez « Analyser » sur la page des matchs ou « Analyser tous les matchs ».
+  </div>
+{% endfor %}
+</div>

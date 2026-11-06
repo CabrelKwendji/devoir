@@ -1,0 +1,19 @@
+<div class="flex items-center gap-3 text-sm"
+     {% if running %}hx-get="/status" hx-trigger="every 5s" hx-swap="outerHTML" hx-target="this"{% endif %}>
+  <span class="text-slate-300">
+    Dernière extraction :
+    <strong class="text-white">{{ last_ok.finished_at|dt if last_ok else NA }}</strong>
+    {% if last_ok %}<span class="text-slate-400">({{ last_ok.kept }} retenus / {{ last_ok.found }} lus)</span>{% endif %}
+  </span>
+  {% if last_run and last_run.status == "error" and not running %}
+    <span class="text-red-300" title="{{ last_run.message }}">⚠ dernier essai en erreur</span>
+  {% elif last_run and last_run.message and not running %}
+    <span class="text-amber-300" title="{{ last_run.message }}">⚠</span>
+  {% endif %}
+  {% if running %}
+    <span class="animate-pulse text-amber-300">Extraction en cours…</span>
+  {% else %}
+    <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded"
+            hx-post="/refresh" hx-target="closest div" hx-swap="outerHTML">Rafraîchir</button>
+  {% endif %}
+</div>

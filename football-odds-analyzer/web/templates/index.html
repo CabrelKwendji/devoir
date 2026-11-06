@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Matchs détectés{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Matchs détectés : favori net contre outsider</h1>
+
+<form class="bg-white shadow rounded p-4 mb-4 grid grid-cols-2 md:grid-cols-6 gap-3 items-end"
+      hx-get="/" hx-target="#matches" hx-swap="outerHTML" hx-push-url="true"
+      hx-trigger="change, submit">
+  <label class="text-sm">Date
+    <select name="date" class="mt-1 w-full border rounded p-1">
+      <option value="">Toutes</option>
+      {% for d in dates %}<option value="{{ d }}" {% if d == filters.date %}selected{% endif %}>{{ d }}</option>{% endfor %}
+    </select>
+  </label>
+  <label class="text-sm">Pays
+    <select name="country" class="mt-1 w-full border rounded p-1">
+      <option value="">Tous</option>
+      {% for c in countries %}<option {% if c == filters.country %}selected{% endif %}>{{ c }}</option>{% endfor %}
+    </select>
+  </label>
+  <label class="text-sm">Ligue
+    <select name="league" class="mt-1 w-full border rounded p-1">
+      <option value="">Toutes</option>
+      {% for l in leagues %}<option {% if l == filters.league %}selected{% endif %}>{{ l }}</option>{% endfor %}
+    </select>
+  </label>
+  <label class="text-sm">Cote favori &lt;
+    <input type="number" step="0.01" min="1.01" name="fav_max" value="{{ '%.2f'|format(filters.fav_max) }}" class="mt-1 w-full border rounded p-1">
+  </label>
+  <label class="text-sm">Cote outsider &gt;
+    <input type="number" step="0.01" min="1.01" name="out_min" value="{{ '%.2f'|format(filters.out_min) }}" class="mt-1 w-full border rounded p-1">
+  </label>
+  <div class="flex gap-2">
+    <button type="submit" class="bg-slate-800 text-white px-3 py-1 rounded">Filtrer</button>
+    <a href="/" class="px-3 py-1 rounded border">Réinitialiser</a>
+  </div>
+</form>
+
+<p class="text-xs text-slate-500 mb-2">
+  Source des cotes : {{ "Pinnacle (sinon moyenne)" if config.ODDS_SOURCE == "pinnacle" else "cote moyenne" }}
+  · Fenêtre J à J+{{ config.DAYS_AHEAD }} · Championnats de niveau ≤ {{ config.MAX_LEAGUE_TIER }}.
+</p>
+
+{% include "partials/matches_table.html" %}
+{% endblock %}

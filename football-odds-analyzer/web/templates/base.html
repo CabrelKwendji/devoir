@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Football Odds Analyzer{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <header class="bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4 justify-between">
+      <a href="/" class="font-bold text-lg">⚽ Football Odds Analyzer</a>
+      <nav class="flex gap-4 text-sm">
+        <a href="/" class="hover:underline">Matchs détectés</a>
+        <a href="/analyse" class="hover:underline">Analyse</a>
+        <a href="/rejets" class="hover:underline">Journal des rejets</a>
+        <a href="/aliases" class="hover:underline">Alias d'équipes</a>
+      </nav>
+      <div id="status">
+        {% include "partials/status.html" %}
+      </div>
+    </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="max-w-7xl mx-auto px-4 pb-6 text-xs text-slate-500">
+    Heures en America/Toronto. Toute donnée manquante est affichée « N/D ». Les cotes ne sont pas des conseils de pari.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Analyse des favoris{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <h1 class="text-2xl font-bold">Analyse : le favori est-il confirmé ?</h1>
+  <div class="flex flex-wrap gap-2 items-center text-sm">
+    <form hx-get="/analyse" hx-target="#cards" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change"
+          class="flex gap-3 items-center">
+      <label class="flex items-center gap-1">
+        <input type="checkbox" name="only_full" value="1" {% if only_full %}checked{% endif %}> seulement 3/3
+      </label>
+      <label>Tri
+        <select name="sort" class="border rounded p-1">
+          <option value="score" {% if sort == "score" %}selected{% endif %}>par score</option>
+          <option value="date" {% if sort == "date" %}selected{% endif %}>par date</option>
+        </select>
+      </label>
+    </form>
+    <a class="bg-slate-800 text-white px-3 py-1 rounded"
+       href="/analyse/export.csv?sort={{ sort }}{% if only_full %}&only_full=1{% endif %}">Export CSV</a>
+    <form method="post" action="/analyse-all">
+      <button class="bg-sky-600 text-white px-3 py-1 rounded">Analyser tous les matchs</button>
+    </form>
+  </div>
+</div>
+<p class="text-xs text-slate-500 mb-4">
+  ✅ favorable · ❌ défavorable · ⚪ neutre / données insuffisantes.
+  Verdict : 3/3 « Favori confirmé », 2/3 « Plutôt confirmé », 0–1/3 « Favori fragile ».
+</p>
+{% include "partials/analysis_cards.html" %}
+{% endblock %}
