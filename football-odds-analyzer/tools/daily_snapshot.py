@@ -7,7 +7,7 @@ Le fichier produit est le document `oddsportal/latest` de la base de l'artefact 
   * matches : tous les matchs de championnat éligibles (niveau <= MAX_LEAGUE_TIER) avec cotes,
     pour que la page puisse appliquer ses propres seuils ;
   * rejects : matchs exclus à l'extraction (coupe, non référencé, niveau, cotes N/D) ;
-  * analyses API-Football quand une clé est configurée (sinon N/D).
+  * analyses (classement, forme, H2H) lues sur OddsPortal, ou API-Football si ANALYSIS_SOURCE=api-football.
 Aucune valeur n'est inventée : une donnée absente reste null.
 """
 from __future__ import annotations
@@ -61,7 +61,8 @@ def _sports_from_analysis(m: Match) -> dict | None:
         "out": {"rank": cl.get("outsider_rank"), "points": cl.get("outsider_points"),
                 "played": cl.get("outsider_played"), "form": form(fo.get("outsider"))},
         "h2h": h2h,
-        "origin": "API-Football",
+        "origin": (a.details or {}).get("source") or "API-Football",
+        "notes": (a.details or {}).get("notes") or [],
     }
 
 
@@ -100,7 +101,7 @@ def build_snapshot() -> dict:
             "days_ahead": config.DAYS_AHEAD,
             "odds_source_mode": config.ODDS_SOURCE,
             "max_tier": config.MAX_LEAGUE_TIER,
-            "api_football": bool(config.API_FOOTBALL_KEY),
+            "analysis_source": config.ANALYSIS_SOURCE,
             "matches": matches,
             "rejects": rejects,
             "reject_counts": dict(counts),

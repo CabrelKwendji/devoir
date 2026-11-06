@@ -35,6 +35,7 @@ class OddsPortalScraper:
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
         self._last_request_at: float | None = None
+        self._standings: dict[str, dict | None] = {}
 
     # --- cycle de vie --------------------------------------------------------
     async def __aenter__(self) -> "OddsPortalScraper":
@@ -226,7 +227,7 @@ class OddsPortalScraper:
         if not match.url or mode not in ("pinnacle", "average"):
             return match
         try:
-            html = await self.fetch(match.url + S.MATCH_1X2_ANCHOR, S.MATCH_READY)
+            html = await self.fetch(match.url + S.MATCH_1X2_ANCHOR, S.MATCH_READY, scroll=True)
         except ScrapeError as exc:
             log.warning("Page du match indisponible (%s) : meilleure cote de la liste conservée", exc)
             return match
@@ -244,3 +245,28 @@ class OddsPortalScraper:
 
     # compatibilité
     enrich_with_pinnacle = enrich_odds
+
+    # --- données sportives (critères d'analyse) ------------------------------------
+    async def standings(self, league_path: str) -> dict | None:
+        """Classement d'une ligue (une seule lecture par extraction)."""
+        if league_path not in self._standings:
+            url = config.ODDSPORTAL_BASE_URL + S.STANDINGS_PATH.format(league_path=league_path)
+            try:
+                html = await self.fetch(url, S.STANDINGS_READY)
+                self._standings[league_path] = parsers.parse_standings(html) or None
+            except ScrapeError as exc:
+                log.warning("Classement indisponible pour %s : %s", league_path, exc)
+                self._standings[league_path] = None
+        return self._standings[league_path]
+
+    async def h2h(self, match: RawMatch) -> list | None:
+        """Confrontations directes lues sur la page du match (None si la page est illisible)."""
+        if not match.url:
+            return None
+        try:
+            html = await self.fetch(match.url + S.MATCH_1X2_ANCHOR, S.MATCH_READY, scroll=True)
+        except ScrapeError as exc:
+            log.warning("Page du match indisponible pour le H2H (%s)", exc)
+            return None
+        return parsers.parse_h2h(html)
+

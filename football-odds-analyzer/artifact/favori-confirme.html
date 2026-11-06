@@ -155,7 +155,7 @@ details summary { cursor: pointer; font-weight: 600; }
   <header class="top">
     <div class="brand">
       <h1>Favori Confirmé</h1>
-      <p class="muted">Repère les matchs de championnat où un favori net (cote &lt; seuil) affronte un outsider (cote &gt; seuil), puis vérifie le classement, la forme et les confrontations directes.</p>
+      <p class="muted">Repère chaque jour sur OddsPortal les matchs de championnat où un favori net (cote &lt; seuil) affronte un outsider (cote &gt; seuil), puis vérifie avec les données d'OddsPortal le classement, la forme et les confrontations directes.</p>
     </div>
     <div class="small muted" id="storeInfo">Chargement…</div>
   </header>
@@ -611,7 +611,8 @@ function renderAnalyse(kept) {
         '<div class="row small">1 ' + odd(r.o1, "home") + " X " + odd(r.ox, "") + " 2 " + odd(r.o2, "away") + '<span class="muted">' + esc(r.source || "") + "</span></div>" +
       '</div><div class="score"><div class="big s' + a.score + '">' + a.score + '/3</div><div class="verdict">' + a.verdict + "</div></div></div>" +
       '<div class="crit">' + critBlock(by["Classement"], "Classement") + critBlock(by["Forme"], "Forme (3 derniers)") + critBlock(by["H2H"], "H2H (5 dernières)") + "</div>" +
-      '<div class="card-foot"><span>Probabilité implicite démarginée de ' + esc(favName(r)) + " : <strong class=\"num\">" + pct(a.implied) + "</strong></span>" +
+      '<div class="card-foot"><span>Probabilité implicite démarginée de ' + esc(favName(r)) + " : <strong class=\"num\">" + pct(a.implied) + "</strong>" +
+        " · Données : " + esc(r.overlay ? "saisie personnelle" : (r.sports && r.sports.origin) || "saisie") + (r.sports && Array.isArray(r.sports.notes) && r.sports.notes.length ? " (" + esc(r.sports.notes.join(", ")) + ")" : "") + "</span>" +
       (r.example ? "<span>Exemple fictif</span>" : '<button data-act="edit" data-id="' + esc(r.id) + '">Modifier les données</button>') + "</div>" +
     "</article>";
   }).join("");
@@ -676,7 +677,7 @@ function renderDonnees() {
       (n ? '<span class="row" id="clearZone"><button class="danger" data-act="askClear">Effacer mes saisies</button></span>' : "") +
     "</section>" +
     '<details class="panel"><summary>D\'où viennent les matchs ?</summary>' +
-      '<p class="small">Chaque jour, une tâche planifiée lance l\'extracteur Playwright sur OddsPortal (J à J+3), applique les filtres et envoie ici les matchs de championnat éligibles avec leurs cotes. Cette page ne lit pas OddsPortal elle-même : un navigateur ne peut pas interroger ce site directement. Les données sportives (classement, forme, H2H) viennent d\'API-Football quand une clé est configurée, sinon vous pouvez les saisir avec « Analyser ».</p>' +
+      '<p class="small">Chaque jour, une tâche planifiée lance l\'extracteur Playwright sur OddsPortal (J à J+3), applique les filtres et envoie ici les matchs de championnat éligibles avec leurs cotes. Cette page ne lit pas OddsPortal elle-même : un navigateur ne peut pas interroger ce site directement. Les données sportives viennent aussi d\'OddsPortal : classement et forme (5 derniers matchs de championnat) depuis la page « Standings » de la ligue, confrontations directes depuis la page du match. Vous pouvez corriger ou compléter une analyse avec « Analyser ».</p>' +
     "</details>" +
   "</div>";
 }

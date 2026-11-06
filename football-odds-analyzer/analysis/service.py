@@ -157,7 +157,40 @@ def analyze_match(match: Match, client: ApiFootballClient, session) -> Analysis:
     return analysis
 
 
+async def _analyze_oddsportal(match_ids: list[str]) -> int:
+    from analysis.oddsportal_source import build_analysis
+    from scraper.models import RawMatch
+    from scraper.oddsportal import OddsPortalScraper
+
+    n = 0
+    async with OddsPortalScraper() as scraper:
+        for mid in match_ids:
+            with session_scope() as s:
+                m = s.get(Match, mid)
+                if m is None:
+                    continue
+                raw = RawMatch(m.id, m.url, m.kickoff, m.league_path, m.country, m.league, m.home, m.away,
+                               m.odds_home, m.odds_draw, m.odds_away, m.odds_source)
+                side = m.favorite_side
+            table = await scraper.standings(raw.league_path)
+            h2h = await scraper.h2h(raw)
+            res = build_analysis(home=raw.home, away=raw.away, favorite_side=side, url=raw.url,
+                                 odds=(raw.odds_home, raw.odds_draw, raw.odds_away), standings=table, h2h=h2h)
+            with session_scope() as s:
+                a = s.get(Analysis, mid) or Analysis(match_id=mid)
+                a.computed_at = now_local()
+                a.score, a.verdict, a.error = res["score"], res["verdict"], res["error"]
+                a.implied_probability, a.details = res["implied_probability"], res["details"]
+                s.add(a)
+            n += 1
+    return n
+
+
 def analyze_ids(match_ids: list[str]) -> int:
+    if config.ANALYSIS_SOURCE == "oddsportal":
+        import asyncio
+
+        return asyncio.run(_analyze_oddsportal(match_ids))
     n = 0
     with ApiFootballClient() as client:
         for mid in match_ids:

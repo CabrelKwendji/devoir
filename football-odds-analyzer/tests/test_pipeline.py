@@ -18,7 +18,7 @@ def test_run_extraction_stores_kept_and_logs_rejects(monkeypatch):
             res = pipeline.evaluate_match(r, pipeline.default_leagues())
             if not res.kept and res.reason_code not in (pipeline.REJECT_ODDS, pipeline.REJECT_ODDS_MISSING):
                 decisions[r.match_id] = (res.reason_code, res.reason)
-        return raws, decisions
+        return raws, decisions, {}
 
     monkeypatch.setattr(pipeline, "_scrape", fake_scrape)
     summary = pipeline.run_extraction(days_ahead=1)

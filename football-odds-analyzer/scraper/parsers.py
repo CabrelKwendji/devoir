@@ -185,3 +185,124 @@ def parse_average_odds(html: str) -> tuple[list[float], int] | None:
         return None
     avg = [round(mean(r.odds[i] for r in books), 2) for i in range(3)]
     return avg, len(books)
+
+
+# --- Classement / forme -------------------------------------------------------------
+_MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
+
+
+@dataclass
+class FormMatch:
+    date: str        # AAAA-MM-JJ
+    home: str
+    away: str
+    home_goals: int
+    away_goals: int
+
+
+@dataclass
+class StandingEntry:
+    team_id: str
+    name: str
+    rank: int | None
+    played: int | None
+    points: int | None
+    form: list[FormMatch]  # du plus récent au plus ancien, matchs joués uniquement
+
+
+def _int(text: str) -> int | None:
+    m = re.search(r"-?\d+", text or "")
+    return int(m.group()) if m else None
+
+
+def parse_standings(html: str) -> dict[str, StandingEntry]:
+    """Classement d'une ligue : {ID équipe OddsPortal: StandingEntry} (1re occurrence gardée)."""
+    soup = BeautifulSoup(html, "lxml")
+    table: dict[str, StandingEntry] = {}
+    for tr in soup.select(S.STANDINGS_ROW):
+        m = S.STANDINGS_TEAM_ID_RE.search(" ".join(tr.get("class") or []))
+        if not m or m.group(1) in table:
+            continue
+        def cell(sel):
+            el = tr.select_one(sel)
+            return _text(el) if el else ""
+        form = []
+        for a in tr.select(S.STANDINGS_FORM_LINKS):
+            fm = S.FORM_XPARAM_RE.search(a.get("xparam", ""))
+            if not fm:
+                continue  # « Next match » ou format inconnu
+            d, mth, y = fm.group(5).split(".")
+            form.append(FormMatch(f"{y}-{mth}-{d}", fm.group(3).strip(), fm.group(4).strip(),
+                                  int(fm.group(1)), int(fm.group(2))))
+        table[m.group(1)] = StandingEntry(
+            team_id=m.group(1), name=cell(S.STANDINGS_NAME), rank=_int(cell(S.STANDINGS_RANK)),
+            played=_int(cell(S.STANDINGS_PLAYED)), points=_int(cell(S.STANDINGS_POINTS)), form=form,
+        )
+    return table
+
+
+# --- Confrontations directes ----------------------------------------------------------
+@dataclass
+class H2HResult:
+    date: str | None   # AAAA-MM-JJ si l'année est déductible, sinon None
+    competition: str
+    home: str
+    away: str
+    home_goals: int
+    away_goals: int
+
+
+def _h2h_date(day: str, month: str, season: str, today: date) -> str | None:
+    mth = _MONTHS.get(month.lower()[:3])
+    if not mth:
+        return None
+    sm = S.SEASON_RE.search(season or "")
+    if sm:
+        y1 = int(sm.group(1))
+        year = int(sm.group(2)) if sm.group(2) and mth <= 7 else y1
+    else:  # saison en cours : dernière occurrence passée de ce jour/mois
+        year = today.year if (mth, int(day)) <= (today.month, today.day) else today.year - 1
+    try:
+        return date(year, mth, int(day)).isoformat()
+    except ValueError:
+        return None
+
+
+def parse_h2h(html: str, today: date | None = None) -> list[H2HResult]:
+    """Section « H2H Results » de la page du match (plus récent d'abord)."""
+    today = today or datetime.now(TZ).date()
+    soup = BeautifulSoup(html, "lxml")
+    title = soup.find(string=S.H2H_TITLE_RE)
+    if title is None:
+        return []
+    container = title.parent.parent if title.parent is not None else None
+    if container is None:
+        return []
+    out: list[H2HResult] = []
+    competition = ""
+    for a in container.find_all("a", href=True):
+        href = a["href"]
+        if S.LEAGUE_LINK_RE.match(href) and not S.LEAGUE_LINK_RE.match(href).group(1) in S.NON_COUNTRY_SEGMENTS:
+            competition = _text(a)
+            continue
+        if not S.MATCH_LINK_RE.match(href):
+            continue
+        ps = [_text(p) for p in a.find_all("p")]
+        spans = [_text(sp) for sp in a.find_all("span")]
+        goals = [int(x) for x in spans if re.fullmatch(r"\d+", x)]
+        dm = next((S.H2H_DATE_RE.match(p) for p in ps if S.H2H_DATE_RE.match(p)), None)
+        names = [p for p in ps if not S.H2H_DATE_RE.match(p) and p not in ("-", "")]
+        if len(names) < 2 or len(goals) < 2:
+            continue  # match sans score (à venir / annulé)
+        out.append(H2HResult(
+            date=_h2h_date(dm.group(1), dm.group(2), competition, today) if dm else None,
+            competition=competition, home=names[0], away=names[1],
+            home_goals=goals[0], away_goals=goals[1],
+        ))
+    return out
+
+
+def team_ids_from_url(url: str | None) -> tuple[str, str] | None:
+    """Les deux ID d'équipe d'une URL h2h (ordre de l'URL, pas domicile/extérieur)."""
+    m = S.TEAM_IDS_IN_H2H_RE.search(url or "")
+    return (m.group(1), m.group(2)) if m else None

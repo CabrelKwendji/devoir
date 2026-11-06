@@ -36,6 +36,11 @@ OddsPortal (Playwright, rendu JS) ──► filtres ──► SQLite ──► a
 - Données stockées : id, date/heure (America/Toronto), pays, ligue, niveau, domicile, extérieur, cotes 1/X/2, source des cotes, favori, outsider, horodatage d'extraction.
 
 ### Module 2 : analyse (`analysis/`)
+
+**Source des données sportives** (`ANALYSIS_SOURCE`) :
+- `oddsportal` (défaut, sans clé) : classement, matchs joués, points et derniers résultats de championnat lus sur la page `/football/<pays>/<ligue>/standings/` (une lecture par ligue et par extraction). Les confrontations directes viennent de la section « H2H Results » de la page du match, déjà ouverte pour les cotes. Les équipes sont reconnues par leur identifiant OddsPortal, sans rapprochement approximatif.
+- `api-football` : données d'API-Football (clé `API_FOOTBALL_KEY` requise), avec cache et table d'alias.
+
 | Critère | Règle | Cas neutre ⚪ |
 |---|---|---|
 | **Classement** | ✅ si le favori est **mieux classé ET a plus de points**. Affiche les rangs, les points, l'écart de rang et l'écart de points. | Classement N/D. Mention « échantillon faible » si moins de 5 journées jouées |

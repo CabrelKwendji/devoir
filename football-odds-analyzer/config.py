@@ -74,6 +74,9 @@ API_CACHE_TTL_HOURS: int = _env_int("API_CACHE_TTL_HOURS", 12)
 API_TIMEOUT_S: float = _env_float("API_TIMEOUT_S", 20.0)
 
 # --- Analyse -----------------------------------------------------------------
+# "oddsportal" : classement, forme et H2H lus sur OddsPortal (défaut, sans clé API)
+# "api-football" : données d'API-Football (clé API_FOOTBALL_KEY requise)
+ANALYSIS_SOURCE: str = _env("ANALYSIS_SOURCE", "oddsportal").lower()
 FORM_MATCHES: int = 3
 H2H_MATCHES: int = 5
 MIN_ROUNDS_PLAYED: int = 5   # en dessous : « échantillon faible »

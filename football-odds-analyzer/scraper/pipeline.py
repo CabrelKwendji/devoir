@@ -9,7 +9,7 @@ from datetime import timedelta
 from sqlalchemy import delete, select
 
 import config
-from database import Match, RejectedMatch, ScrapeRun, now_local, session_scope
+from database import Analysis, Match, RejectedMatch, ScrapeRun, now_local, session_scope
 from scraper.filters import REJECT_ODDS, REJECT_ODDS_MISSING, evaluate_match, odds_within_thresholds
 from scraper.leagues import default_leagues
 from scraper.models import RawMatch
@@ -69,7 +69,7 @@ def _upsert_match(session, raw: RawMatch, league, favorite_side: str, extracted_
     return m
 
 
-async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple]]:
+async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple], dict[str, dict]]:
     """Lit les matchs puis ouvre la page des candidats plausibles pour la cote de référence."""
     leagues = default_leagues()
     decisions: dict[str, tuple] = {}
@@ -90,7 +90,29 @@ async def _scrape(days_ahead: int) -> tuple[list[RawMatch], dict[str, tuple]]:
                     pages += 1
                 else:
                     log.info("Plafond de pages de match atteint : meilleure cote de la liste conservée pour %s", raw.match_id)
-    return raws, decisions
+
+        # Analyse à partir d'OddsPortal (classement de la ligue + H2H de la page du match)
+        analyses: dict[str, dict] = {}
+        if config.ANALYSIS_SOURCE == "oddsportal":
+            from analysis.oddsportal_source import build_analysis
+
+            for raw in raws:
+                if raw.match_id in decisions:
+                    continue
+                res = evaluate_match(raw, leagues)
+                if not res.kept:
+                    continue
+                try:
+                    table = await scraper.standings(raw.league_path)
+                    h2h = await scraper.h2h(raw)
+                    analyses[raw.match_id] = build_analysis(
+                        home=raw.home, away=raw.away, favorite_side=res.favorite_side, url=raw.url,
+                        odds=(raw.odds_home, raw.odds_draw, raw.odds_away), standings=table, h2h=h2h)
+                except Exception as exc:  # une analyse ratée ne doit pas bloquer l'extraction
+                    log.exception("Analyse OddsPortal échouée pour %s", raw.match_id)
+                    analyses[raw.match_id] = {"score": 0, "verdict": "Analyse impossible", "error": str(exc)[:300],
+                                              "implied_probability": None, "details": {"source": "OddsPortal"}}
+    return raws, decisions, analyses
 
 
 def run_extraction(days_ahead: int = config.DAYS_AHEAD) -> dict:
@@ -104,7 +126,7 @@ def run_extraction(days_ahead: int = config.DAYS_AHEAD) -> dict:
             s.flush()
             run_id = run.id
         try:
-            raws, decisions = asyncio.run(_scrape(days_ahead))
+            raws, decisions, analyses = asyncio.run(_scrape(days_ahead))
         except Exception as exc:  # Playwright absent, réseau, etc.
             log.exception("Extraction échouée")
             with session_scope() as s:
@@ -132,8 +154,16 @@ def run_extraction(days_ahead: int = config.DAYS_AHEAD) -> dict:
                 # d'élargir les seuils depuis l'interface. Seuls ceux qui respectent les
                 # seuils par défaut sont considérés « retenus ».
                 fav_side = res.favorite_side or ("home" if raw.odds_home <= raw.odds_away else "away")
-                _upsert_match(s, raw, res.league, fav_side, extracted_at)
+                m = _upsert_match(s, raw, res.league, fav_side, extracted_at)
                 kept_ids.add(raw.match_id)
+                if raw.match_id in analyses:
+                    a = analyses[raw.match_id]
+                    s.flush()
+                    row = s.get(Analysis, raw.match_id) or Analysis(match_id=raw.match_id)
+                    row.computed_at = extracted_at
+                    row.score, row.verdict, row.error = a["score"], a["verdict"], a["error"]
+                    row.implied_probability, row.details = a["implied_probability"], a["details"]
+                    s.add(row)
                 if res.kept:
                     kept += 1
                 else:
@@ -155,10 +185,11 @@ def run_extraction(days_ahead: int = config.DAYS_AHEAD) -> dict:
             run.found, run.kept, run.rejected = len(raws), kept, rejected
             if not raws:
                 run.message = "Aucun match lu : vérifier les sélecteurs (scraper/selectors.py) ou la connexion."
-        summary = {"status": "ok", "found": len(raws), "kept": kept, "rejected": rejected}
+        summary = {"status": "ok", "found": len(raws), "kept": kept, "rejected": rejected,
+                   "analysed_oddsportal": len(analyses)}
         log.info("Extraction terminée : %s", summary)
 
-        if config.ANALYZE_AFTER_SCRAPE and kept:
+        if config.ANALYZE_AFTER_SCRAPE and kept and config.ANALYSIS_SOURCE == "api-football":
             from analysis.service import analyze_pending
 
             try:
