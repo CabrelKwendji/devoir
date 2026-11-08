@@ -174,7 +174,7 @@ class OddsPortalScraper:
                 idle = 0
                 for _ in range(S.SCROLL_MAX_STEPS):
                     html = await page.content()
-                    ids = {m.match_id for m in parsers.parse_listing(html, day)}
+                    ids = parsers.match_ids(html)  # à venir, en cours et terminés
                     if ids - seen:
                         snapshots.append(html)
                         seen |= ids
@@ -183,6 +183,21 @@ class OddsPortalScraper:
                         idle += 1
                         if idle >= S.SCROLL_IDLE_STEPS:
                             break
+                    # bouton « SHOW MORE » s'il est affiché
+                    clicked = False
+                    for sel in S.SHOW_MORE:
+                        try:
+                            btn = page.locator(sel).last
+                            if await btn.count() and await btn.is_visible():
+                                await btn.scroll_into_view_if_needed(timeout=3000)
+                                await btn.click(timeout=3000)
+                                clicked = True
+                                await page.wait_for_timeout(random.randint(1800, 2600))
+                                break
+                        except PlaywrightError:
+                            continue
+                    if clicked:
+                        idle = 0
                     # amène la dernière ligne à l'écran (déclenche la page suivante), puis descend
                     try:
                         await page.locator(S.LISTING_READY[0]).last.scroll_into_view_if_needed(timeout=3000)
@@ -269,4 +284,17 @@ class OddsPortalScraper:
             log.warning("Page du match indisponible pour le H2H (%s)", exc)
             return None
         return parsers.parse_h2h(html)
+
+    async def results_day(self, day: date) -> dict:
+        """Scores de tous les matchs d'une journée (page du jour, défilement complet)."""
+        url = config.ODDSPORTAL_BASE_URL + S.DAY_LISTING_PATH.format(date=day.strftime("%Y%m%d"))
+        snapshots = await self._scroll_snapshots(url, day)
+        merged: dict = {}
+        for html in snapshots:
+            for mid, r in parsers.parse_results(html).items():
+                if mid not in merged or (r.finished and not merged[mid].finished):
+                    merged[mid] = r
+        log.info("%s : %d résultats lus (%d terminés)", day.isoformat(), len(merged),
+                 sum(r.finished for r in merged.values()))
+        return merged
 

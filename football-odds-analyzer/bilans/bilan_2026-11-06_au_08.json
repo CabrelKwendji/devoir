@@ -1,0 +1,3536 @@
+{
+ "generated_at": "2026-11-08T23:40:55",
+ "days": [
+  "2026-11-06",
+  "2026-11-07",
+  "2026-11-08"
+ ],
+ "evaluated": 105,
+ "not_finished": 3,
+ "summary": {
+  "global": {
+   "n": 105,
+   "victoires": 75,
+   "nuls": 17,
+   "defaites": 13,
+   "pct_victoire": 71.4,
+   "pct_invaincu": 87.6,
+   "proba_implicite_moy": 63.6,
+   "roi_mise_fixe_pct": 3.8
+  },
+  "score": {
+   "0/3": {
+    "n": 7,
+    "victoires": 5,
+    "nuls": 2,
+    "defaites": 0,
+    "pct_victoire": 71.4,
+    "pct_invaincu": 100.0,
+    "proba_implicite_moy": 59.1,
+    "roi_mise_fixe_pct": 13.4
+   },
+   "1/3": {
+    "n": 17,
+    "victoires": 13,
+    "nuls": 0,
+    "defaites": 4,
+    "pct_victoire": 76.5,
+    "pct_invaincu": 76.5,
+    "proba_implicite_moy": 62.3,
+    "roi_mise_fixe_pct": 13.5
+   },
+   "2/3": {
+    "n": 38,
+    "victoires": 21,
+    "nuls": 10,
+    "defaites": 7,
+    "pct_victoire": 55.3,
+    "pct_invaincu": 81.6,
+    "proba_implicite_moy": 62.1,
+    "roi_mise_fixe_pct": -18.5
+   },
+   "3/3": {
+    "n": 43,
+    "victoires": 36,
+    "nuls": 5,
+    "defaites": 2,
+    "pct_victoire": 83.7,
+    "pct_invaincu": 95.3,
+    "proba_implicite_moy": 66.1,
+    "roi_mise_fixe_pct": 18.0
+   }
+  },
+  "verdict": {
+   "Favori confirmé": {
+    "n": 43,
+    "victoires": 36,
+    "nuls": 5,
+    "defaites": 2,
+    "pct_victoire": 83.7,
+    "pct_invaincu": 95.3,
+    "proba_implicite_moy": 66.1,
+    "roi_mise_fixe_pct": 18.0
+   },
+   "Favori fragile": {
+    "n": 24,
+    "victoires": 18,
+    "nuls": 2,
+    "defaites": 4,
+    "pct_victoire": 75.0,
+    "pct_invaincu": 83.3,
+    "proba_implicite_moy": 61.4,
+    "roi_mise_fixe_pct": 13.5
+   },
+   "Plutôt confirmé": {
+    "n": 38,
+    "victoires": 21,
+    "nuls": 10,
+    "defaites": 7,
+    "pct_victoire": 55.3,
+    "pct_invaincu": 81.6,
+    "proba_implicite_moy": 62.1,
+    "roi_mise_fixe_pct": -18.5
+   }
+  },
+  "lieu_favori": {
+   "domicile": {
+    "n": 70,
+    "victoires": 49,
+    "nuls": 14,
+    "defaites": 7,
+    "pct_victoire": 70.0,
+    "pct_invaincu": 90.0,
+    "proba_implicite_moy": 64.1,
+    "roi_mise_fixe_pct": 0.6
+   },
+   "extérieur": {
+    "n": 35,
+    "victoires": 26,
+    "nuls": 3,
+    "defaites": 6,
+    "pct_victoire": 74.3,
+    "pct_invaincu": 82.9,
+    "proba_implicite_moy": 62.4,
+    "roi_mise_fixe_pct": 10.0
+   }
+  },
+  "niveau": {
+   "N1": {
+    "n": 61,
+    "victoires": 48,
+    "nuls": 6,
+    "defaites": 7,
+    "pct_victoire": 78.7,
+    "pct_invaincu": 88.5,
+    "proba_implicite_moy": 65.6,
+    "roi_mise_fixe_pct": 12.1
+   },
+   "N2": {
+    "n": 44,
+    "victoires": 27,
+    "nuls": 11,
+    "defaites": 6,
+    "pct_victoire": 61.4,
+    "pct_invaincu": 86.4,
+    "proba_implicite_moy": 60.7,
+    "roi_mise_fixe_pct": -7.8
+   }
+  },
+  "cote_favori": {
+   "1.1–1.2": {
+    "n": 7,
+    "victoires": 7,
+    "nuls": 0,
+    "defaites": 0,
+    "pct_victoire": 100.0,
+    "pct_invaincu": 100.0,
+    "proba_implicite_moy": 81.1,
+    "roi_mise_fixe_pct": 15.9
+   },
+   "1.2–1.3": {
+    "n": 11,
+    "victoires": 11,
+    "nuls": 0,
+    "defaites": 0,
+    "pct_victoire": 100.0,
+    "pct_invaincu": 100.0,
+    "proba_implicite_moy": 75.0,
+    "roi_mise_fixe_pct": 24.8
+   },
+   "1.3–1.4": {
+    "n": 11,
+    "victoires": 9,
+    "nuls": 2,
+    "defaites": 0,
+    "pct_victoire": 81.8,
+    "pct_invaincu": 100.0,
+    "proba_implicite_moy": 68.5,
+    "roi_mise_fixe_pct": 10.5
+   },
+   "1.4–1.5": {
+    "n": 20,
+    "victoires": 13,
+    "nuls": 4,
+    "defaites": 3,
+    "pct_victoire": 65.0,
+    "pct_invaincu": 85.0,
+    "proba_implicite_moy": 64.3,
+    "roi_mise_fixe_pct": -6.2
+   },
+   "1.5–1.6": {
+    "n": 19,
+    "victoires": 12,
+    "nuls": 5,
+    "defaites": 2,
+    "pct_victoire": 63.2,
+    "pct_invaincu": 89.5,
+    "proba_implicite_moy": 60.5,
+    "roi_mise_fixe_pct": -2.8
+   },
+   "1.6–1.69": {
+    "n": 37,
+    "victoires": 23,
+    "nuls": 6,
+    "defaites": 8,
+    "pct_victoire": 62.2,
+    "pct_invaincu": 78.4,
+    "proba_implicite_moy": 56.6,
+    "roi_mise_fixe_pct": 1.9
+   }
+  },
+  "critère Classement": {
+   "defavorable": {
+    "n": 7,
+    "victoires": 5,
+    "nuls": 1,
+    "defaites": 1,
+    "pct_victoire": 71.4,
+    "pct_invaincu": 85.7,
+    "proba_implicite_moy": 57.4,
+    "roi_mise_fixe_pct": 16.3
+   },
+   "favorable": {
+    "n": 92,
+    "victoires": 66,
+    "nuls": 15,
+    "defaites": 11,
+    "pct_victoire": 71.7,
+    "pct_invaincu": 88.0,
+    "proba_implicite_moy": 64.1,
+    "roi_mise_fixe_pct": 3.1
+   },
+   "neutre": {
+    "n": 6,
+    "victoires": 4,
+    "nuls": 1,
+    "defaites": 1,
+    "pct_victoire": 66.7,
+    "pct_invaincu": 83.3,
+    "proba_implicite_moy": 62.7,
+    "roi_mise_fixe_pct": -0.3
+   }
+  },
+  "critère Forme": {
+   "defavorable": {
+    "n": 32,
+    "victoires": 21,
+    "nuls": 5,
+    "defaites": 6,
+    "pct_victoire": 65.6,
+    "pct_invaincu": 81.2,
+    "proba_implicite_moy": 61.4,
+    "roi_mise_fixe_pct": -2.1
+   },
+   "favorable": {
+    "n": 67,
+    "victoires": 50,
+    "nuls": 11,
+    "defaites": 6,
+    "pct_victoire": 74.6,
+    "pct_invaincu": 91.0,
+    "proba_implicite_moy": 64.7,
+    "roi_mise_fixe_pct": 6.9
+   },
+   "neutre": {
+    "n": 6,
+    "victoires": 4,
+    "nuls": 1,
+    "defaites": 1,
+    "pct_victoire": 66.7,
+    "pct_invaincu": 83.3,
+    "proba_implicite_moy": 62.7,
+    "roi_mise_fixe_pct": -0.3
+   }
+  },
+  "critère H2H": {
+   "defavorable": {
+    "n": 30,
+    "victoires": 18,
+    "nuls": 6,
+    "defaites": 6,
+    "pct_victoire": 60.0,
+    "pct_invaincu": 80.0,
+    "proba_implicite_moy": 60.2,
+    "roi_mise_fixe_pct": -7.4
+   },
+   "favorable": {
+    "n": 63,
+    "victoires": 47,
+    "nuls": 9,
+    "defaites": 7,
+    "pct_victoire": 74.6,
+    "pct_invaincu": 88.9,
+    "proba_implicite_moy": 64.6,
+    "roi_mise_fixe_pct": 6.4
+   },
+   "neutre": {
+    "n": 12,
+    "victoires": 10,
+    "nuls": 2,
+    "defaites": 0,
+    "pct_victoire": 83.3,
+    "pct_invaincu": 100.0,
+    "proba_implicite_moy": 66.4,
+    "roi_mise_fixe_pct": 17.8
+   }
+  }
+ },
+ "matches": [
+  {
+   "id": "S2LbeNAa",
+   "kickoff": "2026-11-06T13:30",
+   "country": "Autriche",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "SK Rapid",
+   "away": "Wolfsberger AC",
+   "fav_home": true,
+   "favorite": "SK Rapid",
+   "fav_odds": 1.21,
+   "odds": [
+    1.21,
+    6.83,
+    9.83
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.7690815888198402,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "6-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "8MxMO5cl",
+   "kickoff": "2026-11-06T13:30",
+   "country": "Suisse",
+   "league": "Challenge League",
+   "tier": 2,
+   "home": "Stade Nyonnais",
+   "away": "Lausanne Ouchy",
+   "fav_home": false,
+   "favorite": "Lausanne Ouchy",
+   "fav_odds": 1.32,
+   "odds": [
+    7.33,
+    5.08,
+    1.32
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.6944809167139149,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-5",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "jgEVLTLj",
+   "kickoff": "2026-11-06T14:00",
+   "country": "France",
+   "league": "Ligue 2",
+   "tier": 2,
+   "home": "Nancy",
+   "away": "Sochaux",
+   "fav_home": true,
+   "favorite": "Nancy",
+   "fav_odds": 1.56,
+   "odds": [
+    1.56,
+    3.85,
+    5.62
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5942565544819858,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Sp2zC2uA",
+   "kickoff": "2026-11-06T14:00",
+   "country": "Pays-Bas",
+   "league": "Eerste Divisie",
+   "tier": 2,
+   "home": "Dordrecht",
+   "away": "NAC Breda",
+   "fav_home": false,
+   "favorite": "NAC Breda",
+   "fav_odds": 1.47,
+   "odds": [
+    5.44,
+    4.64,
+    1.47
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6301074409873387,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-0",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "xvfM2b2d",
+   "kickoff": "2026-11-06T14:00",
+   "country": "Pays-Bas",
+   "league": "Eerste Divisie",
+   "tier": 2,
+   "home": "Heracles",
+   "away": "Roda",
+   "fav_home": true,
+   "favorite": "Heracles",
+   "fav_odds": 1.5,
+   "odds": [
+    1.5,
+    4.41,
+    5.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6200153374233129,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "5-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "APcNMJgS",
+   "kickoff": "2026-11-06T14:00",
+   "country": "Pays-Bas",
+   "league": "Eerste Divisie",
+   "tier": 2,
+   "home": "Venlo",
+   "away": "Jong PSV",
+   "fav_home": true,
+   "favorite": "Venlo",
+   "fav_odds": 1.54,
+   "odds": [
+    1.54,
+    4.53,
+    4.76
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.601147496194528,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "OUYQUF9b",
+   "kickoff": "2026-11-06T15:00",
+   "country": "Angleterre",
+   "league": "Premier League",
+   "tier": 1,
+   "home": "Everton",
+   "away": "Coventry",
+   "fav_home": true,
+   "favorite": "Everton",
+   "fav_odds": 1.64,
+   "odds": [
+    1.64,
+    4.0,
+    5.14
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5783468731012444,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "UDrv4aiS",
+   "kickoff": "2026-11-06T20:00",
+   "country": "Mexique",
+   "league": "Liga MX",
+   "tier": 1,
+   "home": "Atl. San Luis",
+   "away": "Juarez",
+   "fav_home": true,
+   "favorite": "Atl. San Luis",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    4.06,
+    5.1
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5855438040834794,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-1",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "jFmn6eq3",
+   "kickoff": "2026-11-07T00:00",
+   "country": "Japon",
+   "league": "J2 League",
+   "tier": 2,
+   "home": "Yokohama FC",
+   "away": "Fujieda MYFC",
+   "fav_home": true,
+   "favorite": "Yokohama FC",
+   "fav_odds": 1.67,
+   "odds": [
+    1.67,
+    3.79,
+    4.53
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.552704012155902,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "4-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Gr9kP4Pp",
+   "kickoff": "2026-11-07T00:00",
+   "country": "Corée du Sud",
+   "league": "K League 2",
+   "tier": 2,
+   "home": "Seongnam",
+   "away": "Daegu",
+   "fav_home": false,
+   "favorite": "Daegu",
+   "fav_odds": 1.67,
+   "odds": [
+    4.23,
+    3.8,
+    1.67
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.545175196122656,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "8xdym8Hi",
+   "kickoff": "2026-11-07T00:00",
+   "country": "Corée du Sud",
+   "league": "K League 2",
+   "tier": 2,
+   "home": "Suwon FC",
+   "away": "Gyeongnam",
+   "fav_home": true,
+   "favorite": "Suwon FC",
+   "fav_odds": 1.49,
+   "odds": [
+    1.49,
+    4.08,
+    5.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.61120765262487,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "44kponn4",
+   "kickoff": "2026-11-07T02:30",
+   "country": "Corée du Sud",
+   "league": "K League 2",
+   "tier": 2,
+   "home": "Gimpo FC",
+   "away": "Ansan Greeners",
+   "fav_home": true,
+   "favorite": "Gimpo FC",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    3.92,
+    4.58
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5689873738654226,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-2",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "G0KPQH0k",
+   "kickoff": "2026-11-07T02:30",
+   "country": "Corée du Sud",
+   "league": "K League 2",
+   "tier": 2,
+   "home": "Seoul E-Land",
+   "away": "Jeonnam",
+   "fav_home": true,
+   "favorite": "Seoul E-Land",
+   "fav_odds": 1.42,
+   "odds": [
+    1.42,
+    4.51,
+    5.69
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6392159597866781,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "pACAJRiD",
+   "kickoff": "2026-11-07T05:30",
+   "country": "Turquie",
+   "league": "1. Lig",
+   "tier": 2,
+   "home": "Keciorengucu",
+   "away": "Manisa FK",
+   "fav_home": true,
+   "favorite": "Keciorengucu",
+   "fav_odds": 1.62,
+   "odds": [
+    1.62,
+    4.01,
+    4.23
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5596068766887378,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Mgton6Ij",
+   "kickoff": "2026-11-07T06:15",
+   "country": "Pologne",
+   "league": "Ekstraklasa",
+   "tier": 1,
+   "home": "Korona Kielce",
+   "away": "Radomiak Radom",
+   "fav_home": true,
+   "favorite": "Korona Kielce",
+   "fav_odds": 1.69,
+   "odds": [
+    1.69,
+    3.85,
+    4.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5511109697326356,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "KWr9iixp",
+   "kickoff": "2026-11-07T08:00",
+   "country": "Espagne",
+   "league": "LaLiga 2",
+   "tier": 2,
+   "home": "Burgos CF",
+   "away": "Celta Vigo B",
+   "fav_home": true,
+   "favorite": "Burgos CF",
+   "fav_odds": 1.61,
+   "odds": [
+    1.61,
+    3.86,
+    5.19
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5789347443496253,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "lO2zycNh",
+   "kickoff": "2026-11-07T09:00",
+   "country": "Tchéquie",
+   "league": "Chance Liga",
+   "tier": 1,
+   "home": "Liberec",
+   "away": "Bohemians",
+   "fav_home": true,
+   "favorite": "Liberec",
+   "fav_odds": 1.54,
+   "odds": [
+    1.54,
+    3.96,
+    5.62
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6013553679705148,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Czmr9yS1",
+   "kickoff": "2026-11-07T09:00",
+   "country": "Italie",
+   "league": "Serie B",
+   "tier": 2,
+   "home": "Pisa",
+   "away": "Sudtirol",
+   "fav_home": true,
+   "favorite": "Pisa",
+   "fav_odds": 1.56,
+   "odds": [
+    1.56,
+    4.01,
+    5.56
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5989447894951753,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-2",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "pANuj6PG",
+   "kickoff": "2026-11-07T09:00",
+   "country": "Suède",
+   "league": "Superettan",
+   "tier": 2,
+   "home": "Orebro",
+   "away": "Oster",
+   "fav_home": true,
+   "favorite": "Orebro",
+   "fav_odds": 1.65,
+   "odds": [
+    1.65,
+    4.17,
+    4.21
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.5594069343937902,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "2of66R9c",
+   "kickoff": "2026-11-07T09:00",
+   "country": "Suède",
+   "league": "Superettan",
+   "tier": 2,
+   "home": "Sundsvall",
+   "away": "Varberg",
+   "fav_home": false,
+   "favorite": "Varberg",
+   "fav_odds": 1.25,
+   "odds": [
+    10.0,
+    5.5,
+    1.25
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.7394957983193278,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "bDmF45vA",
+   "kickoff": "2026-11-07T09:00",
+   "country": "Suède",
+   "league": "Superettan",
+   "tier": 2,
+   "home": "Sandviken",
+   "away": "Nordic United",
+   "fav_home": true,
+   "favorite": "Sandviken",
+   "fav_odds": 1.67,
+   "odds": [
+    1.67,
+    4.2,
+    4.2
+   ],
+   "source": "moyenne (2 bookm.)",
+   "implied": 0.557029177718833,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Eoz0VGVh",
+   "kickoff": "2026-11-07T09:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "RB Leipzig",
+   "away": "Augsburg",
+   "fav_home": true,
+   "favorite": "RB Leipzig",
+   "fav_odds": 1.45,
+   "odds": [
+    1.45,
+    5.12,
+    5.52
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6468789482357681,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "5-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "xdZWqGpn",
+   "kickoff": "2026-11-07T09:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Mainz",
+   "away": "Bayern Munich",
+   "fav_home": false,
+   "favorite": "Bayern Munich",
+   "fav_odds": 1.32,
+   "odds": [
+    7.05,
+    6.15,
+    1.32
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.713333826904568,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "tYyhXx1t",
+   "kickoff": "2026-11-07T09:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Dortmund",
+   "away": "Elversberg",
+   "fav_home": true,
+   "favorite": "Dortmund",
+   "fav_odds": 1.29,
+   "odds": [
+    1.29,
+    5.85,
+    7.85
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.7221029789843622,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "2ckO9eCT",
+   "kickoff": "2026-11-07T09:30",
+   "country": "Autriche",
+   "league": "2. Liga",
+   "tier": 2,
+   "home": "Bregenz",
+   "away": "SK Rapid II",
+   "fav_home": true,
+   "favorite": "Bregenz",
+   "fav_odds": 1.67,
+   "odds": [
+    1.67,
+    4.17,
+    4.13
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.5540663576026845,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "Eyc1EfPH",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Angleterre",
+   "league": "Premier League",
+   "tier": 1,
+   "home": "Arsenal",
+   "away": "Hull",
+   "fav_home": true,
+   "favorite": "Arsenal",
+   "fav_odds": 1.16,
+   "odds": [
+    1.16,
+    7.75,
+    16.0
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.8182118112834048,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "GMbz0OdE",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Angleterre",
+   "league": "Championship",
+   "tier": 2,
+   "home": "Blackburn",
+   "away": "West Ham",
+   "fav_home": false,
+   "favorite": "West Ham",
+   "fav_odds": 1.62,
+   "odds": [
+    5.04,
+    4.07,
+    1.62
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5815769328910437,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "SGdFC1tK",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Angleterre",
+   "league": "Championship",
+   "tier": 2,
+   "home": "Preston",
+   "away": "Southampton",
+   "fav_home": false,
+   "favorite": "Southampton",
+   "fav_odds": 1.63,
+   "odds": [
+    4.88,
+    4.12,
+    1.63
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5781524977282922,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "Onro7u4s",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Angleterre",
+   "league": "Championship",
+   "tier": 2,
+   "home": "QPR",
+   "away": "Lincoln",
+   "fav_home": true,
+   "favorite": "QPR",
+   "fav_odds": 1.64,
+   "odds": [
+    1.64,
+    4.05,
+    4.89
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5746080931698103,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "WCog5JYg",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Angleterre",
+   "league": "Championship",
+   "tier": 2,
+   "home": "Watford",
+   "away": "Middlesbrough",
+   "fav_home": false,
+   "favorite": "Middlesbrough",
+   "fav_odds": 1.54,
+   "odds": [
+    5.25,
+    4.56,
+    1.54
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6131010003226848,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-0",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "UysXJcu2",
+   "kickoff": "2026-11-07T10:00",
+   "country": "Écosse",
+   "league": "Championship",
+   "tier": 2,
+   "home": "Queen's Park",
+   "away": "Partick Thistle",
+   "fav_home": false,
+   "favorite": "Partick Thistle",
+   "fav_odds": 1.37,
+   "odds": [
+    6.88,
+    4.61,
+    1.37
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6683116264662935,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "t8lgHcHk",
+   "kickoff": "2026-11-07T10:30",
+   "country": "Pays-Bas",
+   "league": "Eerste Divisie",
+   "tier": 2,
+   "home": "Den Bosch",
+   "away": "Jong Utrecht",
+   "fav_home": true,
+   "favorite": "Den Bosch",
+   "fav_odds": 1.54,
+   "odds": [
+    1.54,
+    4.57,
+    4.83
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6039300557332465,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "pAfuzdkI",
+   "kickoff": "2026-11-07T11:00",
+   "country": "Turquie",
+   "league": "Süper Lig",
+   "tier": 1,
+   "home": "Galatasaray",
+   "away": "Amedspor",
+   "fav_home": true,
+   "favorite": "Galatasaray",
+   "fav_odds": 1.41,
+   "odds": [
+    1.41,
+    4.83,
+    6.25
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6589675247706303,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "4-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "hWiqcISN",
+   "kickoff": "2026-11-07T11:30",
+   "country": "Autriche",
+   "league": "2. Liga",
+   "tier": 2,
+   "home": "BW Linz",
+   "away": "Floridsdorfer AC",
+   "fav_home": true,
+   "favorite": "BW Linz",
+   "fav_odds": 1.53,
+   "odds": [
+    1.53,
+    4.3,
+    5.42
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.6104626796865177,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "x4BCMnf3",
+   "kickoff": "2026-11-07T11:30",
+   "country": "Pologne",
+   "league": "Ekstraklasa",
+   "tier": 1,
+   "home": "Gornik Zabrze",
+   "away": "Wieczysta Krakow",
+   "fav_home": true,
+   "favorite": "Gornik Zabrze",
+   "fav_odds": 1.59,
+   "odds": [
+    1.59,
+    4.1,
+    5.0
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5862335211187051,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "jRSoFFwS",
+   "kickoff": "2026-11-07T12:00",
+   "country": "Norvège",
+   "league": "Eliteserien",
+   "tier": 1,
+   "home": "Rosenborg",
+   "away": "Start",
+   "fav_home": true,
+   "favorite": "Rosenborg",
+   "fav_odds": 1.23,
+   "odds": [
+    1.23,
+    6.5,
+    10.25
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.763807285546416,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "4-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "tzyUMqS0",
+   "kickoff": "2026-11-07T12:00",
+   "country": "Suisse",
+   "league": "Challenge League",
+   "tier": 2,
+   "home": "Winterthur",
+   "away": "Etoile-Carouge",
+   "fav_home": true,
+   "favorite": "Winterthur",
+   "fav_odds": 1.48,
+   "odds": [
+    1.48,
+    4.45,
+    5.38
+   ],
+   "source": "moyenne (2 bookm.)",
+   "implied": 0.6220154120355215,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-2",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "MBw8Tf05",
+   "kickoff": "2026-11-07T12:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Stuttgart",
+   "away": "Werder Bremen",
+   "fav_home": true,
+   "favorite": "Stuttgart",
+   "fav_odds": 1.65,
+   "odds": [
+    1.65,
+    4.52,
+    4.31
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5721233337346956,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "vcHi3EXO",
+   "kickoff": "2026-11-07T12:30",
+   "country": "Grèce",
+   "league": "Super League",
+   "tier": 1,
+   "home": "Aris",
+   "away": "Panetolikos",
+   "fav_home": true,
+   "favorite": "Aris",
+   "fav_odds": 1.4,
+   "odds": [
+    1.4,
+    4.53,
+    7.06
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6634154638875867,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CbiABCTF",
+   "kickoff": "2026-11-07T12:30",
+   "country": "Espagne",
+   "league": "LaLiga 2",
+   "tier": 2,
+   "home": "Cordoba",
+   "away": "Ceuta",
+   "fav_home": true,
+   "favorite": "Cordoba",
+   "fav_odds": 1.5,
+   "odds": [
+    1.5,
+    4.54,
+    5.31
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6200080241960373,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "M5Ijcqtm",
+   "kickoff": "2026-11-07T13:30",
+   "country": "Autriche",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Ried",
+   "away": "LASK",
+   "fav_home": false,
+   "favorite": "LASK",
+   "fav_odds": 1.47,
+   "odds": [
+    5.5,
+    4.7,
+    1.47
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6328958965821173,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-4",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "AV4u1ai5",
+   "kickoff": "2026-11-07T14:00",
+   "country": "Belgique",
+   "league": "Challenger Pro League",
+   "tier": 2,
+   "home": "Virton",
+   "away": "Beerschot VA",
+   "fav_home": false,
+   "favorite": "Beerschot VA",
+   "fav_odds": 1.6,
+   "odds": [
+    4.49,
+    3.92,
+    1.6
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5667293475180959,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "jD4PsBrA",
+   "kickoff": "2026-11-07T14:00",
+   "country": "France",
+   "league": "Ligue 2",
+   "tier": 2,
+   "home": "St Etienne",
+   "away": "Laval",
+   "fav_home": true,
+   "favorite": "St Etienne",
+   "fav_odds": 1.35,
+   "odds": [
+    1.35,
+    4.75,
+    7.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6829618979151689,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "MF91ODmI",
+   "kickoff": "2026-11-07T14:45",
+   "country": "Italie",
+   "league": "Serie A",
+   "tier": 1,
+   "home": "AS Roma",
+   "away": "Sassuolo",
+   "fav_home": true,
+   "favorite": "AS Roma",
+   "fav_odds": 1.28,
+   "odds": [
+    1.28,
+    5.95,
+    8.25
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.7297791521404625,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "4SrapZ2c",
+   "kickoff": "2026-11-07T15:00",
+   "country": "Espagne",
+   "league": "LaLiga",
+   "tier": 1,
+   "home": "Valencia",
+   "away": "Real Madrid",
+   "fav_home": false,
+   "favorite": "Real Madrid",
+   "fav_odds": 1.27,
+   "odds": [
+    9.5,
+    6.15,
+    1.27
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.746163817600143,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Sf9okNOj",
+   "kickoff": "2026-11-07T15:00",
+   "country": "Écosse",
+   "league": "Premiership",
+   "tier": 1,
+   "home": "St. Mirren",
+   "away": "Rangers",
+   "fav_home": false,
+   "favorite": "Rangers",
+   "fav_odds": 1.41,
+   "odds": [
+    6.44,
+    4.76,
+    1.41
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6599951772365565,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "fs9eEuno",
+   "kickoff": "2026-11-07T15:05",
+   "country": "France",
+   "league": "Ligue 1",
+   "tier": 1,
+   "home": "PSG",
+   "away": "Troyes",
+   "fav_home": true,
+   "favorite": "PSG",
+   "fav_odds": 1.12,
+   "odds": [
+    1.12,
+    9.5,
+    16.4
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.8430370979611272,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "4G20vKem",
+   "kickoff": "2026-11-07T15:30",
+   "country": "Portugal",
+   "league": "Liga Portugal",
+   "tier": 1,
+   "home": "Sporting CP",
+   "away": "Moreirense",
+   "fav_home": true,
+   "favorite": "Sporting CP",
+   "fav_odds": 1.15,
+   "odds": [
+    1.15,
+    7.38,
+    14.38
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.8091932497842139,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Cd5qPpj4",
+   "kickoff": "2026-11-07T15:30",
+   "country": "Argentine",
+   "league": "Liga Profesional",
+   "tier": 1,
+   "home": "Boca Juniors",
+   "away": "Defensa y Justicia",
+   "fav_home": true,
+   "favorite": "Boca Juniors",
+   "fav_odds": 1.38,
+   "odds": [
+    1.38,
+    4.57,
+    8.06
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6788012590392086,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CApIwp5c",
+   "kickoff": "2026-11-07T15:30",
+   "country": "Argentine",
+   "league": "Liga Profesional",
+   "tier": 1,
+   "home": "Rosario Central",
+   "away": "Estudiantes Rio Cuarto",
+   "fav_home": true,
+   "favorite": "Rosario Central",
+   "fav_odds": 1.19,
+   "odds": [
+    1.19,
+    6.25,
+    14.62
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.7862900276481516,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "rPqVfnj5",
+   "kickoff": "2026-11-07T16:00",
+   "country": "États-Unis",
+   "league": "MLS",
+   "tier": 1,
+   "home": "CF Montreal",
+   "away": "Vancouver Whitecaps",
+   "fav_home": false,
+   "favorite": "Vancouver Whitecaps",
+   "fav_odds": 1.65,
+   "odds": [
+    4.43,
+    4.27,
+    1.65
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5685444725302139,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "l6bq18fl",
+   "kickoff": "2026-11-07T16:00",
+   "country": "États-Unis",
+   "league": "MLS",
+   "tier": 1,
+   "home": "Inter Miami",
+   "away": "Charlotte",
+   "fav_home": true,
+   "favorite": "Inter Miami",
+   "fav_odds": 1.39,
+   "odds": [
+    1.39,
+    5.35,
+    6.2
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6738514357687737,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-3",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "GxrwgQKH",
+   "kickoff": "2026-11-07T16:00",
+   "country": "États-Unis",
+   "league": "MLS",
+   "tier": 1,
+   "home": "Philadelphia Union",
+   "away": "Toronto FC",
+   "fav_home": true,
+   "favorite": "Philadelphia Union",
+   "fav_odds": 1.44,
+   "odds": [
+    1.44,
+    5.02,
+    5.7
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6495682257756954,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "4-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "OrwnLToK",
+   "kickoff": "2026-11-07T19:00",
+   "country": "États-Unis",
+   "league": "MLS",
+   "tier": 1,
+   "home": "Austin FC",
+   "away": "Portland Timbers",
+   "fav_home": false,
+   "favorite": "Portland Timbers",
+   "fav_odds": 1.68,
+   "odds": [
+    4.22,
+    4.22,
+    1.68
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5567282321899736,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "pC6TX6VP",
+   "kickoff": "2026-11-07T19:00",
+   "country": "États-Unis",
+   "league": "MLS",
+   "tier": 1,
+   "home": "San Diego FC",
+   "away": "Sporting Kansas City",
+   "fav_home": true,
+   "favorite": "San Diego FC",
+   "fav_odds": 1.47,
+   "odds": [
+    1.47,
+    5.06,
+    5.33
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6384427279247972,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-1",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "UPpSSUkl",
+   "kickoff": "2026-11-07T19:00",
+   "country": "États-Unis",
+   "league": "USL Championship",
+   "tier": 2,
+   "home": "Louisville City",
+   "away": "Miami FC",
+   "fav_home": true,
+   "favorite": "Louisville City",
+   "fav_odds": 1.42,
+   "odds": [
+    1.42,
+    4.7,
+    5.25
+   ],
+   "source": "moyenne (1 bookm.)",
+   "implied": 0.6358880527780642,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "3-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "UBq0gP1E",
+   "kickoff": "2026-11-07T19:30",
+   "country": "Brésil",
+   "league": "Série B",
+   "tier": 2,
+   "home": "Nautico",
+   "away": "CRB",
+   "fav_home": false,
+   "favorite": "CRB",
+   "fav_odds": 1.23,
+   "odds": [
+    11.0,
+    6.12,
+    1.23
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.7617314794699109,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "0-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "IJpq0jjf",
+   "kickoff": "2026-11-07T20:00",
+   "country": "Mexique",
+   "league": "Liga MX",
+   "tier": 1,
+   "home": "Toluca",
+   "away": "Monterrey",
+   "fav_home": true,
+   "favorite": "Toluca",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    4.37,
+    4.72
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5864704410527034,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "4-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "YgadYjSQ",
+   "kickoff": "2026-11-07T22:00",
+   "country": "États-Unis",
+   "league": "USL Championship",
+   "tier": 2,
+   "home": "Sacramento Republic",
+   "away": "El Paso",
+   "fav_home": true,
+   "favorite": "Sacramento Republic",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    3.75,
+    4.7
+   ],
+   "source": "moyenne (1 bookm.)",
+   "implied": 0.5659014288007705,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "OQNXOeV1",
+   "kickoff": "2026-11-08T00:00",
+   "country": "Corée du Sud",
+   "league": "K League 2",
+   "tier": 2,
+   "home": "Suwon Bluewings",
+   "away": "Yongin",
+   "fav_home": true,
+   "favorite": "Suwon Bluewings",
+   "fav_odds": 1.32,
+   "odds": [
+    1.32,
+    4.92,
+    7.0
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.686405816512006,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CUHD4r8b",
+   "kickoff": "2026-11-08T01:00",
+   "country": "Japon",
+   "league": "J2 League",
+   "tier": 2,
+   "home": "Vegalta Sendai",
+   "away": "Kofu",
+   "fav_home": true,
+   "favorite": "Vegalta Sendai",
+   "fav_odds": 1.35,
+   "odds": [
+    1.35,
+    4.64,
+    7.12
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6754223843247575,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "5-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "ENcy7qjT",
+   "kickoff": "2026-11-08T06:15",
+   "country": "Pays-Bas",
+   "league": "Eredivisie",
+   "tier": 1,
+   "home": "Heerenveen",
+   "away": "Feyenoord",
+   "fav_home": false,
+   "favorite": "Feyenoord",
+   "fav_odds": 1.69,
+   "odds": [
+    4.25,
+    4.38,
+    1.69
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.560697837631063,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "5-3",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "rH7vxV9M",
+   "kickoff": "2026-11-08T07:00",
+   "country": "Norvège",
+   "league": "OBOS-ligaen",
+   "tier": 2,
+   "home": "Haugesund",
+   "away": "Odd",
+   "fav_home": true,
+   "favorite": "Haugesund",
+   "fav_odds": 1.43,
+   "odds": [
+    1.43,
+    5.33,
+    5.42
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.6526859928921785,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-3",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "jNU5hjf3",
+   "kickoff": "2026-11-08T07:00",
+   "country": "Norvège",
+   "league": "OBOS-ligaen",
+   "tier": 2,
+   "home": "Sandnes",
+   "away": "Asane",
+   "fav_home": true,
+   "favorite": "Sandnes",
+   "fav_odds": 1.36,
+   "odds": [
+    1.36,
+    5.17,
+    7
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.6861808225827247,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "3-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "OzTDjUOF",
+   "kickoff": "2026-11-08T07:00",
+   "country": "Norvège",
+   "league": "OBOS-ligaen",
+   "tier": 2,
+   "home": "Sogndal",
+   "away": "Hodd",
+   "fav_home": true,
+   "favorite": "Sogndal",
+   "fav_odds": 1.46,
+   "odds": [
+    1.46,
+    4.75,
+    5.58
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.6373416564871546,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-0",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "zFnJUn2d",
+   "kickoff": "2026-11-08T07:00",
+   "country": "Norvège",
+   "league": "OBOS-ligaen",
+   "tier": 2,
+   "home": "Raufoss",
+   "away": "Egersund",
+   "fav_home": false,
+   "favorite": "Egersund",
+   "fav_odds": 1.6,
+   "odds": [
+    4.6,
+    4.3,
+    1.6
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.5814226925338036,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "neutre",
+    "Forme": "neutre",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "SChcBv6c",
+   "kickoff": "2026-11-08T07:30",
+   "country": "Belgique",
+   "league": "Jupiler Pro League",
+   "tier": 1,
+   "home": "Club Brugge KV",
+   "away": "Anderlecht",
+   "fav_home": true,
+   "favorite": "Club Brugge KV",
+   "fav_odds": 1.58,
+   "odds": [
+    1.58,
+    4.4,
+    4.71
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5901280831942775,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "K8hbdJAC",
+   "kickoff": "2026-11-08T08:00",
+   "country": "Danemark",
+   "league": "Superliga",
+   "tier": 1,
+   "home": "Aarhus",
+   "away": "Horsens",
+   "fav_home": true,
+   "favorite": "Aarhus",
+   "fav_odds": 1.66,
+   "odds": [
+    1.66,
+    4.05,
+    4.45
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5608807282346534,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "6mYsOcxp",
+   "kickoff": "2026-11-08T08:00",
+   "country": "Suède",
+   "league": "Allsvenskan",
+   "tier": 1,
+   "home": "Halmstad",
+   "away": "Djurgarden",
+   "fav_home": false,
+   "favorite": "Djurgarden",
+   "fav_odds": 1.4,
+   "odds": [
+    6.81,
+    4.69,
+    1.4
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6648549404753231,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "nXL0wMrn",
+   "kickoff": "2026-11-08T08:00",
+   "country": "Turquie",
+   "league": "1. Lig",
+   "tier": 2,
+   "home": "Boluspor",
+   "away": "Bodrumspor",
+   "fav_home": false,
+   "favorite": "Bodrumspor",
+   "fav_odds": 1.67,
+   "odds": [
+    4.44,
+    3.59,
+    1.67
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5430924336534957,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CddXyIK5",
+   "kickoff": "2026-11-08T08:00",
+   "country": "Turquie",
+   "league": "Süper Lig",
+   "tier": 1,
+   "home": "Corum",
+   "away": "Fenerbahce",
+   "fav_home": false,
+   "favorite": "Fenerbahce",
+   "fav_odds": 1.67,
+   "odds": [
+    4.38,
+    4,
+    1.67
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5559328057471775,
+   "score": 0,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-5",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Mi5kW4yJ",
+   "kickoff": "2026-11-08T08:00",
+   "country": "Turquie",
+   "league": "1. Lig",
+   "tier": 2,
+   "home": "Umraniyespor",
+   "away": "Kayserispor",
+   "fav_home": false,
+   "favorite": "Kayserispor",
+   "fav_odds": 1.69,
+   "odds": [
+    4.28,
+    3.66,
+    1.69
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5386165303919075,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "rP7Q7XV1",
+   "kickoff": "2026-11-08T08:30",
+   "country": "Norvège",
+   "league": "Eliteserien",
+   "tier": 1,
+   "home": "Tromso",
+   "away": "Bodo/Glimt",
+   "fav_home": false,
+   "favorite": "Bodo/Glimt",
+   "fav_odds": 1.42,
+   "odds": [
+    6.25,
+    4.94,
+    1.42
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6602187970439305,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "K8QXL1Ws",
+   "kickoff": "2026-11-08T08:30",
+   "country": "Pologne",
+   "league": "I liga",
+   "tier": 2,
+   "home": "LKS Lodz",
+   "away": "S. Rzeszow",
+   "fav_home": true,
+   "favorite": "LKS Lodz",
+   "fav_odds": 1.66,
+   "odds": [
+    1.66,
+    3.85,
+    4.4
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.5529622980251346,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "xEzJWyun",
+   "kickoff": "2026-11-08T09:00",
+   "country": "Angleterre",
+   "league": "Premier League",
+   "tier": 1,
+   "home": "Crystal Palace",
+   "away": "Liverpool",
+   "fav_home": false,
+   "favorite": "Liverpool",
+   "fav_odds": 1.57,
+   "odds": [
+    5.28,
+    4.37,
+    1.57
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6036401118665972,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "pfCtrVbJ",
+   "kickoff": "2026-11-08T09:00",
+   "country": "Tchéquie",
+   "league": "Chance Liga",
+   "tier": 1,
+   "home": "Slavia Prague",
+   "away": "Artis Brno",
+   "fav_home": true,
+   "favorite": "Slavia Prague",
+   "fav_odds": 1.15,
+   "odds": [
+    1.15,
+    7.81,
+    13.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.8114035931553815,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "4-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "8MM7cnkJ",
+   "kickoff": "2026-11-08T09:00",
+   "country": "Portugal",
+   "league": "Liga Portugal 2",
+   "tier": 2,
+   "home": "SC Farense",
+   "away": "Benfica B",
+   "fav_home": true,
+   "favorite": "SC Farense",
+   "fav_odds": 1.61,
+   "odds": [
+    1.61,
+    3.88,
+    4.88
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.57310975240632,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-3",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "8jfD7d5M",
+   "kickoff": "2026-11-08T10:00",
+   "country": "Belgique",
+   "league": "Jupiler Pro League",
+   "tier": 1,
+   "home": "Gent",
+   "away": "Kortrijk",
+   "fav_home": true,
+   "favorite": "Gent",
+   "fav_odds": 1.52,
+   "odds": [
+    1.52,
+    4.17,
+    5.88
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.616138467569279,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "QRjr01Bm",
+   "kickoff": "2026-11-08T10:00",
+   "country": "Danemark",
+   "league": "Superliga",
+   "tier": 1,
+   "home": "Randers FC",
+   "away": "Nordsjaelland",
+   "fav_home": false,
+   "favorite": "Nordsjaelland",
+   "fav_odds": 1.67,
+   "odds": [
+    4.25,
+    4.12,
+    1.67
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5560866237507106,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-6",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "bJFy7dYa",
+   "kickoff": "2026-11-08T10:00",
+   "country": "Grèce",
+   "league": "Super League",
+   "tier": 1,
+   "home": "AEK Athens",
+   "away": "Levadiakos",
+   "fav_home": true,
+   "favorite": "AEK Athens",
+   "fav_odds": 1.21,
+   "odds": [
+    1.21,
+    5.94,
+    13
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.771140453017554,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "vqGWCQGc",
+   "kickoff": "2026-11-08T10:00",
+   "country": "Écosse",
+   "league": "Premiership",
+   "tier": 1,
+   "home": "Hearts",
+   "away": "Falkirk",
+   "fav_home": true,
+   "favorite": "Hearts",
+   "fav_odds": 1.55,
+   "odds": [
+    1.55,
+    4.41,
+    5.04
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6027678113787801,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "2-5",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "2wNnawMH",
+   "kickoff": "2026-11-08T10:00",
+   "country": "Belgique",
+   "league": "Challenger Pro League",
+   "tier": 2,
+   "home": "K. Lierse S.K.",
+   "away": "Eupen",
+   "fav_home": false,
+   "favorite": "Eupen",
+   "fav_odds": 1.6,
+   "odds": [
+    4.51,
+    4,
+    1.6
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5698761688147587,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "6w0sSimT",
+   "kickoff": "2026-11-08T10:15",
+   "country": "Espagne",
+   "league": "LaLiga",
+   "tier": 1,
+   "home": "Real Sociedad",
+   "away": "Rayo Vallecano",
+   "fav_home": true,
+   "favorite": "Real Sociedad",
+   "fav_odds": 1.69,
+   "odds": [
+    1.69,
+    4.12,
+    4.5
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5599888847945198,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "6wv6YrED",
+   "kickoff": "2026-11-08T10:30",
+   "country": "Turquie",
+   "league": "Süper Lig",
+   "tier": 1,
+   "home": "Alanyaspor",
+   "away": "Trabzonspor",
+   "fav_home": false,
+   "favorite": "Trabzonspor",
+   "fav_odds": 1.6,
+   "odds": [
+    4.88,
+    4.02,
+    1.6
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.579414961485752,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "dGdPHDnI",
+   "kickoff": "2026-11-08T10:30",
+   "country": "Grèce",
+   "league": "Super League",
+   "tier": 1,
+   "home": "Iraklis 1908",
+   "away": "Panathinaikos",
+   "fav_home": false,
+   "favorite": "Panathinaikos",
+   "fav_odds": 1.28,
+   "odds": [
+    9.58,
+    5.5,
+    1.28
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.7318828098521512,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CxIgw5Cs",
+   "kickoff": "2026-11-08T10:30",
+   "country": "Suisse",
+   "league": "Challenge League",
+   "tier": 2,
+   "home": "Yverdon",
+   "away": "Xamax",
+   "fav_home": true,
+   "favorite": "Yverdon",
+   "fav_odds": 1.65,
+   "odds": [
+    1.65,
+    3.97,
+    4.3
+   ],
+   "source": "moyenne (3 bookm.)",
+   "implied": 0.5557599335861834,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-0",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "rylUI204",
+   "kickoff": "2026-11-08T10:30",
+   "country": "Suède",
+   "league": "Allsvenskan",
+   "tier": 1,
+   "home": "AIK",
+   "away": "Hacken",
+   "fav_home": false,
+   "favorite": "Hacken",
+   "fav_odds": 1.54,
+   "odds": [
+    5.06,
+    4.46,
+    1.54
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6061931213804516,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "3-2",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "OGZ0N4zA",
+   "kickoff": "2026-11-08T10:45",
+   "country": "Pays-Bas",
+   "league": "Eredivisie",
+   "tier": 1,
+   "home": "AZ Alkmaar",
+   "away": "Groningen",
+   "fav_home": true,
+   "favorite": "AZ Alkmaar",
+   "fav_odds": 1.48,
+   "odds": [
+    1.48,
+    4.89,
+    5.81
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6420992205103634,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "4-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "YqdLARj4",
+   "kickoff": "2026-11-08T10:45",
+   "country": "Pays-Bas",
+   "league": "Eredivisie",
+   "tier": 1,
+   "home": "Cambuur",
+   "away": "PSV",
+   "fav_home": false,
+   "favorite": "PSV",
+   "fav_odds": 1.39,
+   "odds": [
+    6.06,
+    5.62,
+    1.39
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6771838289681941,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-5",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "tSvmwuv9",
+   "kickoff": "2026-11-08T10:45",
+   "country": "Pays-Bas",
+   "league": "Eerste Divisie",
+   "tier": 2,
+   "home": "FC Emmen",
+   "away": "Maastricht",
+   "fav_home": true,
+   "favorite": "FC Emmen",
+   "fav_odds": 1.62,
+   "odds": [
+    1.62,
+    4.05,
+    4.76
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5746016417189763,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-2",
+   "status": "Finished",
+   "fav_result": "D"
+  },
+  {
+   "id": "bXkDVzO8",
+   "kickoff": "2026-11-08T11:00",
+   "country": "Norvège",
+   "league": "Eliteserien",
+   "tier": 1,
+   "home": "Viking",
+   "away": "KFUM Oslo",
+   "fav_home": true,
+   "favorite": "Viking",
+   "fav_odds": 1.27,
+   "odds": [
+    1.27,
+    6.25,
+    8.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.7393104408029781,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "5-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "GYGabR14",
+   "kickoff": "2026-11-08T11:00",
+   "country": "Écosse",
+   "league": "Premiership",
+   "tier": 1,
+   "home": "Celtic",
+   "away": "Kilmarnock",
+   "fav_home": true,
+   "favorite": "Celtic",
+   "fav_odds": 1.15,
+   "odds": [
+    1.15,
+    8.69,
+    13
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.8191366327444376,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "IcqGY9Xa",
+   "kickoff": "2026-11-08T11:15",
+   "country": "France",
+   "league": "Ligue 1",
+   "tier": 1,
+   "home": "Le Mans",
+   "away": "Monaco",
+   "fav_home": false,
+   "favorite": "Monaco",
+   "fav_odds": 1.67,
+   "odds": [
+    5.03,
+    3.9,
+    1.67
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5681130376106643,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "nXgNPCaU",
+   "kickoff": "2026-11-08T11:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Freiburg",
+   "away": "Union Berlin",
+   "fav_home": true,
+   "favorite": "Freiburg",
+   "fav_odds": 1.46,
+   "odds": [
+    1.46,
+    4.57,
+    6.25
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6438839757708009,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "CGQAaFcn",
+   "kickoff": "2026-11-08T12:00",
+   "country": "Croatie",
+   "league": "HNL",
+   "tier": 1,
+   "home": "Varazdin",
+   "away": "Din. Zagreb",
+   "fav_home": false,
+   "favorite": "Din. Zagreb",
+   "fav_odds": 1.56,
+   "odds": [
+    4.97,
+    4.03,
+    1.56
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5878963635669858,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Crkjbut0",
+   "kickoff": "2026-11-08T12:00",
+   "country": "Danemark",
+   "league": "Superliga",
+   "tier": 1,
+   "home": "Midtjylland",
+   "away": "Sonderjyske",
+   "fav_home": true,
+   "favorite": "Midtjylland",
+   "fav_odds": 1.34,
+   "odds": [
+    1.34,
+    5.38,
+    6.88
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.692598441698414,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-2",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "xts7rDX9",
+   "kickoff": "2026-11-08T12:30",
+   "country": "Espagne",
+   "league": "LaLiga",
+   "tier": 1,
+   "home": "Villarreal",
+   "away": "Getafe",
+   "fav_home": true,
+   "favorite": "Villarreal",
+   "fav_odds": 1.49,
+   "odds": [
+    1.49,
+    4.38,
+    6.6
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.6385939798799156,
+   "score": 1,
+   "verdict": "Favori fragile",
+   "statuses": {
+    "Classement": "defavorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "U5OOEDCk",
+   "kickoff": "2026-11-08T12:30",
+   "country": "Belgique",
+   "league": "Jupiler Pro League",
+   "tier": 1,
+   "home": "Royale Union SG",
+   "away": "Genk",
+   "fav_home": true,
+   "favorite": "Royale Union SG",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    4.15,
+    5.01
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5865434797940616,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "xU08xbQa",
+   "kickoff": "2026-11-08T13:00",
+   "country": "Portugal",
+   "league": "Liga Portugal",
+   "tier": 1,
+   "home": "Vitoria Guimaraes",
+   "away": "FC Porto",
+   "fav_home": false,
+   "favorite": "FC Porto",
+   "fav_odds": 1.52,
+   "odds": [
+    5.75,
+    4.25,
+    1.52
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6165247555976033,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-2",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "Iy8nYZJU",
+   "kickoff": "2026-11-08T13:00",
+   "country": "Turquie",
+   "league": "Süper Lig",
+   "tier": 1,
+   "home": "Besiktas",
+   "away": "Genclerbirligi",
+   "fav_home": true,
+   "favorite": "Besiktas",
+   "fav_odds": 1.19,
+   "odds": [
+    1.19,
+    7.06,
+    11.62
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.78680380256727,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "3-0",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "EJeFRYUH",
+   "kickoff": "2026-11-08T13:30",
+   "country": "Allemagne",
+   "league": "Bundesliga",
+   "tier": 1,
+   "home": "Hoffenheim",
+   "away": "Schalke",
+   "fav_home": true,
+   "favorite": "Hoffenheim",
+   "fav_odds": 1.57,
+   "odds": [
+    1.57,
+    4.35,
+    5.11
+   ],
+   "source": "moyenne (5 bookm.)",
+   "implied": 0.5994627933129633,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-1",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "2Zf9Lemg",
+   "kickoff": "2026-11-08T14:00",
+   "country": "Grèce",
+   "league": "Super League",
+   "tier": 1,
+   "home": "Olympiacos Piraeus",
+   "away": "PAOK",
+   "fav_home": true,
+   "favorite": "Olympiacos Piraeus",
+   "fav_odds": 1.6,
+   "odds": [
+    1.6,
+    3.92,
+    5.06
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5799223464471162,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "1-1",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "AH9KKQOF",
+   "kickoff": "2026-11-08T14:15",
+   "country": "Pologne",
+   "league": "Ekstraklasa",
+   "tier": 1,
+   "home": "Lech Poznan",
+   "away": "Zaglebie",
+   "fav_home": true,
+   "favorite": "Lech Poznan",
+   "fav_odds": 1.47,
+   "odds": [
+    1.47,
+    4.45,
+    5.75
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6305212966499514,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-2",
+   "status": "Finished",
+   "fav_result": "N"
+  },
+  {
+   "id": "ADcmpkS8",
+   "kickoff": "2026-11-08T15:30",
+   "country": "Portugal",
+   "league": "Liga Portugal",
+   "tier": 1,
+   "home": "Estrela",
+   "away": "Benfica",
+   "fav_home": false,
+   "favorite": "Benfica",
+   "fav_odds": 1.21,
+   "odds": [
+    10.69,
+    6.75,
+    1.21
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.7737248270692978,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "neutre"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "2-3",
+   "status": "Finished",
+   "fav_result": "V"
+  },
+  {
+   "id": "8fKrMxtJ",
+   "kickoff": "2026-11-08T15:30",
+   "country": "Portugal",
+   "league": "Liga Portugal",
+   "tier": 1,
+   "home": "Rio Ave",
+   "away": "Braga",
+   "fav_home": false,
+   "favorite": "Braga",
+   "fav_odds": 1.5,
+   "odds": [
+    6.06,
+    4.22,
+    1.5
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.6238400515207401,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "final": "0-1",
+   "status": "Finished",
+   "fav_result": "V"
+  }
+ ],
+ "pending": [
+  {
+   "id": "ryebZ3Ar",
+   "kickoff": "2026-11-08T17:15",
+   "country": "Brésil",
+   "league": "Série B",
+   "tier": 2,
+   "home": "Ceara",
+   "away": "America MG",
+   "fav_home": true,
+   "favorite": "Ceara",
+   "fav_odds": 1.67,
+   "odds": [
+    1.67,
+    3.56,
+    4.9
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5525113865996034,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "defavorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "status": "introuvable"
+  },
+  {
+   "id": "Uig6Xsue",
+   "kickoff": "2026-11-08T17:15",
+   "country": "Brésil",
+   "league": "Série B",
+   "tier": 2,
+   "home": "Goias",
+   "away": "Ponte Preta",
+   "fav_home": true,
+   "favorite": "Goias",
+   "fav_odds": 1.12,
+   "odds": [
+    1.12,
+    8.56,
+    17.75
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.8375632279203913,
+   "score": 3,
+   "verdict": "Favori confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "favorable"
+   },
+   "prediction_at": "2026-11-08T04:57:54-05:00",
+   "status": "introuvable"
+  },
+  {
+   "id": "hlUTUFMP",
+   "kickoff": "2026-11-08T17:30",
+   "country": "Argentine",
+   "league": "Liga Profesional",
+   "tier": 1,
+   "home": "Central Cordoba",
+   "away": "Lanus",
+   "fav_home": false,
+   "favorite": "Lanus",
+   "fav_odds": 1.66,
+   "odds": [
+    5.5,
+    3.55,
+    1.66
+   ],
+   "source": "moyenne (4 bookm.)",
+   "implied": 0.5651557253676045,
+   "score": 2,
+   "verdict": "Plutôt confirmé",
+   "statuses": {
+    "Classement": "favorable",
+    "Forme": "favorable",
+    "H2H": "defavorable"
+   },
+   "prediction_at": "2026-11-06T13:20:14-05:00",
+   "status": "introuvable"
+  }
+ ]
+}

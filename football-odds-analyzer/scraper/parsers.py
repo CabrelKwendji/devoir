@@ -306,3 +306,59 @@ def team_ids_from_url(url: str | None) -> tuple[str, str] | None:
     """Les deux ID d'équipe d'une URL h2h (ordre de l'URL, pas domicile/extérieur)."""
     m = S.TEAM_IDS_IN_H2H_RE.search(url or "")
     return (m.group(1), m.group(2)) if m else None
+
+
+# --- Résultats (page du jour, matchs terminés) -------------------------------------------
+FINISHED_STATUSES = {"finished", "fin", "ft", "after pen.", "pen.", "after et", "aet", "awarded"}
+
+
+@dataclass
+class MatchResult:
+    match_id: str
+    status: str            # texte affiché : « Finished », « Postponed », « 67' »...
+    home: str
+    away: str
+    home_goals: int | None
+    away_goals: int | None
+
+    @property
+    def finished(self) -> bool:
+        return self.status.strip().lower() in FINISHED_STATUSES and None not in (self.home_goals, self.away_goals)
+
+
+def match_ids(html: str) -> set[str]:
+    """Identifiants de tous les liens de match d'une page (à venir, en cours ou terminés)."""
+    return set(re.findall(r'href="/football/h2h/[^"#]+/#([A-Za-z0-9]{8})"', html))
+
+
+def parse_results(html: str) -> dict[str, MatchResult]:
+    """Scores des lignes d'une page /matches/football/AAAAMMJJ/ (toutes les lignes avec un ID)."""
+    soup = BeautifulSoup(html, "lxml")
+    out: dict[str, MatchResult] = {}
+    for a in soup.find_all("a", href=S.MATCH_LINK_RE):
+        mid = S.MATCH_LINK_RE.match(a["href"]).group(3)
+        if mid in out:
+            continue
+        ps = [p for p in a.find_all("p")]
+        if len(ps) < 3:
+            continue
+        status_p = ps[0]
+        spans = status_p.find_all("span")
+        status = _text(spans[0]) if spans else _text(status_p)
+        names = [_text(p) for p in ps[1:] if _text(p)]
+        goals = [int(_text(sp)) for sp in a.find_all("span") if re.fullmatch(r"\d+", _text(sp)) and sp.find_parent("p") is None]
+        if len(names) < 2:
+            continue
+        out[mid] = MatchResult(mid, status, names[0], names[1],
+                               goals[0] if len(goals) >= 2 else None, goals[1] if len(goals) >= 2 else None)
+    return out
+
+
+FINAL_RESULT_RE = re.compile(r"Final\s*result\s*(\d+)\s*:\s*(\d+)", re.I)
+
+
+def parse_final_result(html: str) -> tuple[int, int] | None:
+    """Score final affiché en tête de la page d'un match terminé (« Final result 1:1 (1:0, 0:1) »)."""
+    text = BeautifulSoup(html, "lxml").get_text(" ")
+    m = FINAL_RESULT_RE.search(" ".join(text.replace("\xa0", " ").split()))
+    return (int(m.group(1)), int(m.group(2))) if m else None

@@ -35,6 +35,8 @@ NON_COUNTRY_SEGMENTS = {"h2h", "results", "standings", "outrights"}
 SCROLL_STEP_PX = 2500
 SCROLL_MAX_STEPS = 80
 SCROLL_IDLE_STEPS = 4   # arrêt après N étapes sans nouveau match
+# Depuis le 7 nov. 2026, la suite de la liste se charge avec un bouton « SHOW MORE »
+SHOW_MORE = ["button:text-matches('^\\s*show more\\s*$', 'i')", "text=/^\\s*show more\\s*$/i"]
 # Lien de match : /football/h2h/<equipe-id>/<equipe-id>/#<ID>
 # (les encarts promotionnels n'ont pas de #ID : ils sont ignorés)
 MATCH_LINK_RE = re.compile(r"^/football/h2h/([^/]+)/([^/]+)/#([A-Za-z0-9]{8})$")
