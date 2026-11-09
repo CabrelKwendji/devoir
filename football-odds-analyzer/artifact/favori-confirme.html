@@ -183,6 +183,7 @@ details summary { cursor: pointer; font-weight: 600; }
     <a href="#donnees" data-view="donnees">Données</a>
   </nav>
 
+  <div id="staleBanner" class="banner" hidden></div>
   <div id="exampleBanner" class="banner" hidden>
     <span><strong>Exemple :</strong> aucune extraction OddsPortal n'a encore été reçue. Les matchs ci-dessous sont fictifs et servent uniquement à montrer l'outil.</span>
     <a class="btn" href="#donnees">Importer mes matchs</a>
@@ -338,6 +339,11 @@ function fmtWhen(k) {
   return JOURS[d.getDay()] + " " + m[3] + "/" + m[2] + (m[4] ? " " + m[4] + ":" + m[5] : "");
 }
 const dayOf = k => (k || "").slice(0, 10);
+function todayToronto() {
+  try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Toronto", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
+  catch { return new Date().toISOString().slice(0, 10); }
+}
+const notPast = r => S.showPast || !r.kickoff || dayOf(r.kickoff) >= todayToronto();
 function fmtStamp(iso) {
   const d = new Date(iso);
   if (isNaN(d)) return NA;
@@ -353,7 +359,7 @@ const S = {
   rows: [], loaded: false, store: "memoire", snap: null,
   th: Object.assign({ fav: 1.70, out: 4.00, tier: 2 }, lsGet("fc.th", {})),
   f: { date: "", country: "", league: "" },
-  onlyFull: false, sort: "score", editing: null, rejectCode: "", hideRisky: false, bilan: null, bilanGroup: "score",
+  onlyFull: false, sort: "score", editing: null, rejectCode: "", hideRisky: false, bilan: null, bilanGroup: "score", showPast: false,
 };
 const EXAMPLES = [
   { id: "ex1", example: true, kickoff: "2026-11-08T10:00", country: "Angleterre", league: "Premier League", tier: 1, home: "Exemple United", away: "Démo Town", o1: 1.38, ox: 5.10, o2: 8.40, source: "exemple",
@@ -519,9 +525,13 @@ function render() {
   const v = ["matchs", "analyse", "rejets", "bilan", "donnees"].includes(view()) ? view() : "matchs";
   document.querySelectorAll("nav.views a").forEach(a => a.dataset.view === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   document.getElementById("exampleBanner").hidden = !isExample() || v === "donnees";
+  const stale = document.getElementById("staleBanner");
+  const age = S.snap && S.snap.extracted_at ? (Date.now() - new Date(S.snap.extracted_at).getTime()) / 3600000 : null;
+  stale.hidden = !(age != null && age > 30);
+  if (!stale.hidden) stale.innerHTML = "<span><strong>Données anciennes :</strong> la dernière extraction OddsPortal date du " + esc(fmtStamp(S.snap.extracted_at)) + ". La mise à jour quotidienne de ce matin n'a pas abouti ; les matchs du jour peuvent manquer.</span>";
   const all = rows();
   const evals = all.map(r => ({ r, e: evaluate(r, S.th) }));
-  const kept = evals.filter(x => x.e.kept);
+  const kept = evals.filter(x => x.e.kept && notPast(x.r));
   document.getElementById("cMatchs").textContent = S.loaded ? kept.length : "";
   document.getElementById("cAnalyse").textContent = S.loaded ? kept.filter(x => hasSports(x.r.sports)).length : "";
   document.getElementById("cRejets").textContent = S.loaded ? evals.length - kept.length : "";
@@ -565,6 +575,7 @@ function renderMatchs(kept) {
       '<label for="thOut">Cote outsider &gt;<input id="thOut" type="number" step="0.01" min="1.01" value="' + S.th.out.toFixed(2) + '"></label>' +
       '<label for="thTier">Niveau max.<select id="thTier">' + [1, 2, 3].map(t => "<option" + (t === S.th.tier ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>" +
       '<label class="check" for="hideRisky"><input type="checkbox" id="hideRisky"' + (S.hideRisky ? " checked" : "") + "> Masquer les profils à risque</label>" +
+      '<label class="check" for="showPast"><input type="checkbox" id="showPast"' + (S.showPast ? " checked" : "") + "> Afficher les jours passés</label>" +
       '<button type="button" data-act="resetFilters">Réinitialiser</button>' +
     "</form>" +
     (editing ? renderEditor(editing) : "") +
@@ -854,6 +865,7 @@ document.addEventListener("change", ev => {
   }
   else if (t.id === "onlyFull") S.onlyFull = t.checked;
   else if (t.id === "hideRisky") S.hideRisky = t.checked;
+  else if (t.id === "showPast") S.showPast = t.checked;
   else if (t.id === "bilanGroup") S.bilanGroup = t.value;
   else if (t.id === "sortSel") S.sort = t.value;
   else if (t.id === "rejSel") S.rejectCode = t.value;
