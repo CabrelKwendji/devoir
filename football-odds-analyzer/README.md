@@ -73,6 +73,12 @@ Tous les matchs de championnat éligibles et cotés sont stockés, ce qui permet
 
 `python -m tools.daily_snapshot --out data/snapshot.json` lance une extraction complète (J à J+3), puis écrit un instantané JSON : matchs de championnat éligibles avec cotes, rejets, analyses API-Football si une clé est configurée. Une tâche planifiée Claude Code l'exécute chaque jour et envoie le fichier dans la base de l'artefact (document `oddsportal/latest`), où la page applique les seuils et les 3 critères.
 
+### Bilan quotidien et profil de risque
+
+- `analysis/risk.py` classe chaque favori en profil **« à risque »**, **« sûr »** ou **« intermédiaire »**. La règle a été tirée du bilan du 6 au 8 novembre 2026 : « à risque » signifie une cote ≥ 1.60 **et** soit un favori ayant encaissé ≥ 5 buts sur ses 3 derniers matchs, soit un outsider au moins aussi en forme. Chaque profil liste aussi ses signaux d'alerte : H2H favorable à l'outsider, favori hors du top 5, écart de rang ≤ 5. **C'est une hypothèse à confirmer**, d'où le suivi quotidien.
+- `python -m tools.bilan_update --prev <instantané de la veille> --bilan <bilan actuel> --out <nouveau bilan>` lit sur OddsPortal les scores des matchs prédits la veille, puis met à jour le bilan cumulé (document `oddsportal/bilan` de l'artefact). Le bilan donne les taux de victoire et d'invincibilité du favori par score, profil de risque, critère, cote, lieu et division.
+- `python -m tools.results_check` fait le même calcul en une fois sur une période choisie.
+
 ### Planification
 APScheduler relance l'extraction **toutes les 2 h** (`REFRESH_INTERVAL_HOURS`), suivie de l'analyse automatique des matchs retenus. Une seule extraction peut tourner à la fois.
 

@@ -96,6 +96,8 @@ def summarize(rows: list[dict]) -> dict:
         groups["verdict"][r["verdict"]].append(r)
         groups["lieu_favori"]["domicile" if r["fav_home"] else "extérieur"].append(r)
         groups["niveau"][f"N{r['tier']}"].append(r)
+        if r.get("risk"):
+            groups["profil de risque"][r["risk"]].append(r)
         lo = min(int(r["fav_odds"] * 10) / 10, 1.6)
         groups["cote_favori"][f"{lo:.1f}–{lo + 0.1:.1f}" if lo < 1.6 else "1.6–1.69"].append(r)
         for name, st in r["statuses"].items():
@@ -133,9 +135,36 @@ async def fetch_results(days: list[date], preds: dict[str, dict]) -> dict:
     return res
 
 
-def main() -> None:
+def evaluate(preds: dict[str, dict], results: dict) -> tuple[list[dict], list[dict]]:
+    """Associe prédictions et résultats : (matchs évalués, matchs sans score final)."""
     from analysis.criteria import implied_probability, verdict
+    from analysis.risk import risk_profile
 
+    rows, pending = [], []
+    for mid, m in sorted(preds.items(), key=lambda kv: kv[1]["kickoff"]):
+        r = results.get(mid)
+        fav_home = m["o1"] <= m["o2"]
+        fav_odds, out_odds = (m["o1"], m["o2"]) if fav_home else (m["o2"], m["o1"])
+        a = _analysis(m)
+        rk = risk_profile(fav_odds, m.get("sports"))
+        base = {"id": mid, "kickoff": m["kickoff"], "country": m["country"], "league": m["league"],
+                "tier": m["tier"], "home": m["home"], "away": m["away"], "fav_home": fav_home,
+                "favorite": m["home"] if fav_home else m["away"], "fav_odds": fav_odds,
+                "odds": [m["o1"], m["ox"], m["o2"]], "source": m["source"],
+                "implied": implied_probability(fav_odds, m["ox"], out_odds),
+                "score": a["score"], "verdict": verdict(a["score"]) if a["score"] is not None else "N/D",
+                "statuses": a["statuses"], "prediction_at": m["_stamp"],
+                "risk": rk["profile"], "risk_signals": rk["signals"]}
+        if r is None or not r.finished:
+            pending.append({**base, "status": r.status if r else "introuvable"})
+            continue
+        rows.append({**base, "final": f"{r.home_goals}-{r.away_goals}", "status": r.status,
+                     "fav_result": outcome_for_favorite(m, r.home_goals, r.away_goals)})
+
+    return rows, pending
+
+
+def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--pred", action="append", required=True)
     ap.add_argument("--days", help="AAAA-MM-JJ séparés par des virgules (défaut : jours des prédictions, jusqu'à aujourd'hui)")
@@ -151,24 +180,7 @@ def main() -> None:
     preds = {k: v for k, v in preds.items() if date.fromisoformat(v["kickoff"][:10]) in days}
     results = asyncio.run(fetch_results(days, preds))
 
-    rows, pending = [], []
-    for mid, m in sorted(preds.items(), key=lambda kv: kv[1]["kickoff"]):
-        r = results.get(mid)
-        fav_home = m["o1"] <= m["o2"]
-        fav_odds, out_odds = (m["o1"], m["o2"]) if fav_home else (m["o2"], m["o1"])
-        a = _analysis(m)
-        base = {"id": mid, "kickoff": m["kickoff"], "country": m["country"], "league": m["league"],
-                "tier": m["tier"], "home": m["home"], "away": m["away"], "fav_home": fav_home,
-                "favorite": m["home"] if fav_home else m["away"], "fav_odds": fav_odds,
-                "odds": [m["o1"], m["ox"], m["o2"]], "source": m["source"],
-                "implied": implied_probability(fav_odds, m["ox"], out_odds),
-                "score": a["score"], "verdict": verdict(a["score"]) if a["score"] is not None else "N/D",
-                "statuses": a["statuses"], "prediction_at": m["_stamp"]}
-        if r is None or not r.finished:
-            pending.append({**base, "status": r.status if r else "introuvable"})
-            continue
-        rows.append({**base, "final": f"{r.home_goals}-{r.away_goals}", "status": r.status,
-                     "fav_result": outcome_for_favorite(m, r.home_goals, r.away_goals)})
+    rows, pending = evaluate(preds, results)
 
     report = {"generated_at": datetime.now().isoformat(timespec="seconds"), "days": [d.isoformat() for d in days],
               "evaluated": len(rows), "not_finished": len(pending), "summary": summarize(rows) if rows else {},

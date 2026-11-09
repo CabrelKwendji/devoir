@@ -21,6 +21,7 @@ from pathlib import Path
 from sqlalchemy import select
 
 import config
+from analysis.risk import risk_profile
 from database import Match, RejectedMatch, ScrapeRun, init_db, now_local, session_scope
 
 MAX_REJECTS = 400
@@ -72,13 +73,15 @@ def build_snapshot() -> dict:
         start = now_local().replace(hour=0, minute=0, second=0, microsecond=0)
         matches = []
         for m in s.scalars(select(Match).where(Match.kickoff >= start).order_by(Match.kickoff)):
+            sports = _sports_from_analysis(m)
             matches.append({
                 "id": "op_" + m.id, "kickoff": m.kickoff.strftime("%Y-%m-%dT%H:%M"),
                 "country": m.country, "league": m.league, "tier": m.tier,
                 "home": m.home, "away": m.away,
                 "o1": m.odds_home, "ox": m.odds_draw, "o2": m.odds_away,
                 "source": m.odds_source, "url": m.url,
-                "sports": _sports_from_analysis(m),
+                "sports": sports,
+                "risk": risk_profile(m.favorite_odds, sports),
                 "analysis_error": m.analysis.error if m.analysis else None,
             })
         since = run.started_at if run else start

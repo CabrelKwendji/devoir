@@ -107,6 +107,21 @@ td.c, th.c { text-align: center; }
 .pill.s2 { background: var(--amber-soft); color: var(--amber); }
 .pill.s1, .pill.s0 { background: var(--red-soft); color: var(--red); }
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); }
+.risk { display: inline-block; font: 700 .72rem var(--f-body); text-transform: uppercase; letter-spacing: .05em; padding: 2px 8px; border-radius: 4px; white-space: nowrap; background: var(--neutral-soft); color: var(--muted); border: 1px solid transparent; }
+.risk.r-risque { background: var(--red-soft); color: var(--red); border-color: var(--red); }
+.risk.r-sur { background: var(--pitch-soft); color: var(--pitch); }
+.risk.r-mid { background: var(--amber-soft); color: var(--amber); }
+.signals { margin: 0; padding: 0 0 0 16px; font-size: .78rem; color: var(--muted); }
+.card-risk { padding: 8px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; }
+.tile .k { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.tile .v { font-family: var(--f-display); font-size: 2rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.bar { height: 8px; border-radius: 4px; background: var(--neutral-soft); overflow: hidden; display: flex; min-width: 90px; }
+.bar i { display: block; height: 100%; }
+.bar .bw { background: var(--pitch); } .bar .bd { background: var(--amber); } .bar .bl { background: var(--red); }
+.res { font-family: var(--f-mono); font-weight: 700; }
+.res.V { color: var(--pitch); } .res.N { color: var(--amber); } .res.D { color: var(--red); }
 
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 16px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: grid; }
@@ -164,6 +179,7 @@ details summary { cursor: pointer; font-weight: 600; }
     <a href="#matchs" data-view="matchs">Matchs détectés <span class="badge-count" id="cMatchs"></span></a>
     <a href="#analyse" data-view="analyse">Analyse <span class="badge-count" id="cAnalyse"></span></a>
     <a href="#rejets" data-view="rejets">Rejets <span class="badge-count" id="cRejets"></span></a>
+    <a href="#bilan" data-view="bilan">Bilan <span class="badge-count" id="cBilan"></span></a>
     <a href="#donnees" data-view="donnees">Données</a>
   </nav>
 
@@ -337,7 +353,7 @@ const S = {
   rows: [], loaded: false, store: "memoire", snap: null,
   th: Object.assign({ fav: 1.70, out: 4.00, tier: 2 }, lsGet("fc.th", {})),
   f: { date: "", country: "", league: "" },
-  onlyFull: false, sort: "score", editing: null, rejectCode: "",
+  onlyFull: false, sort: "score", editing: null, rejectCode: "", hideRisky: false, bilan: null, bilanGroup: "score",
 };
 const EXAMPLES = [
   { id: "ex1", example: true, kickoff: "2026-11-08T10:00", country: "Angleterre", league: "Premier League", tier: 1, home: "Exemple United", away: "Démo Town", o1: 1.38, ox: 5.10, o2: 8.40, source: "exemple",
@@ -385,6 +401,7 @@ async function initStore() {
     const [db, user] = await Promise.all([use("db"), use("user")]);
     const uid = db && user ? await user.id() : null;
     if (!uid) { clearTimeout(timer); return useLocal(); }
+    db.doc("oddsportal/bilan").onSnapshot(d => { S.bilan = d.exists ? (d.data() || null) : null; render(); }, () => {});
     db.doc("oddsportal/latest").onSnapshot(d => {
       S.snap = d.exists ? (d.data() || null) : null; setStoreInfo(); render();
     }, () => {});
@@ -499,7 +516,7 @@ function parseH2H(text) {
 /* ---------- Rendu ---------- */
 const view = () => (location.hash.replace("#", "") || "matchs");
 function render() {
-  const v = ["matchs", "analyse", "rejets", "donnees"].includes(view()) ? view() : "matchs";
+  const v = ["matchs", "analyse", "rejets", "bilan", "donnees"].includes(view()) ? view() : "matchs";
   document.querySelectorAll("nav.views a").forEach(a => a.dataset.view === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   document.getElementById("exampleBanner").hidden = !isExample() || v === "donnees";
   const all = rows();
@@ -510,7 +527,8 @@ function render() {
   document.getElementById("cRejets").textContent = S.loaded ? evals.length - kept.length : "";
   const el = document.getElementById("view");
   if (!S.loaded) { el.innerHTML = '<div class="panel empty">Chargement de vos matchs…</div>'; return; }
-  el.innerHTML = v === "matchs" ? renderMatchs(kept) : v === "analyse" ? renderAnalyse(kept) : v === "rejets" ? renderRejets(evals.filter(x => !x.e.kept)) : renderDonnees();
+  document.getElementById("cBilan").textContent = S.bilan && S.bilan.evaluated ? S.bilan.evaluated : "";
+  el.innerHTML = v === "matchs" ? renderMatchs(kept) : v === "analyse" ? renderAnalyse(kept) : v === "rejets" ? renderRejets(evals.filter(x => !x.e.kept)) : v === "bilan" ? renderBilan() : renderDonnees();
   if (S.editing && v === "matchs") { const ed = document.getElementById("editor"); if (ed) ed.scrollIntoView({ block: "nearest" }); }
 }
 
@@ -518,6 +536,7 @@ function renderMatchs(kept) {
   const opts = (vals, cur, label) => '<option value="">' + label + "</option>" + [...new Set(vals)].sort().map(x => '<option' + (x === cur ? " selected" : "") + ' value="' + esc(x) + '">' + esc(x) + "</option>").join("");
   const base = kept.map(x => x.r);
   const list = base.filter(r => (!S.f.date || dayOf(r.kickoff) === S.f.date) && (!S.f.country || r.country === S.f.country) && (!S.f.league || r.league === S.f.league))
+    .filter(r => !S.hideRisky || riskOf(r).profile !== "à risque")
     .sort((a, b) => String(a.kickoff).localeCompare(String(b.kickoff)));
   const body = list.map(r => {
     const side = favSide(r), a = analyse(r);
@@ -532,6 +551,7 @@ function renderMatchs(kept) {
       '<td class="c">' + odd(r.o1, "home") + '</td><td class="c">' + odd(r.ox, "") + '</td><td class="c">' + odd(r.o2, "away") + "</td>" +
       '<td class="c num">' + pct(a.implied) + '<span class="src">' + esc(r.source || NA) + "</span></td>" +
       '<td class="c">' + pill + "</td>" +
+      '<td class="c">' + riskBadge(riskOf(r)) + "</td>" +
       '<td><div class="row"><button data-act="edit" data-id="' + esc(r.id) + '"' + (r.example ? " disabled title=\"Exemple non modifiable\"" : "") + ">Analyser</button>" +
       (a.score != null ? '<a class="btn" href="#analyse" data-act="goto" data-id="' + esc(r.id) + '">Voir</a>' : "") + "</div></td></tr>";
   }).join("");
@@ -544,13 +564,14 @@ function renderMatchs(kept) {
       '<label for="thFav">Cote favori &lt;<input id="thFav" type="number" step="0.01" min="1.01" value="' + S.th.fav.toFixed(2) + '"></label>' +
       '<label for="thOut">Cote outsider &gt;<input id="thOut" type="number" step="0.01" min="1.01" value="' + S.th.out.toFixed(2) + '"></label>' +
       '<label for="thTier">Niveau max.<select id="thTier">' + [1, 2, 3].map(t => "<option" + (t === S.th.tier ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>" +
+      '<label class="check" for="hideRisky"><input type="checkbox" id="hideRisky"' + (S.hideRisky ? " checked" : "") + "> Masquer les profils à risque</label>" +
       '<button type="button" data-act="resetFilters">Réinitialiser</button>' +
     "</form>" +
     (editing ? renderEditor(editing) : "") +
-    '<div class="table-wrap"><table><thead><tr><th>Heure</th><th>Pays</th><th>Ligue (niveau)</th><th>Domicile</th><th>Extérieur</th><th class="c">1</th><th class="c">X</th><th class="c">2</th><th class="c">Proba. favori</th><th class="c">Score</th><th></th></tr></thead><tbody>' +
-      (body || '<tr><td colspan="11" class="empty">Aucun match ne respecte ces filtres. Élargissez les seuils ou importez des matchs dans « Données ».</td></tr>') +
+    '<div class="table-wrap"><table><thead><tr><th>Heure</th><th>Pays</th><th>Ligue (niveau)</th><th>Domicile</th><th>Extérieur</th><th class="c">1</th><th class="c">X</th><th class="c">2</th><th class="c">Proba. favori</th><th class="c">Score</th><th class="c">Profil</th><th></th></tr></thead><tbody>' +
+      (body || '<tr><td colspan="12" class="empty">Aucun match ne respecte ces filtres. Élargissez les seuils ou importez des matchs dans « Données ».</td></tr>') +
     "</tbody></table></div>" +
-    '<p class="small muted">' + list.length + " match(s). Cote du favori en vert, de l'outsider en rouge. Probabilité implicite démarginée : (1/cote du favori) ÷ (1/c1 + 1/cX + 1/c2).</p>" +
+    '<p class="small muted">' + list.length + " match(s). Cote du favori en vert, de l'outsider en rouge. Probabilité implicite démarginée : (1/cote du favori) ÷ (1/c1 + 1/cX + 1/c2). Profil « à risque » : cote du favori ≥ 1.60 et (favori ayant encaissé ≥ 5 buts sur 3 matchs ou outsider au moins aussi en forme) ; règle tirée du bilan du 6 au 8 novembre, à confirmer (onglet Bilan).</p>" +
   "</div>";
 }
 
@@ -599,6 +620,7 @@ function critBlock(c, title) {
 function renderAnalyse(kept) {
   let list = kept.map(x => ({ r: x.r, a: analyse(x.r) })).filter(x => x.a.score != null);
   if (S.onlyFull) list = list.filter(x => x.a.score === 3);
+  if (S.hideRisky) list = list.filter(x => riskOf(x.r).profile !== "à risque");
   list.sort(S.sort === "date" ? (p, q) => String(p.r.kickoff).localeCompare(String(q.r.kickoff)) : (p, q) => q.a.score - p.a.score || String(p.r.kickoff).localeCompare(String(q.r.kickoff)));
   const waiting = kept.filter(x => !hasSports(x.r.sports)).length;
   const cards = list.map(({ r, a }) => {
@@ -610,6 +632,7 @@ function renderAnalyse(kept) {
         '<div class="teams"><span class="' + (side === "home" ? "t-fav" : "t-out") + '">' + esc(r.home) + '</span><span class="vs">vs</span><span class="' + (side === "away" ? "t-fav" : "t-out") + '">' + esc(r.away) + "</span></div>" +
         '<div class="row small">1 ' + odd(r.o1, "home") + " X " + odd(r.ox, "") + " 2 " + odd(r.o2, "away") + '<span class="muted">' + esc(r.source || "") + "</span></div>" +
       '</div><div class="score"><div class="big s' + a.score + '">' + a.score + '/3</div><div class="verdict">' + a.verdict + "</div></div></div>" +
+      (() => { const rk = riskOf(r); return '<div class="card-risk"><div class="row small">Profil ' + riskBadge(rk) + "</div>" + (rk.signals.length ? '<ul class="signals">' + rk.signals.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>" : '<span class="small muted">Aucun signal d\'alerte.</span>') + "</div>"; })() +
       '<div class="crit">' + critBlock(by["Classement"], "Classement") + critBlock(by["Forme"], "Forme (3 derniers)") + critBlock(by["H2H"], "H2H (5 dernières)") + "</div>" +
       '<div class="card-foot"><span>Probabilité implicite démarginée de ' + esc(favName(r)) + " : <strong class=\"num\">" + pct(a.implied) + "</strong>" +
         " · Données : " + esc(r.overlay ? "saisie personnelle" : (r.sports && r.sports.origin) || "saisie") + (r.sports && Array.isArray(r.sports.notes) && r.sports.notes.length ? " (" + esc(r.sports.notes.join(", ")) + ")" : "") + "</span>" +
@@ -619,6 +642,7 @@ function renderAnalyse(kept) {
   return '<div class="wrap">' +
     '<div class="panel row spread"><div class="row">' +
       '<label class="check" for="onlyFull"><input type="checkbox" id="onlyFull"' + (S.onlyFull ? " checked" : "") + "> Seulement 3/3</label>" +
+      '<label class="check" for="hideRisky"><input type="checkbox" id="hideRisky"' + (S.hideRisky ? " checked" : "") + "> Masquer les profils à risque</label>" +
       '<label for="sortSel" class="check">Tri <select id="sortSel"><option value="score"' + (S.sort === "score" ? " selected" : "") + '>par score</option><option value="date"' + (S.sort === "date" ? " selected" : "") + ">par date</option></select></label>" +
     '</div><button class="primary" data-act="csv">Exporter en CSV</button></div>' +
     '<div class="legend"><span>✅ favorable</span><span>❌ défavorable</span><span>⚪ neutre / insuffisant</span><span>3/3 Favori confirmé · 2/3 Plutôt confirmé · 0–1/3 Favori fragile</span></div>' +
@@ -641,6 +665,61 @@ function renderRejets(list) {
     "</tbody></table></div>" +
     (counts ? '<p class="small muted">Rejets de la dernière extraction OddsPortal : ' + esc(counts) + (S.snap.rejects_truncated ? " (" + S.snap.rejects_truncated + " non affichés)" : "") + ".</p>" : "") +
     '<p class="small muted">Les rejets « cotes hors seuils » sont recalculés à chaque changement de seuil. Exclus : coupes, compétitions européennes et internationales, amicaux, barrages, qualifications ; divisions au-delà du niveau maximal ; championnats absents du référentiel quand le niveau n\'est pas renseigné.</p>' +
+  "</div>";
+}
+
+
+/* ---------- Profil de risque (même règle que analysis/risk.py) ---------- */
+function formPts(l) { return Array.isArray(l) && l.length ? l.slice(0, 3).reduce((s, x) => s + (x.gf > x.ga ? 3 : x.gf === x.ga ? 1 : 0), 0) : null; }
+function riskOf(r) {
+  const side = favSide(r), fo = side === "home" ? r.o1 : r.o2;
+  const sp = r.sports || {}, f = sp.fav || {}, o = sp.out || {}, sig = [];
+  if (Number.isFinite(fo) && fo >= 1.60) sig.push("cote du favori ≥ 1.60");
+  const conc = Array.isArray(f.form) && f.form.length ? f.form.slice(0, 3).reduce((s, x) => s + x.ga, 0) : null;
+  const weak = conc != null && conc >= 5; if (weak) sig.push("favori : " + conc + " buts encaissés sur 3 matchs");
+  const fp = formPts(f.form), op = formPts(o.form);
+  const hot = fp != null && op != null && op >= fp; if (hot) sig.push("outsider aussi en forme (" + op + " pts contre " + fp + ")");
+  if (Array.isArray(sp.h2h) && sp.h2h.length) { const ow = sp.h2h.slice(0, 5).filter(x => x.og > x.fg).length; if (ow >= 2) sig.push("outsider vainqueur de " + ow + " des " + Math.min(sp.h2h.length, 5) + " derniers H2H"); }
+  if (f.rank != null && f.rank > 5) sig.push("favori " + f.rank + "e seulement");
+  if (f.rank != null && o.rank != null && o.rank - f.rank <= 5) sig.push("écart de rang de " + (o.rank - f.rank) + " place(s)");
+  let profile = "N/D";
+  if (fp != null && op != null && Number.isFinite(fo)) profile = fo >= 1.60 && (weak || hot) ? "à risque" : fo < 1.60 && !weak && !hot ? "sûr" : "intermédiaire";
+  return { profile, signals: sig };
+}
+function riskBadge(rk) {
+  const cls = rk.profile === "à risque" ? "r-risque" : rk.profile === "sûr" ? "r-sur" : rk.profile === "intermédiaire" ? "r-mid" : "";
+  return '<span class="risk ' + cls + '" title="' + esc(rk.signals.join(" · ") || "aucun signal") + '">' + esc(rk.profile) + "</span>";
+}
+
+/* ---------- Bilan des résultats ---------- */
+const GROUP_LABELS = { "score": "Score de confirmation", "profil de risque": "Profil de risque", "verdict": "Verdict", "cote_favori": "Cote du favori", "lieu_favori": "Favori à domicile / à l'extérieur", "niveau": "Division", "critère Classement": "Critère Classement", "critère Forme": "Critère Forme", "critère H2H": "Critère H2H" };
+const ST_LABEL = { favorable: "✅ favorable", defavorable: "❌ défavorable", neutre: "⚪ neutre" };
+function bar(b) { const n = b.n || 1; return '<div class="bar" aria-hidden="true"><i class="bw" style="width:' + (100 * b.victoires / n) + '%"></i><i class="bd" style="width:' + (100 * b.nuls / n) + '%"></i><i class="bl" style="width:' + (100 * b.defaites / n) + '%"></i></div>'; }
+const p1 = v => v == null ? NA : String(v).replace(".", ",") + " %";
+function renderBilan() {
+  const B = S.bilan;
+  if (!B || !B.summary || !B.summary.global) return '<div class="panel empty">Aucun bilan reçu pour l\'instant. Chaque matin, la tâche quotidienne lit les résultats de la veille sur OddsPortal et met ce bilan à jour.</div>';
+  const g = B.summary.global, groups = Object.keys(B.summary).filter(k => k !== "global");
+  const cur = groups.includes(S.bilanGroup) ? S.bilanGroup : groups[0];
+  const rowsG = Object.entries(B.summary[cur] || {}).map(([k, b]) =>
+    "<tr><td>" + esc(ST_LABEL[k] || k) + '</td><td class="c num">' + b.n + '</td><td class="c num">' + b.victoires + " / " + b.nuls + " / " + b.defaites + "</td><td>" + bar(b) + '</td><td class="c num">' + p1(b.pct_victoire) + '</td><td class="c num">' + p1(b.pct_invaincu) + '</td><td class="c num">' + p1(b.proba_implicite_moy) + "</td></tr>").join("");
+  const losses = (B.matches || []).filter(m => m.fav_result === "D").slice(0, 30);
+  const recent = (B.matches || []).slice(0, 40);
+  const line = m => "<tr><td class=\"when\">" + fmtWhen(m.kickoff) + "</td><td>" + esc(m.league) + "</td><td>" + esc(m.home) + ' <span class="res ' + m.fav_result + '">' + esc(m.final) + "</span> " + esc(m.away) + '</td><td>' + esc(m.favorite) + ' <span class="num muted">' + fmt2(m.fav_odds) + '</span></td><td class="c">' + (m.score == null ? NA : m.score + "/3") + '</td><td class="c">' + riskBadge({ profile: m.risk || "N/D", signals: m.risk_signals || [] }) + '</td><td class="c"><span class="res ' + m.fav_result + '">' + ({ V: "Gagné", N: "Nul", D: "Perdu" })[m.fav_result] + "</span></td></tr>";
+  const head = '<thead><tr><th>Date</th><th>Ligue</th><th>Résultat</th><th>Favori (cote)</th><th class="c">Score</th><th class="c">Profil</th><th class="c">Favori</th></tr></thead>';
+  return '<div class="wrap">' +
+    '<p class="small muted">Matchs du ' + esc(B.first_day || NA) + " au " + esc(B.last_day || NA) + " · favori < " + fmt2(B.thresholds && B.thresholds.favorite_max) + " contre outsider > " + fmt2(B.thresholds && B.thresholds.outsider_min) + " · prédictions faites avant les matchs, résultats lus sur OddsPortal · mis à jour " + esc(fmtStamp(B.updated_at)) + ".</p>" +
+    '<div class="tiles">' +
+      '<div class="tile"><span class="k">Matchs évalués</span><span class="v">' + g.n + "</span></div>" +
+      '<div class="tile"><span class="k">Favori gagne</span><span class="v">' + p1(g.pct_victoire) + '</span><span class="small muted">' + g.victoires + " victoires</span></div>" +
+      '<div class="tile"><span class="k">Favori ne perd pas</span><span class="v">' + p1(g.pct_invaincu) + '</span><span class="small muted">' + g.nuls + " nuls · " + g.defaites + " défaites</span></div>" +
+      '<div class="tile"><span class="k">Proba. implicite moyenne</span><span class="v">' + p1(g.proba_implicite_moy) + '</span><span class="small muted">ce que prévoyaient les cotes</span></div>' +
+    "</div>" +
+    '<section class="panel editor"><div class="row spread"><h2>Taux par catégorie</h2><label for="bilanGroup" class="check">Regrouper par <select id="bilanGroup">' + groups.map(k => '<option value="' + esc(k) + '"' + (k === cur ? " selected" : "") + ">" + esc(GROUP_LABELS[k] || k) + "</option>").join("") + "</select></label></div>" +
+      '<div class="table-wrap"><table><thead><tr><th>Catégorie</th><th class="c">Matchs</th><th class="c">V / N / D</th><th>Répartition</th><th class="c">Favori gagne</th><th class="c">Ne perd pas</th><th class="c">Proba. implicite</th></tr></thead><tbody>' + rowsG + "</tbody></table></div>" +
+      '<p class="small muted">Vert : victoire du favori, orange : nul, rouge : défaite. Avec moins de 30 matchs par catégorie, les écarts restent très incertains.</p></section>' +
+    '<section class="editor"><h2>Défaites du favori</h2><div class="table-wrap"><table>' + head + "<tbody>" + (losses.map(line).join("") || '<tr><td colspan="7" class="empty">Aucune défaite.</td></tr>') + "</tbody></table></div></section>" +
+    '<details class="panel"><summary>40 derniers matchs évalués</summary><div class="table-wrap"><table>' + head + "<tbody>" + recent.map(line).join("") + "</tbody></table></div></details>" +
   "</div>";
 }
 
@@ -691,11 +770,11 @@ const say = (id, t) => { const e = document.getElementById(id); if (e) e.textCon
 function buildCSV() {
   const kept = rows().filter(r => evaluate(r, S.th).kept).map(r => ({ r, a: analyse(r) })).filter(x => x.a.score != null && (!S.onlyFull || x.a.score === 3));
   const q = s => { s = String(s ?? ""); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const head = ["date","pays","ligue","niveau","domicile","exterieur","cote_1","cote_X","cote_2","source_cotes","favori","outsider","proba_implicite_favori","classement","forme","h2h","score","verdict"];
+  const head = ["date","pays","ligue","niveau","domicile","exterieur","cote_1","cote_X","cote_2","source_cotes","favori","outsider","proba_implicite_favori","classement","forme","h2h","score","verdict","profil_risque","signaux"];
   const lines = [head.join(";")];
   for (const { r, a } of kept) {
     const by = Object.fromEntries(a.crit.map(c => [c.name, c.status]));
-    lines.push([r.kickoff, r.country, r.league, nd(leagueTier(r)), r.home, r.away, fmt2(r.o1), fmt2(r.ox), fmt2(r.o2), r.source || NA, favName(r), outName(r), pct(a.implied), by["Classement"], by["Forme"], by["H2H"], a.score + "/3", a.verdict].map(q).join(";"));
+    lines.push([r.kickoff, r.country, r.league, nd(leagueTier(r)), r.home, r.away, fmt2(r.o1), fmt2(r.ox), fmt2(r.o2), r.source || NA, favName(r), outName(r), pct(a.implied), by["Classement"], by["Forme"], by["H2H"], a.score + "/3", a.verdict, riskOf(r).profile, riskOf(r).signals.join(" | ")].map(q).join(";"));
   }
   return "﻿" + lines.join("\r\n");
 }
@@ -774,6 +853,8 @@ document.addEventListener("change", ev => {
     lsSet("fc.th", S.th);
   }
   else if (t.id === "onlyFull") S.onlyFull = t.checked;
+  else if (t.id === "hideRisky") S.hideRisky = t.checked;
+  else if (t.id === "bilanGroup") S.bilanGroup = t.value;
   else if (t.id === "sortSel") S.sort = t.value;
   else if (t.id === "rejSel") S.rejectCode = t.value;
   else return;
